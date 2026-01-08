@@ -1,75 +1,110 @@
 <template>
-  <div :class="cardClasses">
-    <div v-if="$slots.header || title" class="card-header">
-      <slot name="header">
-        <h3 v-if="title" class="text-xl font-semibold text-neutral-900">
-          {{ title }}
-        </h3>
-      </slot>
-    </div>
-    
-    <div :class="['card-body', { 'p-0': noPadding }]">
+  <component
+    :is="tag"
+    :type="tag === 'button' ? type : undefined"
+    :to="tag === 'router-link' ? to : undefined"
+    :href="tag === 'a' ? href : undefined"
+    :disabled="disabled || loading"
+    :class="buttonClasses"
+    @click="handleClick"
+  >
+    <span v-if="loading" class="absolute inset-0 flex items-center justify-center">
+      <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+    </span>
+    <span :class="{ 'opacity-0': loading }">
       <slot />
-    </div>
-
-    <div v-if="$slots.footer" class="card-footer">
-      <slot name="footer" />
-    </div>
-  </div>
+    </span>
+  </component>
 </template>
 
 <script setup>
 import { computed } from 'vue'
 
 const props = defineProps({
-  title: {
-    type: String,
-    default: ''
-  },
   variant: {
     type: String,
-    default: 'default',
-    validator: (value) => ['default', 'bordered', 'elevated', 'flat'].includes(value)
+    default: 'primary',
+    validator: (value) => ['primary', 'secondary', 'outline', 'ghost', 'danger', 'link'].includes(value)
   },
-  noPadding: {
+  size: {
+    type: String,
+    default: 'md',
+    validator: (value) => ['sm', 'md', 'lg', 'xl'].includes(value)
+  },
+  type: {
+    type: String,
+    default: 'button'
+  },
+  tag: {
+    type: String,
+    default: 'button',
+    validator: (value) => ['button', 'a', 'router-link'].includes(value)
+  },
+  to: {
+    type: [String, Object],
+    default: undefined
+  },
+  href: {
+    type: String,
+    default: undefined
+  },
+  disabled: {
     type: Boolean,
     default: false
   },
-  hoverable: {
+  loading: {
+    type: Boolean,
+    default: false
+  },
+  fullWidth: {
     type: Boolean,
     default: false
   }
 })
 
-const cardClasses = computed(() => {
-  const classes = ['card', 'bg-white', 'rounded-2xl', 'overflow-hidden']
+const emit = defineEmits(['click'])
 
+const buttonClasses = computed(() => {
+  const classes = [
+    'relative inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200',
+    'focus:outline-none focus:ring-2 focus:ring-offset-2',
+    'disabled:opacity-50 disabled:cursor-not-allowed'
+  ]
+
+  // Variant styles
   const variantClasses = {
-    default: 'shadow-card',
-    bordered: 'border border-neutral-200',
-    elevated: 'shadow-float',
-    flat: 'shadow-none'
+    primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-sm hover:shadow-md',
+    secondary: 'bg-secondary-500 text-white hover:bg-secondary-600 focus:ring-secondary-500 shadow-sm hover:shadow-md',
+    outline: 'border-2 border-primary-600 text-primary-600 hover:bg-primary-50 focus:ring-primary-500',
+    ghost: 'text-neutral-700 hover:bg-neutral-100 focus:ring-neutral-500',
+    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm hover:shadow-md',
+    link: 'text-primary-600 hover:text-primary-700 underline focus:ring-primary-500'
   }
   classes.push(variantClasses[props.variant])
 
-  if (props.hoverable) {
-    classes.push('transition-all duration-200 hover:shadow-float hover:-translate-y-1 cursor-pointer')
+  // Size styles
+  const sizeClasses = {
+    sm: 'px-4 py-2 text-sm',
+    md: 'px-6 py-3 text-base',
+    lg: 'px-8 py-4 text-lg',
+    xl: 'px-10 py-5 text-xl'
+  }
+  classes.push(sizeClasses[props.size])
+
+  // Full width
+  if (props.fullWidth) {
+    classes.push('w-full')
   }
 
   return classes.join(' ')
 })
+
+const handleClick = (event) => {
+  if (!props.disabled && !props.loading) {
+    emit('click', event)
+  }
+}
 </script>
-
-<style scoped>
-.card-header {
-  @apply px-6 py-4 border-b border-neutral-100;
-}
-
-.card-body {
-  @apply p-6;
-}
-
-.card-footer {
-  @apply px-6 py-4 border-t border-neutral-100 bg-neutral-50;
-}
-</style>
