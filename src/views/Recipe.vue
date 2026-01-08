@@ -66,7 +66,7 @@
 
               <div class="flex items-center gap-3">
                 <div class="w-12 h-12 bg-secondary-100 rounded-xl flex items-center justify-center">
-                  <svg class="w-6 h-6 text-secondary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg class="w-6 h-6 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
                 </div>
@@ -105,7 +105,7 @@
                   :key="index"
                   class="flex items-start gap-4 bg-white rounded-xl p-5 shadow-soft"
                 >
-                  <div class="w-8 h-8 bg-primary-600 text-white rounded-lg flex items-center justify-center flex-shrink-0 font-bold">
+                  <div class="w-8 h-8 bg-primary-400 text-white rounded-lg flex items-center justify-center flex-shrink-0 font-bold">
                     {{ index + 1 }}
                   </div>
                   <p class="text-neutral-700 text-lg pt-1">{{ reason }}</p>
@@ -146,7 +146,7 @@
                         <p class="text-sm text-neutral-600">Calo</p>
                       </div>
                       <div class="text-center p-4 bg-neutral-50 rounded-lg">
-                        <p class="text-2xl font-bold text-secondary-600">{{ recipe.nutrition.protein }}g</p>
+                        <p class="text-2xl font-bold text-primary-400">{{ recipe.nutrition.protein }}g</p>
                         <p class="text-sm text-neutral-600">Protein</p>
                       </div>
                       <div class="text-center p-4 bg-neutral-50 rounded-lg">
@@ -171,7 +171,7 @@
                     :key="index"
                     class="flex gap-4"
                   >
-                    <div class="w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold text-lg">
+                    <div class="w-10 h-10 bg-primary-400 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold text-lg">
                       {{ index + 1 }}
                     </div>
                     <div class="flex-1 pt-2">

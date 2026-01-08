@@ -31,7 +31,7 @@ const iconBoxClasses = computed(() => {
   // Variant colors
   const variantMap = {
     primary: 'bg-primary-100 text-primary-600',
-    secondary: 'bg-secondary-100 text-secondary-600',
+    secondary: 'bg-secondary-100 text-primary-400',
     success: 'bg-green-100 text-green-600',
     warning: 'bg-amber-100 text-amber-600',
     info: 'bg-blue-100 text-blue-600',

@@ -290,17 +290,17 @@ const criteria = [
   {
     title: 'Không cần mua thêm (hoặc tối đa 1 nguyên liệu phụ)',
     description: 'Bạn có thể nấu ngay với những gì đang có. Nếu thiếu, chỉ là những thứ đơn giản như nước tương, dầu ăn, muối - luôn có sẵn trong bếp.',
-    gradient: 'bg-gradient-to-br from-primary-500 to-primary-600'
+    gradient: 'bg-gradient-to-br from-primary-300 to-primary-400'
   },
   {
     title: 'Dùng được nhiều nguyên liệu đã chọn',
     description: 'Món được chọn sẽ tận dụng tối đa số nguyên liệu bạn đã chọn. Không để thực phẩm nào bị bỏ quên trong tủ lạnh.',
-    gradient: 'bg-gradient-to-br from-warning to-secondary-500'
+    gradient: 'bg-gradient-to-br from-warning to-primary-300'
   },
   {
     title: 'Công thức đơn giản, quen thuộc',
     description: 'Không phải món lạ hay quá phức tạp. Mỗi món đều là món ăn Việt quen thuộc, dễ làm, ai cũng nấu được trong 15-30 phút.',
-    gradient: 'bg-gradient-to-br from-success to-primary-500'
+    gradient: 'bg-gradient-to-br from-primary-300 to-primary-400'
   }
 ]
 

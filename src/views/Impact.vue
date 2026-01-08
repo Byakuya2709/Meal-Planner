@@ -2,7 +2,7 @@
   <MainLayout>
     <div class="impact-page">
       <!-- Hero Section -->
-      <section class="bg-gradient-to-br from-success/10 via-white to-primary-50 py-16 md:py-20">
+      <section class="bg-gradient-to-br from-primary-50 via-white to-primary-100 py-16 md:py-20">
         <div class="container mx-auto px-4">
           <div class="max-w-4xl mx-auto text-center">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-success/20 rounded-full mb-6">
@@ -42,11 +42,11 @@
               <!-- Meals -->
               <BaseCard variant="elevated" class="text-center">
                 <div class="w-16 h-16 bg-secondary-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <svg class="w-8 h-8 text-secondary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg class="w-8 h-8 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <p class="text-4xl font-bold text-secondary-600 mb-2">
+                <p class="text-4xl font-bold text-primary-400 mb-2">
                   {{ formatNumber(stats.mealsCreated) }}
                 </p>
                 <p class="text-neutral-600 font-medium">Bữa ăn đã nấu</p>
@@ -83,7 +83,7 @@
       </section>
 
       <!-- Money Saved -->
-      <section class="bg-gradient-to-br from-warning/10 to-primary-50 py-12 md:py-16">
+      <section class="bg-gradient-to-br from-primary-50 to-primary-100 py-12 md:py-16">
         <div class="container mx-auto px-4">
           <div class="max-w-4xl mx-auto text-center">
             <h2 class="heading-2 mb-4">💰 Tiết kiệm được</h2>
@@ -159,7 +159,7 @@
       </section>
 
       <!-- CTA -->
-      <section class="bg-primary-600 text-white py-12 md:py-16">
+      <section class="bg-primary-400 text-white py-12 md:py-16">
         <div class="container mx-auto px-4">
           <div class="max-w-3xl mx-auto text-center">
             <h2 class="text-3xl md:text-4xl font-bold mb-6">

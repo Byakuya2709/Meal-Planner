@@ -13,7 +13,9 @@
     "vue-router": "^4.6.4",
     "@vueuse/core": "^11.3.0",
     "@formkit/auto-animate": "^0.8.2",
-    "lucide-vue-next": "^0.460.0"
+    "lucide-vue-next": "^0.460.0",
+    "gsap": "^3.12.5",
+    "@vueuse/motion": "^2.2.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.1",

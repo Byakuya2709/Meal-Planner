@@ -2,7 +2,7 @@
   <MainLayout>
     <div class="community-page">
       <!-- Hero Section -->
-      <section class="bg-gradient-to-br from-secondary-50 via-white to-primary-50 py-16 md:py-20">
+      <section class="bg-gradient-to-br from-primary-50 via-white to-primary-100 py-16 md:py-20">
         <div class="container mx-auto px-4">
           <div class="max-w-4xl mx-auto text-center">
             <h1 class="heading-1 mb-6">
@@ -33,7 +33,7 @@
               <p class="text-sm text-neutral-600">Công thức</p>
             </div>
             <div class="text-center">
-              <p class="text-3xl font-bold text-secondary-600 mb-1">5,678</p>
+              <p class="text-3xl font-bold text-primary-400 mb-1">5,678</p>
               <p class="text-sm text-neutral-600">Thành viên</p>
             </div>
             <div class="text-center">
