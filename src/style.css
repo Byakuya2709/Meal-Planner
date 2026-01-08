@@ -13,6 +13,7 @@ html {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -20,22 +21,37 @@ body {
   min-height: 100vh;
 }
 
-/* Typography utilities */
+/* Typography Scale - Modern 2025 */
 @layer components {
+  /* Display - For hero headlines */
+  .display-1 {
+    @apply text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none;
+  }
+
+  .display-2 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight;
+  }
+
+  /* Headings */
   .heading-1 {
-    @apply text-4xl md:text-5xl font-bold;
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-tight;
   }
 
   .heading-2 {
-    @apply text-3xl md:text-4xl font-bold;
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold leading-tight;
   }
 
   .heading-3 {
-    @apply text-2xl md:text-3xl font-semibold;
+    @apply text-xl md:text-2xl lg:text-3xl font-semibold leading-snug;
   }
 
   .heading-4 {
-    @apply text-xl md:text-2xl font-semibold;
+    @apply text-lg md:text-xl font-semibold leading-snug;
+  }
+
+  /* Body text */
+  .body-xl {
+    @apply text-xl leading-relaxed;
   }
 
   .body-lg {
@@ -44,6 +60,153 @@ body {
 
   .body-base {
     @apply text-base leading-relaxed;
+  }
+
+  .body-sm {
+    @apply text-sm leading-relaxed;
+  }
+
+  /* Caption */
+  .caption {
+    @apply text-sm text-neutral-600;
+  }
+
+  .caption-sm {
+    @apply text-xs text-neutral-500;
+  }
+
+  /* Text effects */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Container variations */
+@layer components {
+  .container-narrow {
+    @apply container mx-auto px-4 max-w-4xl;
+  }
+
+  .container-wide {
+    @apply container mx-auto px-4 max-w-7xl;
+  }
+}
+
+/* Background patterns */
+@layer components {
+  .bg-grid-pattern {
+    background-image: 
+      linear-gradient(to right, rgba(0,0,0,0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0,0,0,0.02) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .bg-dots-pattern {
+    background-image: radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .bg-gradient-radial {
+    background: radial-gradient(circle at center, var(--tw-gradient-stops));
+  }
+}
+
+/* Card enhancements */
+@layer components {
+  .card-interactive {
+    @apply transition-all duration-300 hover:shadow-float hover:-translate-y-1;
+  }
+
+  .card-glow {
+    @apply relative;
+  }
+
+  .card-glow::before {
+    content: '';
+    @apply absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500/20 to-secondary-500/20 opacity-0 transition-opacity duration-300;
+    z-index: -1;
+    filter: blur(20px);
+  }
+
+  .card-glow:hover::before {
+    @apply opacity-100;
+  }
+}
+
+/* Section spacing */
+@layer components {
+  .section-sm {
+    @apply py-8 md:py-12;
+  }
+
+  .section-md {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+
+  .section-lg {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+}
+
+/* Animations */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.4s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
   }
 }
 
@@ -55,4 +218,9 @@ body {
 /* Focus styles for accessibility */
 *:focus-visible {
   @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+}
+
+/* Selection color */
+::selection {
+  @apply bg-primary-500/20 text-primary-900;
 }
