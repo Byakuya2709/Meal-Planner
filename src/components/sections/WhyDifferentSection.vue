@@ -1,30 +1,30 @@
 <template>
-  <section ref="sectionEl" class="section-md bg-white relative overflow-hidden">
+  <section ref="sectionEl" class="section-md bg-white relative">
     <!-- Background decoration -->
-    <div class="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-radial from-primary-100/30 to-transparent blur-3xl"></div>
+    <div class="absolute top-0 right-0 w-1/3 h-1/3 bg-primary-100/30 blur-3xl pointer-events-none -z-10"></div>
 
-    <div class="container-narrow relative">
+    <div class="container-narrow relative z-10">
       <!-- Section header -->
       <div class="text-center mb-16">
         <div 
-          v-if="isVisible"
-          class="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-semibold mb-6 animate-slide-down"
+          class="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-semibold mb-6"
+          :class="isVisible ? 'animate-slide-down' : 'opacity-0 translate-y-[-30px]'"
         >
           <Zap :size="16" />
           <span>Điểm khác biệt</span>
         </div>
         
         <h2 
-          v-if="isVisible"
-          class="heading-2 mb-4 animate-slide-up"
+          class="heading-2 mb-4"
+          :class="isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-[30px]'"
           style="animation-delay: 0.1s"
         >
           Vì sao <span class="text-primary-600">khác biệt</span>?
         </h2>
         
         <p 
-          v-if="isVisible"
-          class="body-lg text-neutral-600 max-w-2xl mx-auto animate-slide-up"
+          class="body-lg text-neutral-600 max-w-2xl mx-auto"
+          :class="isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-[30px]'"
           style="animation-delay: 0.2s"
         >
           Không phải công thức nấu ăn thông thường. Đây là giải pháp cho bài toán "Hôm nay nấu gì?"
@@ -36,8 +36,8 @@
         <div
           v-for="(feature, index) in features"
           :key="index"
-          v-show="isVisible"
-          class="group relative bg-white rounded-3xl p-8 border-2 border-neutral-100 hover:border-primary-200 transition-all duration-500 hover:shadow-float hover:-translate-y-2 animate-slide-up"
+          class="group relative bg-white rounded-3xl p-8 border-2 border-neutral-100 hover:border-primary-200 transition-all duration-500 hover:shadow-float hover:-translate-y-2"
+          :class="isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-[30px]'"
           :style="{ animationDelay: `${0.3 + index * 0.1}s` }"
         >
           <!-- Glow effect on hover -->
@@ -79,12 +79,39 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useElementVisibility } from '@vueuse/core'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { Target, Zap, RefreshCw, ArrowRight } from 'lucide-vue-next'
 
 const sectionEl = ref(null)
-const isVisible = useElementVisibility(sectionEl, { threshold: 0.3 })
+const isVisible = ref(false)
+
+// Sử dụng Intersection Observer thủ công để tránh dependency @vueuse
+onMounted(() => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          isVisible.value = true
+          // Chỉ trigger 1 lần, sau đó disconnect
+          observer.disconnect()
+        }
+      })
+    },
+    {
+      threshold: 0.2, // Trigger khi 20% section visible
+      rootMargin: '0px' // Không offset
+    }
+  )
+
+  if (sectionEl.value) {
+    observer.observe(sectionEl.value)
+  }
+
+  // Cleanup
+  onUnmounted(() => {
+    observer.disconnect()
+  })
+})
 
 const features = [
   {

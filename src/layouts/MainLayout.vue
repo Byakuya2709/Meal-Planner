@@ -82,7 +82,7 @@
                         : route.path === '/' &&  route.path === item.path
                         ? 'text-primary-900/70 font-black text-text drop-shadow-lg'
                         : route.path === '/' &&  route.path !== item.path
-                        ? 'text-white text-text drop-shadow-lg'
+                        ? 'text-white hover:text-neutral-800 text-text drop-shadow-lg'
                         : route.path === item.path && route.path !== '/'
                         ? 'text-primary-900/70 font-black drop-shadow-lg'
                         : 'text-black/95 hover:text-text drop-shadow-md',
@@ -207,7 +207,6 @@
       </div>
     </header>
 
-    <!-- Main Content với padding-top để không bị nav che -->
     <main>
       <slot />
     </main>

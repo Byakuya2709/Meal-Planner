@@ -8,12 +8,12 @@
       <!-- WHY DIFFERENT - New Component -->
       <WhyDifferentSection />
 
-      <!-- 3 CRITERIA SECTION - Enhanced -->
-      <section class="section-md bg-gradient-to-br from-neutral-50 to-primary-50/20 relative overflow-hidden">
-        <!-- Decorative element -->
-        <div class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-radial from-primary-200/20 to-transparent blur-3xl"></div>
-
-        <div class="container-narrow relative">
+          <!-- 3 CRITERIA SECTION - Enhanced -->
+      <section class="section-md bg-gradient-to-br from-neutral-50 to-primary-50/20 relative">
+        <!-- Decorative element - Fixed positioning -->
+        <div class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-primary-200/20 blur-3xl pointer-events-none -z-10"></div>
+      
+        <div class="container-narrow relative z-10">
           <div class="text-center mb-12">
             <div class="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
               <component :is="BookOpen" :size="16" />
@@ -26,7 +26,7 @@
               Mọi món được gợi ý đều phải thỏa mãn cả 3 điều kiện này
             </p>
           </div>
-
+      
           <div class="space-y-6">
             <!-- Criterion cards with enhanced design -->
             <div 
@@ -43,7 +43,7 @@
                   {{ index + 1 }}
                 </div>
               </div>
-
+      
               <div class="flex-1">
                 <h3 class="heading-4 mb-3 group-hover:text-primary-600 transition-colors">
                   {{ criterion.title }}
@@ -56,7 +56,6 @@
           </div>
         </div>
       </section>
-
       <!-- ===== INGREDIENT SELECTION SECTION ===== -->
       <section ref="ingredientsSection" class="section-md bg-white">
         <div class="container-wide">
@@ -309,7 +308,15 @@ onMounted(() => {
 })
 
 const scrollToIngredients = () => {
+  // Thêm class smooth-scroll tạm thời
+  document.documentElement.classList.add('smooth-scroll')
+  
   ingredientsSection.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  
+  // Xóa sau 1s
+  setTimeout(() => {
+    document.documentElement.classList.remove('smooth-scroll')
+  }, 1000)
 }
 
 const handleIngredientClick = (ingredient) => {
