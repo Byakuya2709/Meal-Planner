@@ -34,8 +34,6 @@
 
     <!-- ===== FLOATING STATS - Random Positions ===== -->
     <div class="absolute inset-0 pointer-events-none z-10 mt-20">
-   
-   
       <!-- Stat 1 - Top Left -->
       <div
         ref="stat1"
@@ -233,49 +231,31 @@
                   </div>
                 </div>
               </div>
-        <!-- Floating Cards -->
-            <div class="hidden lg:block">
-              <div
-                ref="float1"
-                class="absolute -top-6 -left-20 bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl p-3 shadow-2xl animate-float opacity-0"
-                style="animation-delay: 1.8s"
-              >
-                <div class="flex items-center gap-2">
-                  <div
-                    class="w-10 h-10 bg-success rounded-xl flex items-center justify-center"
-                  >
-                    <CheckCircle2 :size="18" class="text-white" />
-                  </div>
-
-                  <p class="text-sm font-semibold text-white whitespace-nowrap">
-                    Đã tìm món!
-                  </p>
-                </div>
-              </div>
-
-              <div
-                ref="float2"
-                class="absolute -bottom-6 -right-20 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3 shadow-2xl animate-float-delayed opacity-0"
-                style="animation-delay: 2s"
-              >
-                <div class="flex items-center gap-2">
-                  <div
-                    class="w-10 h-10 bg-warning rounded-xl flex items-center justify-center"
-                  >
-                    <Clock :size="18" class="text-white" />
-                  </div>
-
-                  <div >
-                    <p
-                      class="text-sm font-semibold text-white whitespace-nowrap"
+              <!-- Floating Cards -->
+              <div class="hidden lg:block">
+                <div
+                  ref="float2"
+                  class="absolute -bottom-6 -right-20 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3 shadow-2xl opacity-0"
+                  style="animation-delay: 2s"
+                >
+                  <div class="flex items-center gap-2">
+                    <div
+                      class="w-10 h-10 bg-warning rounded-xl flex items-center justify-center"
                     >
-                      Chỉ 15 phút
-                    </p>
-                    <p class="text-xs text-neutral-400">Nhanh gọn</p>
+                      <Clock :size="18" class="text-white" />
+                    </div>
+
+                    <div>
+                      <p
+                        class="text-sm font-semibold text-white whitespace-nowrap"
+                      >
+                        Chỉ 15 phút
+                      </p>
+                      <p class="text-xs text-neutral-400">Nhanh gọn</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
               <!-- Result Badge -->
               <div
                 class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-3 opacity-0 animate-fade-in"
@@ -309,9 +289,23 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div
+            ref="float1"
+            class="hidden lg:inline-block absolute left-[27rem] top-8  bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl p-2 shadow-2xl animate-bounce-subtle opacity-0"
+            style="animation-delay: 1.8s"
+          >
+            <div class="flex items-center gap-2">
+              <div
+                class="w-8 h-8 bg-success rounded-xl flex items-center justify-center"
+              >
+                <CheckCircle2 :size="18" class="text-white" />
+              </div>
 
-
-              
+              <p class="text-sm font-semibold text-white whitespace-nowrap">
+                Đã tìm món!
+              </p>
             </div>
           </div>
         </div>
@@ -439,18 +433,26 @@ onMounted(() => {
 <style scoped>
 /* ===== 3D PERSPECTIVE STYLES ===== */
 .perspective-container {
-  perspective: 55px;
+  perspective: 200px;
   perspective-origin: center top;
 }
 
 .transform-3d-base {
   transform-style: preserve-3d;
-  transform: rotateX(65deg) translateY(-20px);
+  transform: perspective(800px) rotateX(58deg) translateY(-40px)
+    translateZ(0.01px);
   transition: transform 0.6s cubic-bezier(0.35, 1.56, 0.64, 1);
+
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  backface-visibility: hidden !important;
+}
+.no-persec {
+  perspective: none;
 }
 
 .transform-3d-base:hover {
-  transform: rotateX(65deg) translateY(-25px) scale(1.2);
+  transform: perspective(800px) rotateX(56deg) translateY(-60px) scale(1.2);
 }
 
 /* Bento Grid Styles */
@@ -536,7 +538,7 @@ onMounted(() => {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-10px);
   }
 }
 
@@ -553,6 +555,9 @@ onMounted(() => {
 .animate-float {
   animation: float 8s ease-in-out infinite;
 }
+
+
+
 
 .animate-float-delayed {
   animation: float-delayed 10s ease-in-out infinite;

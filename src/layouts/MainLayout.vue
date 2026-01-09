@@ -53,7 +53,7 @@
                       'group-hover:text-primary-600',
                     ]"
                   >
-                    Tủ lạnh nhà bạn
+                    Meal Planner
                   </p>
                   <p
                     :class="[
@@ -235,7 +235,7 @@
                 <ChefHat :size="24" class="text-white" />
               </div>
               <div>
-                <h3 class="text-xl font-bold text-white">Tủ lạnh nhà bạn</h3>
+                <h3 class="text-xl font-bold text-white">Meal Planner</h3>
                 <p class="text-sm text-neutral-400">Nấu gì hôm nay?</p>
               </div>
             </div>
