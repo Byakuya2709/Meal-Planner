@@ -3,6 +3,33 @@ export default {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     extend: {
+    fontFamily: {
+        allura: ['"Allura"', 'cursive'],
+        bangers: ['"Bangers"', 'cursive'],
+        bebas: ['"Bebas Neue"', 'sans-serif'],
+        bonheur: ['"Bonheur Royale"', 'cursive'],
+        caveat: ['"Caveat"', 'cursive'],
+        cinzel: ['"Cinzel"', 'serif'],
+        cormorant: ['"Cormorant Garamond"', 'serif'],
+        greatvibes: ['"Great Vibes"', 'cursive'],
+        grenze: ['"Grenze Gotisch"', 'serif'],
+        imfell: ['"IM Fell English SC"', 'serif'],
+        indie: ['"Indie Flower"', 'cursive'],
+        lato: ['"Lato"', 'sans-serif'],
+        lobster: ['"Lobster"', 'cursive'],
+        meow: ['"Meow Script"', 'cursive'],
+        modern: ['"Modern Antiqua"', 'serif'],
+        montserrat: ['"Montserrat"', 'sans-serif'],
+        moolah: ['"Moo Lah Lah"', 'cursive'],
+        nova: ['"Nova Square"', 'sans-serif'],
+        roadrage: ['"Road Rage"', 'sans-serif'],
+        robotoflex: ['"Roboto Flex"', 'sans-serif'],
+        roboto: ['"Roboto"', 'sans-serif'],
+        sacramento: ['"Sacramento"', 'cursive'],
+        sawarabi: ['"Sawarabi Gothic"', 'sans-serif'],
+        spectral: ['"Spectral SC"', 'serif'],
+        vt323: ['"VT323"', 'monospace'],
+      },
       colors: {
         primary: {
           50: "#ecfdf7",
