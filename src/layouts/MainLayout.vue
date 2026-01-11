@@ -18,12 +18,11 @@
                 // Khi scroll → nền trắng mờ, backdrop blur
                 'bg-white/95 backdrop-blur-xl border border-neutral-200/50 rounded-2xl px-6 py-3 shadow-lg':
                   isScrolled,
-
                 // Trang chủ khi chưa scroll
-                'bg-neutral-700 rounded-2xl sm:bg-neutral lg:bg-transparent px-6 py-4': !isScrolled,
-                // Các trang khác khi chưa scroll
-                // 'bg-neutral-700 px-6 py-4 rounded-2xl lg:bg-gradient-to-br lg:from-neutral-200 lg:via-neutral-400/70 lg:to-primary-400/50':
-                //   route.path !== '/' && !isScrolled,
+                'bg-neutral-700 rounded-2xl sm:bg-neutral lg:bg-transparent px-6 py-4':
+                  !isScrolled && route.path === '/',
+                'bg-neutral-100 rounded-2xl sm:bg-neutral lg:bg-transparent px-6 py-4':
+                  !isScrolled && route.path !== '/',
               },
             ]"
           >
@@ -43,12 +42,14 @@
                     <ChefHat :size="20" class="text-white" />
                   </div>
                 </div>
-                <div class="hidden sm:block">
+                <div class="sm:block">
                   <p
                     :class="[
-                      'text-base font-bold transition-colors',
+                      'text-base font-bold transition-color ',
                       isScrolled
                         ? 'text-neutral-900'
+                        : route.path === '/'
+                        ? 'text-white'
                         : 'text-neutral-900 font-black drop-shadow-lg',
                       'group-hover:text-primary-600',
                     ]"
@@ -57,9 +58,11 @@
                   </p>
                   <p
                     :class="[
-                      'text-xs transition-colors',
+                      'text-xs transition-colors ',
                       isScrolled
                         ? 'text-neutral-600'
+                        : route.path === '/'
+                        ? 'text-neutral-200'
                         : 'text-neutral-800/90 drop-shadow-md',
                     ]"
                   >
@@ -79,9 +82,9 @@
                         ? route.path === item.path
                           ? 'text-primary-600 font-semibold'
                           : 'text-neutral-800 hover:text-primary-600'
-                        : route.path === '/' &&  route.path === item.path
+                        : route.path === '/' && route.path === item.path
                         ? 'text-primary-900/70 font-black text-text drop-shadow-lg'
-                        : route.path === '/' &&  route.path !== item.path
+                        : route.path === '/' && route.path !== item.path
                         ? 'text-white hover:text-neutral-800 text-text drop-shadow-lg'
                         : route.path === item.path && route.path !== '/'
                         ? 'text-primary-900/70 font-black drop-shadow-lg'
@@ -137,16 +140,20 @@
                   :class="
                     isScrolled
                       ? 'text-neutral-800'
-                      : 'text-white drop-shadow-lg'
+                      : route.path === '/'
+                      ? 'text-white drop-shadow-lg'
+                      : 'text-black drop-shadow-lg'
                   "
                 />
                 <X
                   v-else
                   :size="24"
-                  :class="
+                 :class="
                     isScrolled
                       ? 'text-neutral-800'
-                      : 'text-white drop-shadow-lg'
+                      : route.path === '/'
+                      ? 'text-white drop-shadow-lg'
+                      : 'text-black drop-shadow-lg'
                   "
                 />
               </button>
@@ -177,11 +184,19 @@
                       @click="closeMobileMenu"
                       :class="[
                         'flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all',
+
+                        // ĐÃ SCROLL
                         isScrolled
                           ? route.path === item.path
                             ? 'bg-primary-50 text-primary-600 font-semibold'
                             : 'text-neutral-800 hover:bg-primary-50 hover:text-primary-600'
-                          : route.path === item.path
+                          : // CHƯA SCROLL & KHÔNG PHẢI TRANG /
+                          route.path !== '/'
+                          ? route.path === item.path
+                            ? 'text-neutral-800 font-semibold hover:bg-primary-50 hover:text-primary-600'
+                            : 'text-neutral-800 hover:bg-primary-50 hover:text-primary-600'
+                          : // CHƯA SCROLL & TRANG /
+                          route.path === item.path
                           ? 'bg-white/15 text-white font-semibold'
                           : 'text-white/95 hover:bg-white/15 hover:text-white',
                       ]"

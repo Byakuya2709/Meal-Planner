@@ -1,7 +1,7 @@
 <template>
   <section
     ref="heroRef"
-    class="relative h-screen overflow-hidden bg-neutral-500 flex flex-col pt-20"
+    class="relative min-h-screen overflow-hidden bg-neutral-500 flex flex-col pt-20"
   >
     <!-- ===== ANIMATED BACKGROUND LAYERS ===== -->
     <div class="absolute inset-0">
@@ -33,12 +33,14 @@
     </div>
 
     <!-- ===== FLOATING STATS - Random Positions ===== -->
-    <div class="absolute inset-0 pointer-events-none z-10 mt-20">
+    <div
+      class="absolute inset-0 pointer-events-none z-10 mt-20 hidden lg:block"
+    >
       <!-- Stat 1 - Top Left -->
       <div
         ref="stat1"
-        class="absolute top-[12%] left-[5%] lg:left-[8%] bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3 lg:p-4 shadow-xl animate-float opacity-0 transition-opacity duration-700"
-        style="animation-delay: 0s"
+        class="absolute top-[12%] left-[5%] lg:left-[8%] bg-white/10 backdrop-blur-md border aspect-square w-[120px] border-white/20 content-center rounded-full p-3 lg:p-4 shadow-xl animate-float opacity-0 transition-opacity duration-700"
+        style="animation-delay: 0s;"
       >
         <div class="text-center space-y-1">
           <p class="text-2xl lg:text-4xl font-bold text-white">45K+</p>
@@ -49,20 +51,20 @@
       <!-- Stat 2 - Top Right -->
       <div
         ref="stat2"
-        class="absolute top-[20%] right-[5%] lg:right-[10%] bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3 lg:p-4 shadow-xl animate-float-delayed opacity-0 transition-opacity duration-700"
-        style="animation-delay: 1s"
+        class="absolute top-[20%] right-[5%] lg:right-[10%] bg-white/10 backdrop-blur-md border border-white/20 w-[110px] h-[110px] content-center rounded-full p-3 lg:p-4 shadow-xl animate-float-delayed opacity-0 transition-opacity duration-700"
+        style="animation-delay: 1s;"
       >
         <div class="text-center space-y-1">
           <p class="text-2xl lg:text-4xl font-bold text-white">23</p>
-          <p class="text-xs lg:text-sm text-neutral-300">Tấn tiết kiệm</p>
+          <p class="text-xs lg:text-sm text-neutral-300">Tấn Tiến kiệm</p>
         </div>
       </div>
 
       <!-- Stat 3 - Middle Left -->
       <div
         ref="stat3"
-        class="absolute top-[42%] left-[3%] lg:left-[5%] bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3 lg:p-4 shadow-xl animate-float opacity-0 transition-opacity duration-700"
-        style="animation-delay: 2s"
+        class="absolute top-[42%] left-[3%] aspect-square w-[100px] lg:left-[5%] bg-white/10 backdrop-blur-md border border-white/20 content-center rounded-full p-3 lg:p-4 shadow-xl animate-float opacity-0 transition-opacity duration-700"
+        style="animation-delay: 2s;"
       >
         <div class="text-center space-y-1">
           <p class="text-2xl lg:text-4xl font-bold text-white">3s</p>
@@ -71,9 +73,10 @@
       </div>
     </div>
 
-    <!-- ===== MAIN CONTENT WRAPPER ===== -->
+    <!-- ===== MAIN CONTENT WRAPPER - Auto Scale to Fit ===== -->
     <div
-      class="relative flex-1 flex flex-col justify-center items-center px-4 py-6 lg:py-8"
+      ref="contentWrapper"
+      class="relative flex-1 flex flex-col justify-center items-center px-4 py-6 lg:py-8 auto-scale-content"
     >
       <div class="container mx-auto max-w-7xl w-full">
         <!-- ===== TOP: HEADLINE SECTION ===== -->
@@ -95,7 +98,7 @@
           <div class="space-y-2 lg:space-y-3">
             <h1
               ref="h1Line1"
-              class="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-none tracking-tight opacity-0 animate-fade-in"
+              class="text-5xl md:text-6xl lg:text-7xl xl:text-7xl font-bold leading-none tracking-tight opacity-0 animate-fade-in"
               style="animation-delay: 0.4s"
             >
               <span class="block text-white font-bangers tracking-wider">
@@ -103,7 +106,7 @@
               </span>
 
               <span
-                class="font-meow tracking-wide block mt-2 lg:mt-4 pb-2 text-3xl md:text-5xl lg:text-6xl xl:text-7xl bg-gradient-to-r from-primary-400 via-primary-300 to-secondary-400 bg-clip-text text-transparent"
+                class="font-meow tracking-wide block mt-2 lg:mt-4 pb-2 text-3xl md:text-4xl lg:text-5xl xl:text-6xl bg-gradient-to-r from-primary-400 via-primary-300 to-secondary-400 bg-clip-text text-transparent"
               >
                 Hôm nay còn gì?
               </span>
@@ -124,12 +127,12 @@
             <span class="text-secondary-400 font-semibold"> 3 giây </span>.
             Không cần mua thêm, không lãng phí.
           </p>
-
-          <!-- CTAs -->
         </div>
 
         <!-- ===== BOTTOM: BENTO GRID SHOWCASE WITH 3D PERSPECTIVE ===== -->
-        <div class="w-full flex justify-center perspective-container">
+        <div
+          class="w-full flex justify-center perspective-container -mt-7 max-h-[215px] md:max-h-[265px]"
+        >
           <div
             ref="mainDevice"
             class="relative max-w-sm w-full opacity-0 animate-scale-in-3d"
@@ -142,7 +145,7 @@
 
             <!-- Grid container with 3D transform -->
             <div
-              class="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-4 lg:p-5 shadow-2xl transform-3d-base"
+              class="relative -mt-6 [scale:0.5] sm:[scale:0.6] md:[scale:0.7] bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-4 lg:p-5 shadow-2xl transform-3d-base"
             >
               <!-- Bento Ingredient Grid -->
               <div class="grid grid-cols-4 gap-2 mb-3">
@@ -231,6 +234,7 @@
                   </div>
                 </div>
               </div>
+
               <!-- Floating Cards -->
               <div class="hidden lg:block">
                 <div
@@ -256,6 +260,7 @@
                   </div>
                 </div>
               </div>
+
               <!-- Result Badge -->
               <div
                 class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-3 opacity-0 animate-fade-in"
@@ -291,9 +296,10 @@
               </div>
             </div>
           </div>
+
           <div
             ref="float1"
-            class="hidden lg:inline-block absolute left-[27rem] top-8  bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl p-2 shadow-2xl animate-bounce-subtle opacity-0"
+            class="hidden lg:inline-block absolute left-[27rem] top-11 bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl p-2 shadow-2xl animate-bounce-subtle opacity-0"
             style="animation-delay: 1.8s"
           >
             <div class="flex items-center gap-2">
@@ -310,9 +316,10 @@
           </div>
         </div>
       </div>
+
       <div
         ref="ctaButtons"
-        class="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center opacity-0 animate-fade-in -mt-5"
+        class="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center opacity-0 animate-fade-in mt-4"
         style="animation-delay: 0.8s"
       >
         <button
@@ -349,17 +356,6 @@
       </div>
     </div>
 
-    <!-- Scroll Indicator -->
-    <!-- <div
-      ref="scrollIndicator"
-      class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/60 animate-bounce-subtle"
-    >
-      <span class="text-xs uppercase tracking-wider font-medium"
-        >Cuộn xuống</span
-      >
-      <ChevronDown :size="10" />
-    </div> -->
-
     <!-- Corner accents -->
     <div
       class="absolute top-0 left-0 w-24 h-24 lg:w-32 lg:h-32 border-l-2 border-t-2 border-white/10 rounded-tl-3xl"
@@ -371,7 +367,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useScrollAnimation } from "../../composables/useScrollAnimation";
 import {
   Sparkles,
@@ -395,9 +391,31 @@ const mainDevice = ref(null);
 const float1 = ref(null);
 const float2 = ref(null);
 const meshBg = ref(null);
-const scrollIndicator = ref(null);
+const contentWrapper = ref(null);
 
 const { parallax } = useScrollAnimation();
+
+// Hàm tự động scale content để fit vào viewport
+const autoScaleContent = () => {
+  if (!contentWrapper.value || !heroRef.value) return;
+
+  const heroHeight = heroRef.value.offsetHeight;
+  const contentHeight = contentWrapper.value.scrollHeight;
+  const availableHeight = heroHeight - 80; // Trừ padding top (pt-20 = 80px)
+
+  // Tính toán scale factor
+  let scaleFactor = 1;
+  if (contentHeight > availableHeight) {
+    scaleFactor = availableHeight / contentHeight;
+    // Giới hạn scale minimum là 0.7 để không quá nhỏ
+    scaleFactor = Math.max(scaleFactor, 0.7);
+  }
+
+  contentWrapper.value.style.transform = `scale(${scaleFactor})`;
+  contentWrapper.value.style.transformOrigin = "center center";
+};
+
+let resizeObserver;
 
 onMounted(() => {
   // Parallax effects
@@ -427,10 +445,37 @@ onMounted(() => {
   if (float2.value) {
     setTimeout(() => float2.value.classList.add("opacity-100"), 2000);
   }
+
+  // Auto scale content khi mount và khi resize
+  autoScaleContent();
+
+  // Sử dụng ResizeObserver để theo dõi thay đổi kích thước
+  resizeObserver = new ResizeObserver(() => {
+    autoScaleContent();
+  });
+
+  if (heroRef.value) {
+    resizeObserver.observe(heroRef.value);
+  }
+
+  window.addEventListener("resize", autoScaleContent);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", autoScaleContent);
+  if (resizeObserver) {
+    resizeObserver.disconnect();
+  }
 });
 </script>
 
 <style scoped>
+/* ===== AUTO SCALE CONTENT ===== */
+.auto-scale-content {
+  transition: transform 0.3s ease-out;
+  will-change: transform;
+}
+
 /* ===== 3D PERSPECTIVE STYLES ===== */
 .perspective-container {
   perspective: 200px;
@@ -446,9 +491,6 @@ onMounted(() => {
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
   backface-visibility: hidden !important;
-}
-.no-persec {
-  perspective: none;
 }
 
 .transform-3d-base:hover {
@@ -555,9 +597,6 @@ onMounted(() => {
 .animate-float {
   animation: float 8s ease-in-out infinite;
 }
-
-
-
 
 .animate-float-delayed {
   animation: float-delayed 10s ease-in-out infinite;
