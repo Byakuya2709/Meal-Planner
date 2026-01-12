@@ -1,0 +1,95 @@
+/* src/styles/theme.css */
+/* ===========================================
+   HỆ THỐNG THEME - CSS VARIABLES
+   Tuân thủ quy tắc 60-30-10:
+   - 60% Secondary (nền, layout lớn)
+   - 30% Primary (nội dung chính, card)
+   - 10% Accent (CTA, highlight, active)
+   
+   BẢN MÀU ĐƠN GIẢN - DỄ NHÌN
+   =========================================== */
+
+:root {
+  /* ===== MÀU CHÍNH (Primary) - 30% ===== */
+  /* Dùng cho: Card, tiêu đề, nội dung chính */
+  /* Xanh lá nhẹ (Mint Green) - dịu mắt, tươi mát */
+  --color-primary-50: 240 253 244;    /* #f0fdf4 */
+  --color-primary-100: 220 252 231;   /* #dcfce7 */
+  --color-primary-200: 187 247 208;   /* #bbf7d0 */
+  --color-primary-300: 134 239 172;   /* #86efac */
+  --color-primary-400: 74 222 128;    /* #4ade80 */
+  --color-primary-500: 34 197 94;     /* #22c55e - MAIN */
+  --color-primary-600: 22 163 74;     /* #16a34a */
+  --color-primary-700: 21 128 61;     /* #15803d */
+  --color-primary-800: 22 101 52;     /* #166534 */
+  --color-primary-900: 20 83 45;      /* #14532d */
+
+  /* ===== MÀU PHỤ (Secondary) - 60% ===== */
+  /* Dùng cho: Background, layout, section lớn */
+  /* Xám xanh nhẹ (Slate) - trung tính, dễ nhìn */
+  --color-secondary-50: 248 250 252;  /* #f8fafc */
+  --color-secondary-100: 241 245 249; /* #f1f5f9 */
+  --color-secondary-200: 226 232 240; /* #e2e8f0 */
+  --color-secondary-300: 203 213 225; /* #cbd5e1 */
+  --color-secondary-400: 148 163 184; /* #94a3b8 */
+  --color-secondary-500: 100 116 139; /* #64748b - MAIN */
+  --color-secondary-600: 71 85 105;   /* #475569 */
+  --color-secondary-700: 51 65 85;    /* #334155 */
+  --color-secondary-800: 30 41 59;    /* #1e293b */
+  --color-secondary-900: 15 23 42;    /* #0f172a */
+
+  /* ===== MÀU NHẤN (Accent) - 10% ===== */
+  /* Dùng RIÊNG cho: CTA button, highlight, active state */
+  /* Cam ấm (Orange) - nổi bật nhưng không chói */
+  --color-accent-50: 255 247 237;     /* #fff7ed */
+  --color-accent-100: 254 237 213;    /* #ffedd5 */
+  --color-accent-200: 254 215 170;    /* #fed7aa */
+  --color-accent-300: 253 186 116;    /* #fdba74 */
+  --color-accent-400: 251 146 60;     /* #fb923c */
+  --color-accent-500: 249 115 22;     /* #f97316 - MAIN */
+  --color-accent-600: 234 88 12;      /* #ea580c */
+  --color-accent-700: 194 65 12;      /* #c2410c */
+  --color-accent-800: 154 52 18;      /* #9a3412 */
+  --color-accent-900: 124 45 18;      /* #7c2d12 */
+
+  /* ===== MÀU NỀN (Background) - Luôn màu sáng ===== */
+  --color-bg-base: 255 255 255;       /* #ffffff - Nền chính */
+  --color-bg-subtle: 249 250 251;     /* #f9fafb - Nền nhẹ */
+  --color-bg-muted: 243 244 246;      /* #f3f4f6 - Nền tối hơn */
+
+  /* ===== MÀU TEXT - Neutral ===== */
+  --color-text-primary: 17 24 39;     /* #111827 */
+  --color-text-secondary: 75 85 99;   /* #4b5563 */
+  --color-text-tertiary: 156 163 175; /* #9ca3af */
+  --color-text-inverse: 255 255 255;  /* #ffffff */
+
+  /* ===== NEUTRAL SYSTEM ===== */
+  --color-neutral-50: 255 255 255;
+  --color-neutral-100: 249 250 251;
+  --color-neutral-200: 229 231 235;
+  --color-neutral-300: 209 213 219;
+  --color-neutral-400: 156 163 175;
+  --color-neutral-500: 107 114 128;
+  --color-neutral-600: 75 85 99;
+  --color-neutral-700: 55 65 81;
+  --color-neutral-800: 31 41 55;
+  --color-neutral-900: 17 24 39;
+
+  /* ===== SEMANTIC COLORS ===== */
+  --color-success: 34 197 94;         /* #22c55e - xanh lá */
+  --color-warning: 245 158 11;        /* #f59e0b - vàng */
+  --color-error: 239 68 68;           /* #ef4444 - đỏ */
+  --color-info: 59 130 246;           /* #3b82f6 - xanh dương */
+
+  /* ===== BORDER ===== */
+  --color-border-subtle: 229 231 235; /* #e5e7eb */
+  --color-border-default: 209 213 219; /* #d1d5db */
+  --color-border-strong: 156 163 175; /* #9ca3af */
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Có thể thêm dark theme sau */
+  }
+}

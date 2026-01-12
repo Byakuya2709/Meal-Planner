@@ -1,4 +1,4 @@
-<!-- Recipe.vue - Cập nhật Hero và Content sections -->
+<!-- Recipe.vue - Tuân thủ quy tắc 60-30-10 -->
 <template>
   <MainLayout>
     <div class="recipe-page bg-neutral-50 min-h-screen">
@@ -28,7 +28,7 @@
             <p class="text-xl text-neutral-600 mb-8">{{ error }}</p>
             <button
               @click="$router.push('/')"
-              class="inline-flex items-center gap-2 px-8 py-4 bg-primary-500 hover:bg-primary-600 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl"
+              class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               <Home :size="20" />
               Quay về trang chủ
@@ -39,18 +39,17 @@
 
       <!-- Recipe Content -->
       <div v-else-if="recipe" class="recipe-content">
-        <!-- Hero Section - Nền sáng với image và content tách biệt -->
+        <!-- Hero Section - 60% Secondary background -->
         <section
-          style="max-height: min-content"
-          class="relative bg-white border-b border-neutral-200 pt-[80px] lg:pt-[90px] "
+          class="relative bg-secondary-50 border-b border-secondary-200 pt-[80px] lg:pt-[90px]"
         >
           <div class="container mx-auto px-4 py-8 md:py-12">
             <div class="max-w-6xl mx-auto">
               <div class="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
-                <!-- Image Column - Cố định tỷ lệ -->
+                <!-- Image Column -->
                 <div class="order-2 md:order-1">
                   <div
-                    class="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl bg-neutral-100"
+                    class="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl bg-neutral-100 border-2 border-primary-200"
                   >
                     <img
                       :src="recipe.image_url"
@@ -60,15 +59,15 @@
                   </div>
                 </div>
 
-                <!-- Content Column - Nền trắng, text dễ đọc -->
+                <!-- Content Column - 30% Primary colors -->
                 <div class="order-1 md:order-2">
-                  <!-- Badge -->
+                  <!-- Badge - Primary -->
                   <div
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 border border-primary-200 rounded-full mb-4"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-primary-100 border border-primary-300 rounded-full mb-4"
                   >
                     <Sparkles :size="16" class="text-primary-600" />
                     <span class="text-sm font-semibold text-primary-700">
-                      Công thức được gợi ý
+                      Gợi ý hoàn hảo
                     </span>
                   </div>
 
@@ -86,7 +85,7 @@
                     {{ recipe.description }}
                   </p>
 
-                  <!-- Tags - Giữ nguyên -->
+                  <!-- Tags -->
                   <div
                     v-if="recipe.tags && recipe.tags.length > 0"
                     class="flex flex-wrap gap-2 mb-6"
@@ -96,101 +95,58 @@
                       :key="tag"
                       class="px-3 py-1.5 bg-primary-50 border border-primary-200 text-primary-700 text-sm font-semibold rounded-full"
                     >
-                      #{{ tag }}
+                      {{ tag }}
                     </span>
                   </div>
 
-                  <!-- Meta Info Cards - 4 cards ngang -->
+                  <!-- Meta Info Cards - Primary color -->
                   <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
                     <div
-                      class="bg-neutral-50 border border-neutral-200 rounded-xl p-4 hover:border-primary-300 hover:bg-primary-50/50 transition-all duration-300"
+                      class="bg-primary-50 border border-primary-200 rounded-xl p-4 hover:border-primary-400 hover:bg-primary-100 transition-all duration-300"
                     >
-                      <div class="flex items-center gap-3">
-                        <div
-                          class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center"
-                        >
-                          <Clock :size="20" class="text-primary-600" />
-                        </div>
-                        <div>
-                          <p class="text-xs text-neutral-500 mb-0.5">
-                            Thời gian
-                          </p>
-                          <p class="text-base font-bold text-neutral-900">
-                            {{ recipe.time_minutes }}p
-                          </p>
-                        </div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <Clock :size="16" class="text-primary-600" />
+                        <p class="text-xs font-semibold text-primary-700">Thời gian</p>
                       </div>
+                      <p class="text-lg font-bold text-primary-900">
+                        {{ recipe.time_minutes }} phút
+                      </p>
                     </div>
 
                     <div
-                      class="bg-neutral-50 border border-neutral-200 rounded-xl p-4 hover:border-warning/50 hover:bg-warning/5 transition-all duration-300"
+                      class="bg-secondary-50 border border-secondary-200 rounded-xl p-4 hover:border-secondary-400 hover:bg-secondary-100 transition-all duration-300"
                     >
-                      <div class="flex items-center gap-3">
-                        <div
-                          class="w-10 h-10 bg-warning/20 rounded-lg flex items-center justify-center"
-                        >
-                          <ChefHat :size="20" class="text-warning" />
-                        </div>
-                        <div>
-                          <p class="text-xs text-neutral-500 mb-0.5">Độ khó</p>
-                          <div class="flex gap-1 mt-1">
-                            <div
-                              v-for="n in 5"
-                              :key="n"
-                              class="w-1.5 h-1.5 rounded-full"
-                              :class="
-                                n <= recipe.difficulty_score
-                                  ? 'bg-warning'
-                                  : 'bg-neutral-300'
-                              "
-                            ></div>
-                          </div>
-                        </div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <ChefHat :size="16" class="text-secondary-600" />
+                        <p class="text-xs font-semibold text-secondary-700">Độ khó</p>
                       </div>
+                      <p class="text-lg font-bold text-secondary-900">
+                        {{ getDifficultyText(recipe.difficulty_score) }}
+                      </p>
                     </div>
 
                     <div
-                      class="bg-neutral-50 border border-neutral-200 rounded-xl p-4 hover:border-success/50 hover:bg-success/5 transition-all duration-300"
+                      class="bg-primary-50 border border-primary-200 rounded-xl p-4 hover:border-primary-400 hover:bg-primary-100 transition-all duration-300"
                     >
-                      <div class="flex items-center gap-3">
-                        <div
-                          class="w-10 h-10 bg-success/20 rounded-lg flex items-center justify-center"
-                        >
-                          <Flame :size="20" class="text-success" />
-                        </div>
-                        <div>
-                          <p class="text-xs text-neutral-500 mb-0.5">
-                            Calories
-                          </p>
-                          <p class="text-base font-bold text-neutral-900">
-                            {{ recipe.nutrition_facts.calories }}
-                          </p>
-                        </div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <Users :size="16" class="text-primary-600" />
+                        <p class="text-xs font-semibold text-primary-700 ">Khẩu phần</p>
                       </div>
+                      <p class="text-lg font-bold text-primary-900 text-center">
+                        {{ recipe.nutrition_facts?.serving_size || '2-3 người' }}
+                      </p>
                     </div>
 
                     <div
-                      class="bg-neutral-50 border border-neutral-200 rounded-xl p-4 hover:border-error/50 hover:bg-error/5 transition-all duration-300"
+                      class="bg-accent-50 border border-accent-200 rounded-xl p-4 hover:border-accent-400 hover:bg-accent-100 transition-all duration-300"
                     >
-                      <div class="flex items-center gap-3">
-                        <div
-                          class="w-10 h-10 bg-error/20 rounded-lg flex items-center justify-center"
-                        >
-                          <Heart
-                            :size="20"
-                            class="text-error"
-                            :class="{ 'fill-error': recipe.likeCount > 0 }"
-                          />
-                        </div>
-                        <div>
-                          <p class="text-xs text-neutral-500 mb-0.5">
-                            Yêu thích
-                          </p>
-                          <p class="text-base font-bold text-neutral-900">
-                            {{ recipe.likeCount }}
-                          </p>
-                        </div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <Flame :size="16" class="text-accent-600" />
+                        <p class="text-xs font-semibold text-accent-700">Calories</p>
                       </div>
+                      <p class="text-lg font-bold text-accent-900">
+                        {{ recipe.nutrition_facts?.calories || 'N/A' }}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -199,107 +155,100 @@
           </div>
         </section>
 
-              <!-- Main Content Section - Nền trắng, content tách biệt -->
-        <section class="relative bg-gradient-to-b from-neutral-50 via-secondary-10 to-secondary-100 py-16 md:py-24">
-          <!-- Decorative elements nhẹ nhàng -->
+        <!-- Main Content Section - 60% Secondary background -->
+        <section class="relative bg-gradient-to-b from-secondary-50 via-secondary-100/50 to-white py-16 md:py-24">
+          <!-- Decorative elements -->
           <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
-              class="absolute top-1/4 -left-20 w-64 h-64 bg-primary-100/30 rounded-full blur-[120px]"
+              class="absolute top-1/4 -left-20 w-64 h-64 bg-primary-200/20 rounded-full blur-[120px]"
             ></div>
             <div
-              class="absolute bottom-1/4 -right-20 w-64 h-64 bg-secondary-100/30 rounded-full blur-[120px]"
+              class="absolute bottom-1/4 -right-20 w-64 h-64 bg-secondary-200/20 rounded-full blur-[120px]"
             ></div>
           </div>
-        
+
           <div class="relative container mx-auto px-4">
             <div class="max-w-7xl mx-auto grid lg:grid-cols-[1fr,400px] gap-12">
               <!-- Left Column: Ingredients & Instructions -->
               <div class="space-y-12">
-                <!-- Ingredients Section -->
+                <!-- Ingredients Section - Primary color -->
                 <div class="space-y-6">
                   <div class="flex items-center gap-4">
                     <div
                       class="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center shadow-lg"
                     >
-                      <ShoppingCart :size="28" class="text-white" />
+                      <ShoppingCart :size="24" class="text-white" />
                     </div>
                     <div>
-                      <h2 class="text-3xl md:text-4xl font-bold text-neutral-900">
-                        Nguyên liệu
-                      </h2>
+                      <h2 class="heading-2 text-neutral-900">Nguyên liệu</h2>
                       <p class="text-neutral-600">
-                        Chuẩn bị đầy đủ để nấu ngon
+                        {{ recipe.ingredients_list?.length || 0 }} nguyên liệu
                       </p>
                     </div>
                   </div>
-        
+
                   <!-- Ingredients List -->
                   <div
-                    class="bg-neutral-50 border-2 border-neutral-200 rounded-3xl p-6 md:p-8 space-y-4 shadow-sm"
+                    class="bg-white border-2 border-primary-100 rounded-3xl p-6 md:p-8 space-y-4 shadow-sm"
                   >
                     <div
-                      v-for="(
-                        ingredient, index
-                      ) in recipe.ingredients_list_fixed"
+                      v-for="(ingredient, index) in recipe.ingredients_list"
                       :key="index"
                       class="flex items-center justify-between py-4 border-b border-neutral-200 last:border-0 group hover:bg-primary-50 px-4 rounded-xl transition-all duration-300"
                     >
                       <div class="flex items-center gap-4">
                         <div
-                          class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-primary-200 transition-all font-semibold"
+                          class="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center font-bold text-primary-700 group-hover:scale-110 transition-transform"
                         >
-                          <span class="text-base text-primary-700">{{
-                            index + 1
-                          }}</span>
+                          {{ index + 1 }}
                         </div>
-                        <span class="text-neutral-900 text-lg font-medium">{{ ingredient }}</span>
+                        <span class="font-medium text-neutral-900">
+                          {{ ingredient }}
+                        </span>
                       </div>
-                      <CheckCircle2
-                        :size="20"
-                        class="text-success opacity-0 group-hover:opacity-100 transition-opacity"
-                      />
+                      <CheckCircle2 :size="20" class="text-primary-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </div>
-        
-                  <!-- Seasoning -->
+
+                  <!-- Seasoning - Accent color -->
                   <div v-if="recipe.seasoning && recipe.seasoning.length > 0">
+                    
                     <h3
                       class="text-xl font-semibold text-neutral-900 mb-4 flex items-center gap-2"
                     >
-                      <Sparkles :size="20" class="text-warning" />
+                    
+                      <span class="text-accent-500">🧂</span>
                       Gia vị
                     </h3>
                     <div
-                      class="bg-warning/5 border-2 border-warning/20 rounded-2xl p-6 space-y-3"
+                      class="bg-accent-50 border-2 border-accent-200 rounded-2xl p-6 space-y-3"
                     >
                       <div
                         v-for="(item, index) in recipe.seasoning"
                         :key="index"
-                        class="flex items-center gap-3 text-neutral-700"
+                        class="flex items-center gap-3"
                       >
-                        <div class="w-2 h-2 bg-warning rounded-full"></div>
-                        <span class="font-medium">{{ item }}</span>
+                        <div class="w-2 h-2 bg-accent-500 rounded-full"></div>
+                        <span class="text-neutral-800">{{ item }}</span>
                       </div>
                     </div>
                   </div>
                 </div>
-        
-                <!-- Instructions Section -->
+
+                <!-- Instructions Section - Secondary color -->
                 <div class="space-y-6">
                   <div class="flex items-center gap-4">
                     <div
                       class="w-14 h-14 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-2xl flex items-center justify-center shadow-lg"
                     >
-                      <ChefHat :size="28" class="text-white" />
+                      <ChefHat :size="24" class="text-white" />
                     </div>
                     <div>
-                      <h2 class="text-3xl md:text-4xl font-bold text-neutral-900">
-                        Cách làm
-                      </h2>
-                      <p class="text-neutral-600">Làm theo từng bước nhé</p>
+                      <h2 class="heading-2 text-neutral-900">Cách làm</h2>
+                      <p class="text-neutral-600">{{ recipe.instructions?.length || 0 }} bước</p>
                     </div>
                   </div>
-        
+
                   <!-- Steps -->
                   <div class="space-y-6">
                     <div
@@ -307,100 +256,88 @@
                       :key="index"
                       class="flex gap-6 group"
                     >
-                      <!-- Step number -->
                       <div class="flex-shrink-0">
                         <div
-                          class="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center font-bold text-xl text-white shadow-lg group-hover:scale-110 group-hover:shadow-xl transition-all duration-300"
+                          class="w-12 h-12  bg-secondary-500 text-white rounded-2xl flex items-center justify-center font-bold text-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-md"
                         >
                           {{ index + 1 }}
                         </div>
                       </div>
-        
-                      <!-- Step content -->
                       <div
-                        class="flex-1 bg-neutral-50 border-2 border-neutral-200 rounded-2xl p-6 group-hover:border-primary-300 group-hover:bg-primary-50/30 group-hover:shadow-md transition-all duration-300"
+                        class="flex-1 bg-white border-2 border-secondary-100 rounded-2xl p-6 group-hover:border-secondary-300 group-hover:shadow-lg transition-all duration-300"
                       >
-                        <p class="text-neutral-800 text-lg leading-relaxed font-medium">
-                          {{ step }}
-                        </p>
+                        <p class="text-neutral-800 leading-relaxed">{{ step }}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-        
-              <!-- Right Column: Nutrition & Tags -->
+
+              <!-- Right Column: Nutrition & Tags - Primary -->
               <div class="space-y-8 lg:sticky lg:top-24 lg:self-start">
                 <!-- Nutrition Facts -->
                 <div
-                  class="bg-gradient-to-br from-success/5 to-success/10 border-2 border-success/20 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm"
+                  v-if="recipe.nutrition_facts"
+                  class="bg-gradient-to-br from-primary-50 to-primary-100/50 border-2 border-primary-200 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm"
                 >
                   <div class="flex items-center gap-3 mb-4">
                     <div
-                      class="w-12 h-12 bg-success/20 rounded-xl flex items-center justify-center"
+                      class="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center"
                     >
-                      <Flame :size="24" class="text-success" />
+                      <Flame :size="24" class="text-white" />
                     </div>
                     <h3 class="text-2xl font-bold text-neutral-900">Dinh dưỡng</h3>
                   </div>
-        
+
                   <div class="space-y-4">
                     <!-- Calories - Large -->
                     <div
-                      class="bg-white border-2 border-success/30 rounded-2xl p-6 text-center shadow-sm"
+                      class="bg-white border-2 border-primary-300 rounded-2xl p-6 text-center shadow-sm"
                     >
-                      <p class="text-5xl font-bold text-success mb-1">
-                        {{ recipe.nutrition_facts.calories }}
+                      <p class="text-5xl font-bold text-accent-500 mb-1">
+                        {{ recipe.nutrition_facts.calories || 0 }}
                       </p>
-                      <p class="text-neutral-600 text-sm font-semibold">Calories</p>
+                      <p class="text-sm font-semibold text-neutral-600">Calories</p>
                     </div>
-        
+
                     <!-- Other nutrients -->
                     <div class="grid grid-cols-2 gap-4">
-                      <div
-                        class="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center hover:border-success/50 hover:shadow-md transition-all duration-300"
-                      >
-                        <p class="text-2xl font-bold text-success">
-                          {{ recipe.nutrition_facts.protein_g }}g
-                        </p>
-                        <p class="text-neutral-600 text-xs mt-1 font-semibold">Protein</p>
-                      </div>
-                      <div
-                        class="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center hover:border-warning/50 hover:shadow-md transition-all duration-300"
-                      >
-                        <p class="text-2xl font-bold text-warning">
-                          {{ recipe.nutrition_facts.carbohydrates_g }}g
-                        </p>
-                        <p class="text-neutral-600 text-xs mt-1 font-semibold">Carbs</p>
-                      </div>
-                      <div
-                        class="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center hover:border-info/50 hover:shadow-md transition-all duration-300"
-                      >
-                        <p class="text-2xl font-bold text-info">
-                          {{ recipe.nutrition_facts.fat_total_g }}g
-                        </p>
-                        <p class="text-neutral-600 text-xs mt-1 font-semibold">Fat</p>
-                      </div>
-                      <div
-                        class="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center hover:border-primary-500/50 hover:shadow-md transition-all duration-300"
-                      >
+                      <div class="bg-white border border-primary-200 rounded-xl p-4 text-center">
                         <p class="text-2xl font-bold text-primary-600">
-                          {{ recipe.nutrition_facts.fiber_g }}g
+                          {{ recipe.nutrition_facts.protein_g || 0 }}g
                         </p>
-                        <p class="text-neutral-600 text-xs mt-1 font-semibold">Fiber</p>
+                        <p class="text-xs text-neutral-600 font-medium">Protein</p>
+                      </div>
+                      <div class="bg-white border border-primary-200 rounded-xl p-4 text-center">
+                        <p class="text-2xl font-bold text-primary-600">
+                          {{ recipe.nutrition_facts.carbohydrates_g || 0 }}g
+                        </p>
+                        <p class="text-xs text-neutral-600 font-medium">Carbs</p>
+                      </div>
+                      <div class="bg-white border border-primary-200 rounded-xl p-4 text-center">
+                        <p class="text-2xl font-bold text-primary-600">
+                          {{ recipe.nutrition_facts.fat_total_g || 0 }}g
+                        </p>
+                        <p class="text-xs text-neutral-600 font-medium">Chất béo</p>
+                      </div>
+                      <div class="bg-white border border-primary-200 rounded-xl p-4 text-center">
+                        <p class="text-2xl font-bold text-primary-600">
+                          {{ recipe.nutrition_facts.fiber_g || 0 }}g
+                        </p>
+                        <p class="text-xs text-neutral-600 font-medium">Chất xơ</p>
                       </div>
                     </div>
-        
+
                     <div class="text-xs text-neutral-500 text-center pt-2 font-medium">
-                      {{ recipe.nutrition_facts.serving_size }}
+                      * Giá trị dinh dưỡng/khẩu phần
                     </div>
                   </div>
                 </div>
-        
+
                 <!-- Tags -->
                 <div
                   v-if="recipe.tags && recipe.tags.length > 0"
-                  class="bg-neutral-50 border-2 border-neutral-200 rounded-3xl p-6 space-y-4 shadow-sm"
+                  class="bg-white border-2 border-neutral-200 rounded-3xl p-6 space-y-4 shadow-sm"
                 >
                   <h3
                     class="text-xl font-bold text-neutral-900 flex items-center gap-2"
@@ -418,8 +355,8 @@
                     </span>
                   </div>
                 </div>
-        
-                <!-- Share Section -->
+
+                <!-- Share Section - Accent button -->
                 <div
                   class="bg-gradient-to-br from-primary-50 to-secondary-50 border-2 border-primary-200 rounded-3xl p-6 space-y-4 shadow-sm"
                 >
@@ -433,7 +370,7 @@
                     Bạn thích món này? Chia sẻ với bạn bè nhé!
                   </p>
                   <button
-                    class="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
+                    class="w-full bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
                   >
                     <Heart :size="18" />
                     Yêu thích
@@ -444,7 +381,7 @@
           </div>
         </section>
 
-        <!-- CTA Section -->
+        <!-- CTA Section - 10% Accent for main CTA -->
         <section
           class="relative bg-gradient-to-b from-neutral-900 to-black py-16 md:py-20 overflow-hidden"
         >
@@ -454,16 +391,16 @@
               class="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-[150px]"
             ></div>
             <div
-              class="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary-500/20 rounded-full blur-[150px]"
+              class="absolute bottom-0 right-1/4 w-96 h-96 bg-accent-500/20 rounded-full blur-[150px]"
             ></div>
           </div>
 
           <div class="relative container mx-auto px-4">
             <div class="max-w-4xl mx-auto text-center space-y-8">
               <div
-                class="inline-flex items-center justify-center w-20 h-20 bg-success/20 backdrop-blur-md border border-success/30 rounded-3xl mb-4"
+                class="inline-flex items-center justify-center w-20 h-20 bg-primary-500/20 backdrop-blur-md border border-primary-400/30 rounded-3xl mb-4"
               >
-                <Sparkles :size="40" class="text-success" />
+                <Sparkles :size="40" class="text-primary-300" />
               </div>
 
               <h2 class="text-4xl md:text-5xl font-bold text-white">
@@ -476,9 +413,10 @@
               </p>
 
               <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                <!-- 10% Accent: CTA button chính -->
                 <button
                   @click="$router.push('/')"
-                  class="group px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-2xl font-bold text-lg shadow-2xl hover:shadow-[0_0_50px_rgba(34,197,94,0.5)] transition-all duration-500 hover:scale-105 overflow-hidden relative"
+                  class="group px-8 py-4 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-2xl font-bold text-lg shadow-2xl hover:shadow-[0_0_50px_rgba(251,146,60,0.5)] transition-all duration-500 hover:scale-105 overflow-hidden relative"
                 >
                   <span
                     class="relative z-10 flex items-center justify-center gap-3"
@@ -532,7 +470,6 @@ import {
   Users,
   Home,
   AlertCircle,
-  ChevronDown,
 } from "lucide-vue-next";
 
 const route = useRoute();
@@ -541,6 +478,14 @@ const { parallax } = useScrollAnimation();
 
 const heroSection = ref(null);
 const parallaxBg = ref(null);
+
+// Helper function để chuyển difficulty_score thành text
+const getDifficultyText = (score) => {
+  if (score === 1) return 'Dễ';
+  if (score === 2) return 'Trung bình';
+  if (score === 3) return 'Khó';
+  return 'Dễ';
+};
 
 onMounted(async () => {
   const recipeId = route.params.id;

@@ -18,10 +18,11 @@
                 // Khi scroll → nền trắng mờ, backdrop blur
                 'bg-white/95 backdrop-blur-xl border border-neutral-200/50 rounded-2xl px-6 py-3 shadow-lg':
                   isScrolled,
-                // Trang chủ khi chưa scroll
-                'bg-neutral-700 rounded-2xl sm:bg-neutral lg:bg-transparent px-6 py-4':
+                // Trang chủ khi chưa scroll → transparent
+                'bg-transparent backdrop-blur-sm rounded-2xl px-6 py-4':
                   !isScrolled && route.path === '/',
-                'bg-neutral-100 rounded-2xl sm:bg-neutral lg:bg-transparent px-6 py-4':
+                // Các trang khác khi chưa scroll → nền trắng
+                'bg-white/95 border border-neutral-200/50 rounded-2xl px-6 py-4':
                   !isScrolled && route.path !== '/',
               },
             ]"
@@ -34,10 +35,10 @@
               >
                 <div class="relative">
                   <div
-                    class="absolute inset-0 bg-gradient-to-br from-primary-300 to-primary-200 rounded-xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"
+                    class="absolute inset-0 bg-gradient-to-br from-primary-400 to-primary-500 rounded-xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"
                   ></div>
                   <div
-                    class="relative w-10 h-10 bg-gradient-to-br from-primary-300 to-primary-400 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md"
+                    class="relative w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md"
                   >
                     <ChefHat :size="20" class="text-white" />
                   </div>
@@ -45,12 +46,12 @@
                 <div class="sm:block">
                   <p
                     :class="[
-                      'text-base font-bold transition-color ',
+                      'text-base font-bold transition-colors',
                       isScrolled
                         ? 'text-neutral-900'
                         : route.path === '/'
                         ? 'text-white'
-                        : 'text-neutral-900 font-black drop-shadow-lg',
+                        : 'text-neutral-900',
                       'group-hover:text-primary-600',
                     ]"
                   >
@@ -58,12 +59,12 @@
                   </p>
                   <p
                     :class="[
-                      'text-xs transition-colors ',
+                      'text-xs transition-colors',
                       isScrolled
                         ? 'text-neutral-600'
                         : route.path === '/'
                         ? 'text-neutral-200'
-                        : 'text-neutral-800/90 drop-shadow-md',
+                        : 'text-neutral-600',
                     ]"
                   >
                     Nấu gì hôm nay?
@@ -71,24 +72,27 @@
                 </div>
               </router-link>
 
-              <!-- Desktop Navigation - CONTRAST ENHANCED -->
+              <!-- Desktop Navigation -->
               <ul class="hidden md:flex items-center gap-2">
                 <li v-for="item in navItems" :key="item.path">
                   <router-link
                     :to="item.path"
                     :class="[
                       'relative px-4 py-2 rounded-lg font-medium transition-all duration-300 group flex items-center gap-2',
+                      // Khi đã scroll
                       isScrolled
                         ? route.path === item.path
                           ? 'text-primary-600 font-semibold'
-                          : 'text-neutral-800 hover:text-primary-600'
-                        : route.path === '/' && route.path === item.path
-                        ? 'text-primary-900/70 font-black text-text drop-shadow-lg'
-                        : route.path === '/' && route.path !== item.path
-                        ? 'text-white hover:text-neutral-800 text-text drop-shadow-lg'
-                        : route.path === item.path && route.path !== '/'
-                        ? 'text-primary-900/70 font-black drop-shadow-lg'
-                        : 'text-black/95 hover:text-text drop-shadow-md',
+                          : 'text-neutral-700 hover:text-primary-600'
+                        : // Trang chủ chưa scroll
+                        route.path === '/'
+                        ? route.path === item.path
+                          ? 'text-white font-semibold'
+                          : 'text-white/90 hover:text-white'
+                        : // Trang khác chưa scroll
+                        route.path === item.path
+                        ? 'text-primary-600 font-semibold'
+                        : 'text-neutral-700 hover:text-primary-600',
                     ]"
                   >
                     <component :is="item.icon" :size="16" />
@@ -98,21 +102,23 @@
                     <div
                       :class="[
                         'absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-100 transition-all duration-300 -z-10',
-                        isScrolled ? 'bg-primary-50' : 'bg-white/15',
+                        isScrolled
+                          ? 'bg-primary-50'
+                          : route.path === '/'
+                          ? 'bg-white/10'
+                          : 'bg-primary-50',
                         route.path === item.path && '!opacity-100',
-                        route.path === '/' && '!bg-primary-50',
-                        route.path !== '/' && '!bg-primary-100',
                       ]"
                     ></div>
                   </router-link>
                 </li>
               </ul>
 
-              <!-- CTA Button -->
+              <!-- CTA Button - Accent color -->
               <div class="hidden md:block">
                 <router-link
                   to="/"
-                  class="group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden"
+                  class="group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden"
                 >
                   <span class="relative z-10 flex items-center gap-2">
                     <Sparkles :size="16" />
@@ -130,31 +136,35 @@
                 @click="toggleMobileMenu"
                 :class="[
                   'md:hidden p-2 rounded-lg transition-colors',
-                  isScrolled ? 'hover:bg-neutral-100' : 'hover:bg-white/15',
+                  isScrolled
+                    ? 'hover:bg-neutral-100'
+                    : route.path === '/'
+                    ? 'hover:bg-white/10'
+                    : 'hover:bg-neutral-100',
                 ]"
                 aria-label="Menu"
               >
                 <Menu
                   v-if="!isMobileMenuOpen"
                   :size="24"
-                  :class="
+                  :class="[
                     isScrolled
                       ? 'text-neutral-800'
                       : route.path === '/'
-                      ? 'text-white drop-shadow-lg'
-                      : 'text-black drop-shadow-lg'
-                  "
+                      ? 'text-white'
+                      : 'text-neutral-800',
+                  ]"
                 />
                 <X
                   v-else
                   :size="24"
-                 :class="
+                  :class="[
                     isScrolled
                       ? 'text-neutral-800'
                       : route.path === '/'
-                      ? 'text-white drop-shadow-lg'
-                      : 'text-black drop-shadow-lg'
-                  "
+                      ? 'text-white'
+                      : 'text-neutral-800',
+                  ]"
                 />
               </button>
             </div>
@@ -174,7 +184,9 @@
                   'md:hidden mt-4 pb-4 pt-4',
                   isScrolled
                     ? 'border-t border-neutral-200'
-                    : 'border-t border-white/20',
+                    : route.path === '/'
+                    ? 'border-t border-white/20'
+                    : 'border-t border-neutral-200',
                 ]"
               >
                 <ul class="flex flex-col gap-2">
@@ -184,21 +196,20 @@
                       @click="closeMobileMenu"
                       :class="[
                         'flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all',
-
-                        // ĐÃ SCROLL
+                        // Đã scroll
                         isScrolled
                           ? route.path === item.path
                             ? 'bg-primary-50 text-primary-600 font-semibold'
-                            : 'text-neutral-800 hover:bg-primary-50 hover:text-primary-600'
-                          : // CHƯA SCROLL & KHÔNG PHẢI TRANG /
-                          route.path !== '/'
+                            : 'text-neutral-700 hover:bg-primary-50 hover:text-primary-600'
+                          : // Trang chủ chưa scroll
+                          route.path === '/'
                           ? route.path === item.path
-                            ? 'text-neutral-800 font-semibold hover:bg-primary-50 hover:text-primary-600'
-                            : 'text-neutral-800 hover:bg-primary-50 hover:text-primary-600'
-                          : // CHƯA SCROLL & TRANG /
+                            ? 'bg-white/15 text-white font-semibold'
+                            : 'text-white/90 hover:bg-white/15 hover:text-white'
+                          : // Trang khác chưa scroll
                           route.path === item.path
-                          ? 'bg-white/15 text-white font-semibold'
-                          : 'text-white/95 hover:bg-white/15 hover:text-white',
+                          ? 'bg-primary-50 text-primary-600 font-semibold'
+                          : 'text-neutral-700 hover:bg-primary-50 hover:text-primary-600',
                       ]"
                     >
                       <component :is="item.icon" :size="18" />
@@ -206,11 +217,11 @@
                     </router-link>
                   </li>
                 </ul>
-                <!-- Mobile CTA -->
+                <!-- Mobile CTA - Accent color -->
                 <router-link
                   to="/"
                   @click="closeMobileMenu"
-                  class="mt-4 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow"
+                  class="mt-4 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow"
                 >
                   <Sparkles :size="18" />
                   <span>Tìm món ngay</span>
@@ -230,12 +241,12 @@
     <footer
       class="relative bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 text-neutral-300 mt-auto overflow-hidden"
     >
-      <!-- Decorative elements -->
+      <!-- Decorative elements - Primary color -->
       <div
-        class="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/5 rounded-full blur-3xl"
+        class="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl"
       ></div>
       <div
-        class="absolute bottom-0 right-1/4 w-96 h-96 bg-primary-200/5 rounded-full blur-3xl"
+        class="absolute bottom-0 right-1/4 w-96 h-96 bg-primary-500/5 rounded-full blur-3xl"
       ></div>
 
       <div class="relative container mx-auto px-4 py-16">
@@ -244,7 +255,7 @@
           <div class="md:col-span-2">
             <div class="flex items-center gap-3 mb-4">
               <div
-                class="w-12 h-12 bg-gradient-to-br from-primary-300 to-primary-400 rounded-xl flex items-center justify-center shadow-lg"
+                class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg"
               >
                 <ChefHat :size="24" class="text-white" />
               </div>
@@ -257,16 +268,16 @@
               Giúp bạn tận dụng thực phẩm trong tủ lạnh, giảm lãng phí và bảo vệ
               môi trường. Mỗi bữa ăn là một hành động ý nghĩa.
             </p>
-            <!-- Social links -->
+            <!-- Social links - Primary hover -->
             <div class="flex gap-3 mt-6">
               <a
                 v-for="social in socials"
                 :key="social.name"
                 href="#"
-                class="w-10 h-10 bg-neutral-800 hover:bg-primary-600 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-glow"
+                class="w-10 h-10 bg-neutral-800 hover:bg-primary-600 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110"
                 :aria-label="social.name"
               >
-                <component :is="social.icon" :size="18" />
+                <component :is="social.icon" :size="18" class="text-neutral-400 group-hover:text-white" />
               </a>
             </div>
           </div>
@@ -302,7 +313,7 @@
             <ul class="space-y-3 text-sm">
               <li class="flex items-start gap-2 text-neutral-400">
                 <Mail :size="16" class="mt-0.5 flex-shrink-0" />
-                <span>hello@tulanhcuaban.com</span>
+                <span>hello@mealplanner.vn</span>
               </li>
               <li class="flex items-start gap-2 text-neutral-400">
                 <Phone :size="16" class="mt-0.5 flex-shrink-0" />
@@ -321,7 +332,7 @@
           class="border-t border-neutral-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
         >
           <p class="text-sm text-neutral-500">
-            &copy; {{ currentYear }} Tủ lạnh nhà bạn. Made with 💚 in Vietnam
+            &copy; {{ currentYear }} Meal Planner. Made with 💚 in Vietnam
           </p>
           <div class="flex gap-6 text-sm text-neutral-500">
             <a href="#" class="hover:text-primary-400 transition-colors"
@@ -338,7 +349,7 @@
       </div>
     </footer>
 
-    <!-- Back to top button -->
+    <!-- Back to top button - Primary color -->
     <Transition
       enter-active-class="transition-all duration-300"
       enter-from-class="opacity-0 translate-y-4"
@@ -348,7 +359,7 @@
       <button
         v-if="showBackToTop"
         @click="scrollToTop"
-        class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-primary-300 to-primary-400 text-white rounded-full shadow-float hover:shadow-glow flex items-center justify-center transition-all duration-300 hover:scale-110 z-40 group"
+        class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 z-40 group"
         aria-label="Back to top"
       >
         <ArrowUp

@@ -1,0 +1,68 @@
+/* src/styles/typography.css */
+/* ===========================================
+   HỆ THỐNG TYPOGRAPHY
+   Typography scale hiện đại 2025
+   =========================================== */
+
+@layer components {
+  /* ===== DISPLAY - Hero Headlines ===== */
+  .display-1 {
+    @apply text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none;
+  }
+
+  .display-2 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight;
+  }
+
+  /* ===== HEADINGS ===== */
+  .heading-1 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-tight;
+  }
+
+  .heading-2 {
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold leading-tight;
+  }
+
+  .heading-3 {
+    @apply text-xl md:text-2xl lg:text-3xl font-semibold leading-snug;
+  }
+
+  .heading-4 {
+    @apply text-lg md:text-xl font-semibold leading-snug;
+  }
+
+  /* ===== BODY TEXT ===== */
+  .body-xl {
+    @apply text-xl leading-relaxed;
+  }
+
+  .body-lg {
+    @apply text-lg leading-relaxed;
+  }
+
+  .body-base {
+    @apply text-base leading-relaxed;
+  }
+
+  .body-sm {
+    @apply text-sm leading-relaxed;
+  }
+
+  /* ===== CAPTION ===== */
+  .caption {
+    @apply text-sm text-neutral-600;
+  }
+
+  .caption-sm {
+    @apply text-xs text-neutral-500;
+  }
+
+  /* ===== TEXT EFFECTS ===== */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}

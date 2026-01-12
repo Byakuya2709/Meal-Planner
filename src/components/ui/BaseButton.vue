@@ -1,3 +1,4 @@
+<!-- src/components/ui/BaseButton.vue - REFACTORED -->
 <template>
   <component
     :is="tag"
@@ -8,6 +9,7 @@
     :class="buttonClasses"
     @click="handleClick"
   >
+    <!-- Loading spinner -->
     <span v-if="loading" class="absolute inset-0 flex items-center justify-center">
       <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -27,7 +29,7 @@ const props = defineProps({
   variant: {
     type: String,
     default: 'primary',
-    validator: (value) => ['primary', 'secondary', 'outline', 'ghost', 'danger', 'link'].includes(value)
+    validator: (value) => ['primary', 'secondary', 'accent', 'outline', 'ghost', 'danger', 'link'].includes(value)
   },
   size: {
     type: String,
@@ -74,13 +76,27 @@ const buttonClasses = computed(() => {
     'disabled:opacity-50 disabled:cursor-not-allowed'
   ]
 
-  // Variant styles
+  // Variant styles - Tuân thủ quy tắc 60-30-10
   const variantClasses = {
-    primary: 'bg-primary-400 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-sm hover:shadow-md',
-    secondary: 'bg-secondary-500 text-white hover:bg-secondary-600 focus:ring-secondary-500 shadow-sm hover:shadow-md',
-    outline: 'border-2 border-primary-600 text-primary-600 hover:bg-primary-50 focus:ring-primary-500',
+    // Primary: màu chính cho nội dung (30%)
+    primary: 'bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500 shadow-sm hover:shadow-md',
+    
+    // Secondary: màu phụ cho layout (60%)
+    secondary: 'bg-secondary-100 text-secondary-900 hover:bg-secondary-200 focus:ring-secondary-500 border border-secondary-200',
+    
+    // Accent: màu nhấn CHỈ CHO CTA (10%)
+    accent: 'bg-accent-400 text-white hover:bg-accent-500 focus:ring-accent-500 shadow-md hover:shadow-lg',
+    
+    // Outline
+    outline: 'border-2 border-primary-500 text-primary-700 bg-white hover:bg-primary-50 focus:ring-primary-500',
+    
+    // Ghost
     ghost: 'text-neutral-700 hover:bg-neutral-100 focus:ring-neutral-500',
-    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm hover:shadow-md',
+    
+    // Danger
+    danger: 'bg-error text-white hover:bg-error/90 focus:ring-error shadow-sm hover:shadow-md',
+    
+    // Link
     link: 'text-primary-600 hover:text-primary-700 underline focus:ring-primary-500'
   }
   classes.push(variantClasses[props.variant])

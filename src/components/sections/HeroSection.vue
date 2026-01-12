@@ -1,28 +1,28 @@
 <template>
   <section
     ref="heroRef"
-    class="relative min-h-screen overflow-hidden bg-neutral-500 flex flex-col pt-5"
+    class="relative min-h-screen overflow-hidden bg-gradient-to-br from-secondary-600 via-secondary-700 to-secondary-800 flex flex-col pt-5"
   >
-    <!-- ===== ANIMATED BACKGROUND LAYERS ===== -->
+    <!-- ===== ANIMATED BACKGROUND LAYERS - 60% Secondary ===== -->
     <div class="absolute inset-0">
-      <!-- Gradient base -->
+      <!-- Gradient base - Màu phụ (Secondary) -->
       <div
-        class="absolute inset-0 bg-gradient-to-br from-neutral-200/90 via-neutral-600 to-primary-700/30"
+        class="absolute inset-0 bg-gradient-to-br from-secondary-500/90 via-secondary-600 to-secondary-700/80"
       ></div>
 
       <!-- Animated mesh gradient -->
       <div ref="meshBg" class="absolute inset-0 opacity-40">
         <div
           ref="blob1"
-          class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary-300/30 rounded-full blur-[120px] animate-float transition-all duration-700 ease-out"
+          class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary-400/30 rounded-full blur-[120px] animate-float transition-all duration-700 ease-out"
         ></div>
         <div
           ref="blob2"
-          class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-secondary-500/30 rounded-full blur-[100px] animate-float-delayed transition-all duration-700 ease-out"
+          class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-secondary-400/40 rounded-full blur-[100px] animate-float-delayed transition-all duration-700 ease-out"
         ></div>
         <div
           ref="blob3"
-          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-warning/20 rounded-full blur-[80px] animate-pulse-slow transition-all duration-700 ease-out"
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-accent-400/20 rounded-full blur-[80px] animate-pulse-slow transition-all duration-700 ease-out"
         ></div>
       </div>
 
@@ -36,39 +36,39 @@
     <div
       class="absolute inset-0 pointer-events-none z-10 mt-20 hidden lg:block"
     >
-      <!-- Stat 1 - Top Left -->
+      <!-- Stat 1 - Top Left - Màu Primary (30%) -->
       <div
         ref="stat1"
-        class="absolute top-[12%] left-[5%] lg:left-[8%] bg-white/10 backdrop-blur-md border aspect-square w-[120px] border-white/20 content-center rounded-full p-3 lg:p-4 shadow-xl animate-float opacity-0 transition-opacity duration-700"
+        class="absolute top-[12%] left-[5%] lg:left-[8%] bg-primary-500/20 backdrop-blur-md border aspect-square w-[120px] border-primary-400/30 content-center rounded-full p-3 lg:p-4 shadow-xl animate-float opacity-0 transition-opacity duration-700"
         style="animation-delay: 0s;"
       >
         <div class="text-center space-y-1">
           <p class="text-2xl lg:text-4xl font-bold text-white">45K+</p>
-          <p class="text-xs lg:text-sm text-neutral-300">Bữa ăn</p>
+          <p class="text-xs lg:text-sm text-secondary-100">Bữa ăn</p>
         </div>
       </div>
 
-      <!-- Stat 2 - Top Right -->
+      <!-- Stat 2 - Top Right - Màu Primary -->
       <div
         ref="stat2"
-        class="absolute top-[20%] right-[5%] lg:right-[10%] bg-white/10 backdrop-blur-md border border-white/20 w-[110px] h-[110px] content-center rounded-full p-3 lg:p-4 shadow-xl animate-float-delayed opacity-0 transition-opacity duration-700"
+        class="absolute top-[20%] right-[5%] lg:right-[10%] bg-primary-500/20 backdrop-blur-md border border-primary-400/30 w-[110px] h-[110px] content-center rounded-full p-3 lg:p-4 shadow-xl animate-float-delayed opacity-0 transition-opacity duration-700"
         style="animation-delay: 1s;"
       >
         <div class="text-center space-y-1">
           <p class="text-2xl lg:text-4xl font-bold text-white">23</p>
-          <p class="text-xs lg:text-sm text-neutral-300">Tấn Tiến kiệm</p>
+          <p class="text-xs lg:text-sm text-secondary-100">Tấn Tiến kiệm</p>
         </div>
       </div>
 
-      <!-- Stat 3 - Middle Left -->
+      <!-- Stat 3 - Middle Left - Màu Accent (10%) -->
       <div
         ref="stat3"
-        class="absolute top-[42%] left-[3%] aspect-square w-[100px] lg:left-[5%] bg-white/10 backdrop-blur-md border border-white/20 content-center rounded-full p-3 lg:p-4 shadow-xl animate-float opacity-0 transition-opacity duration-700"
+        class="absolute top-[42%] left-[3%] aspect-square w-[100px] lg:left-[5%] bg-accent-500/20 backdrop-blur-md border border-accent-400/30 content-center rounded-full p-3 lg:p-4 shadow-xl animate-float opacity-0 transition-opacity duration-700"
         style="animation-delay: 2s;"
       >
         <div class="text-center space-y-1">
           <p class="text-2xl lg:text-4xl font-bold text-white">3s</p>
-          <p class="text-xs lg:text-sm text-neutral-300">Tìm món</p>
+          <p class="text-xs lg:text-sm text-secondary-100">Tìm món</p>
         </div>
       </div>
     </div>
@@ -87,7 +87,7 @@
             style="animation-delay: 0.2s"
           >
             <div
-              class="w-2 h-2 bg-primary-400 rounded-full animate-pulse"
+              class="w-2 h-2 bg-accent-400 rounded-full animate-pulse"
             ></div>
             <span class="text-xs lg:text-sm font-medium text-white/90">
               🌱 Đang có 12,458 người dùng
@@ -106,7 +106,7 @@
               </span>
 
               <span
-                class="font-meow tracking-wide block mt-2 lg:mt-4 pb-2 text-3xl md:text-4xl lg:text-5xl xl:text-6xl bg-gradient-to-r from-primary-400 via-primary-300 to-secondary-400 bg-clip-text text-transparent"
+                class="font-meow tracking-wide block mt-2 lg:mt-4 pb-2 text-3xl md:text-4xl lg:text-5xl xl:text-6xl bg-gradient-to-r from-primary-300 via-accent-300 to-primary-400 bg-clip-text text-transparent"
               >
                 Hôm nay còn gì?
               </span>
@@ -116,15 +116,15 @@
           <!-- Subheadline -->
           <p
             ref="subheadline"
-            class="text-base md:text-lg lg:text-xl text-neutral-300 leading-relaxed max-w-2xl mx-auto opacity-0 animate-fade-in"
+            class="text-base md:text-lg lg:text-xl text-secondary-100 leading-relaxed max-w-2xl mx-auto opacity-0 animate-fade-in"
             style="animation-delay: 0.6s"
           >
             Chọn
-            <span class="text-primary-400 font-semibold">
+            <span class="text-primary-300 font-semibold">
               3-5 nguyên liệu
             </span>
             đang có, nhận gợi ý món nấu trong
-            <span class="text-secondary-400 font-semibold"> 3 giây </span>.
+            <span class="text-accent-300 font-semibold"> 3 giây </span>.
             Không cần mua thêm, không lãng phí.
           </p>
         </div>
@@ -138,14 +138,14 @@
             class="relative max-w-sm w-full opacity-0 animate-scale-in-3d"
             style="animation-delay: 1s"
           >
-            <!-- Glow effect -->
+            <!-- Glow effect - Màu Primary -->
             <div
-              class="absolute inset-0 bg-gradient-to-r from-primary-500/30 to-secondary-500/30 rounded-3xl blur-3xl transform-3d-base"
+              class="absolute inset-0 bg-gradient-to-r from-primary-500/40 to-accent-500/30 rounded-3xl blur-3xl transform-3d-base"
             ></div>
 
-            <!-- Grid container with 3D transform -->
+            <!-- Grid container with 3D transform - Màu Primary (30%) -->
             <div
-              class="relative -mt-6 [scale:0.5] sm:[scale:0.6] md:[scale:0.7] bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-4 lg:p-5 shadow-2xl transform-3d-base"
+              class="relative -mt-6 [scale:0.5] sm:[scale:0.6] md:[scale:0.7] bg-primary-500/10 backdrop-blur-md border border-primary-400/30 rounded-3xl p-4 lg:p-5 shadow-2xl transform-3d-base"
             >
               <!-- Bento Ingredient Grid -->
               <div class="grid grid-cols-4 gap-2 mb-3">
@@ -239,12 +239,12 @@
               <div class="hidden lg:block">
                 <div
                   ref="float2"
-                  class="absolute -bottom-6 -right-20 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3 shadow-2xl opacity-0"
+                  class="absolute -bottom-6 -right-20 bg-accent-500/20 backdrop-blur-md border border-accent-400/30 rounded-2xl p-3 shadow-2xl opacity-0"
                   style="animation-delay: 2s"
                 >
                   <div class="flex items-center gap-2">
                     <div
-                      class="w-10 h-10 bg-warning rounded-xl flex items-center justify-center"
+                      class="w-10 h-10 bg-accent-500 rounded-xl flex items-center justify-center"
                     >
                       <Clock :size="18" class="text-white" />
                     </div>
@@ -255,7 +255,7 @@
                       >
                         Chỉ 15 phút
                       </p>
-                      <p class="text-xs text-neutral-400">Nhanh gọn</p>
+                      <p class="text-xs text-secondary-100">Nhanh gọn</p>
                     </div>
                   </div>
                 </div>
@@ -268,9 +268,9 @@
               >
                 <div class="flex items-center gap-3">
                   <div
-                    class="w-10 h-10 bg-success/20 rounded-lg flex items-center justify-center"
+                    class="w-10 h-10 bg-primary-500/30 rounded-lg flex items-center justify-center"
                   >
-                    <Sparkles :size="20" class="text-success animate-pulse" />
+                    <Sparkles :size="20" class="text-primary-300 animate-pulse" />
                   </div>
 
                   <div class="flex-1">
@@ -278,7 +278,7 @@
                       class="h-2 bg-white/30 rounded-full w-3/4 mb-2 overflow-hidden"
                     >
                       <div
-                        class="h-full bg-success rounded-full animate-progress"
+                        class="h-full bg-primary-400 rounded-full animate-progress"
                         style="width: 85%"
                       ></div>
                     </div>
@@ -287,7 +287,7 @@
                       class="h-2 bg-white/30 rounded-full w-1/2 overflow-hidden"
                     >
                       <div
-                        class="h-full bg-primary-400 rounded-full animate-progress"
+                        class="h-full bg-accent-400 rounded-full animate-progress"
                         style="width: 65%; animation-delay: 0.3s"
                       ></div>
                     </div>
@@ -299,12 +299,12 @@
 
           <div
             ref="float1"
-            class="hidden lg:inline-block absolute left-[27rem] top-11 bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl p-2 shadow-2xl animate-bounce-subtle opacity-0"
+            class="hidden lg:inline-block absolute left-[27rem] top-11 bg-primary-500/20 backdrop-blur-md border border-primary-400/30 rounded-2xl p-2 shadow-2xl animate-bounce-subtle opacity-0"
             style="animation-delay: 1.8s"
           >
             <div class="flex items-center gap-2">
               <div
-                class="w-8 h-8 bg-success rounded-xl flex items-center justify-center"
+                class="w-8 h-8 bg-primary-500 rounded-xl flex items-center justify-center"
               >
                 <CheckCircle2 :size="18" class="text-white" />
               </div>
@@ -317,6 +317,7 @@
         </div>
       </div>
 
+      <!-- CTA Buttons - 10% Accent cho button chính -->
       <div
         ref="ctaButtons"
         class="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center opacity-0 animate-fade-in mt-4 pt-2"
@@ -324,7 +325,7 @@
       >
         <button
           @click="$emit('start')"
-          class="group relative px-6 lg:px-8 py-3 lg:py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-2xl font-bold text-sm lg:text-base shadow-2xl hover:shadow-[0_0_50px_rgba(34,197,94,0.5)] transition-all duration-500 hover:scale-105 overflow-hidden"
+          class="group relative px-6 lg:px-8 py-3 lg:py-4 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-2xl font-bold text-sm lg:text-base shadow-2xl hover:shadow-[0_0_50px_rgba(251,146,60,0.6)] transition-all duration-500 hover:scale-105 overflow-hidden"
         >
           <span
             class="relative z-10 flex items-center justify-center gap-2 lg:gap-3"
@@ -338,7 +339,7 @@
           </span>
 
           <div
-            class="absolute inset-0 bg-gradient-to-r from-primary-400 to-primary-500 opacity-0 group-hover:opacity-100 transition-opacity"
+            class="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-500 opacity-0 group-hover:opacity-100 transition-opacity"
           ></div>
 
           <div
@@ -401,13 +402,11 @@ const autoScaleContent = () => {
 
   const heroHeight = heroRef.value.offsetHeight;
   const contentHeight = contentWrapper.value.scrollHeight;
-  const availableHeight = heroHeight - 80; // Trừ padding top (pt-20 = 80px)
+  const availableHeight = heroHeight - 80;
 
-  // Tính toán scale factor
   let scaleFactor = 1;
   if (contentHeight > availableHeight) {
     scaleFactor = availableHeight / contentHeight;
-    // Giới hạn scale minimum là 0.7 để không quá nhỏ
     scaleFactor = Math.max(scaleFactor, 0.7);
   }
 
@@ -418,13 +417,11 @@ const autoScaleContent = () => {
 let resizeObserver;
 
 onMounted(() => {
-  // Parallax effects
   if (meshBg.value) parallax(meshBg.value, 0.3);
   if (mainDevice.value) parallax(mainDevice.value, 0.15);
   if (float1.value) parallax(float1.value, 0.4);
   if (float2.value) parallax(float2.value, 0.5);
 
-  // Parallax for floating stats
   if (stat1.value) {
     parallax(stat1.value, 0.2);
     setTimeout(() => stat1.value.classList.add("opacity-100"), 100);
@@ -438,7 +435,6 @@ onMounted(() => {
     setTimeout(() => stat3.value.classList.add("opacity-100"), 500);
   }
 
-  // Show floating cards after delay
   if (float1.value) {
     setTimeout(() => float1.value.classList.add("opacity-100"), 1800);
   }
@@ -446,10 +442,8 @@ onMounted(() => {
     setTimeout(() => float2.value.classList.add("opacity-100"), 2000);
   }
 
-  // Auto scale content khi mount và khi resize
   autoScaleContent();
 
-  // Sử dụng ResizeObserver để theo dõi thay đổi kích thước
   resizeObserver = new ResizeObserver(() => {
     autoScaleContent();
   });
@@ -514,7 +508,7 @@ onUnmounted(() => {
 }
 
 .checkmark {
-  @apply absolute top-2 right-2 w-6 h-6 bg-primary-500 rounded-full 
+  @apply absolute top-2 right-2 w-6 h-6 bg-accent-500 rounded-full 
          flex items-center justify-center opacity-0 
          transition-opacity duration-300;
 }

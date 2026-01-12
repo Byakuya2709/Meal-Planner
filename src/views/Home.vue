@@ -8,19 +8,21 @@
       <!-- WHY DIFFERENT - New Component -->
       <WhyDifferentSection />
 
-          <!-- 3 CRITERIA SECTION - Enhanced -->
-      <section class="section-md bg-gradient-to-br from-neutral-50 to-primary-50/20 relative">
-        <!-- Decorative element - Fixed positioning -->
-        <div class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-primary-200/20 blur-3xl pointer-events-none -z-10"></div>
+      <!-- 3 CRITERIA SECTION - Tuân thủ 60-30-10 -->
+      <section class="section-md bg-secondary-50 relative">
+        <!-- 60% Secondary: Background màu phụ -->
+        <div class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-secondary-100/30 blur-3xl pointer-events-none -z-10"></div>
       
         <div class="container-narrow relative z-10">
           <div class="text-center mb-12">
+            <!-- Badge -->
             <div class="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
               <component :is="BookOpen" :size="16" />
               <span>Triết lý sản phẩm</span>
             </div>
+            <!-- Title with accent color -->
             <h2 class="heading-2 mb-4">
-              3 tiêu chí <span class="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">"NẤU NGAY"</span>
+              3 tiêu chí <span class="text-accent-500">"NẤU NGAY"</span>
             </h2>
             <p class="body-lg text-neutral-600">
               Mọi món được gợi ý đều phải thỏa mãn cả 3 điều kiện này
@@ -28,18 +30,15 @@
           </div>
       
           <div class="space-y-6">
-            <!-- Criterion cards with enhanced design -->
+            <!-- 30% Primary: Card sử dụng màu chính -->
             <div 
               v-for="(criterion, index) in criteria"
               :key="index"
-              class="group flex gap-6 items-start bg-white p-8 rounded-3xl shadow-card hover:shadow-float transition-all duration-500 hover:-translate-y-1 border border-transparent hover:border-primary-200"
+              class="group flex gap-6 items-start bg-white p-8 rounded-3xl shadow-card hover:shadow-float transition-all duration-500 hover:-translate-y-1 border border-neutral-200 hover:border-primary-200"
             >
-              <!-- Number badge with gradient -->
+              <!-- Number badge với primary color -->
               <div class="flex-shrink-0">
-                <div :class="[
-                  'w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold text-2xl transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6',
-                  criterion.gradient
-                ]">
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold text-2xl transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 bg-gradient-to-br from-primary-500 to-primary-600">
                   {{ index + 1 }}
                 </div>
               </div>
@@ -56,6 +55,61 @@
           </div>
         </div>
       </section>
+      
+      <!-- CTA STICKY BAR - 10% Accent color -->
+      <Transition name="slide-up">
+        <section 
+          v-if="selectedCount > 0"
+          class="fixed bottom-0 left-0 right-0 bg-white/95 border-t-2 border-primary-200 shadow-float py-4 md:py-6 z-40 backdrop-blur-sm"
+        >
+          <div class="container-wide">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+              <!-- Left: Selection info -->
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+                  🧺
+                </div>
+                <div class="text-left">
+                  <p class="font-bold text-neutral-900 text-lg">
+                    Đã chọn {{ selectedCount }} nguyên liệu
+                  </p>
+                  <p class="text-sm text-neutral-600">
+                    {{ canSubmit ? '✨ Sẵn sàng tìm món!' : `Chọn thêm ${3 - selectedCount} nguyên liệu nữa` }}
+                  </p>
+                </div>
+              </div>
+      
+              <!-- Right: Actions -->
+              <div class="flex items-center gap-3 w-full md:w-auto">
+                <BaseButton
+                  variant="ghost"
+                  size="md"
+                  @click="clearSelection"
+                  class="hidden sm:flex"
+                >
+                  Xóa tất cả
+                </BaseButton>
+                
+                <!-- 10% Accent: CTA button chính -->
+                <BaseButton
+                  variant="accent"
+                  size="xl"
+                  :disabled="!canSubmit"
+                  :loading="findingRecipe"
+                  @click="handleFindRecipe"
+                  class="flex-1 md:flex-initial md:min-w-[280px]"
+                >
+                  <span v-if="!findingRecipe" class="flex items-center gap-2 justify-center">
+                    <span>🔍</span>
+                    <span>Gợi ý món nấu ngay</span>
+                  </span>
+                  <span v-else>Đang tìm món phù hợp...</span>
+                </BaseButton>
+              </div>
+            </div>
+          </div>
+        </section>
+      </Transition>
       <!-- ===== INGREDIENT SELECTION SECTION ===== -->
       <section ref="ingredientsSection" class="section-md bg-white">
         <div class="container-wide">
@@ -285,21 +339,19 @@ const {
 const { findRecipe } = useRecipe()
 const findingRecipe = ref(false)
 
+// Trong script setup của Home.vue, cập nhật criteria:
 const criteria = [
   {
     title: 'Không cần mua thêm (hoặc tối đa 1 nguyên liệu phụ)',
-    description: 'Bạn có thể nấu ngay với những gì đang có. Nếu thiếu, chỉ là những thứ đơn giản như nước tương, dầu ăn, muối - luôn có sẵn trong bếp.',
-    gradient: 'bg-gradient-to-br from-primary-300 to-primary-400'
+    description: 'Bạn có thể nấu ngay với những gì đang có. Nếu thiếu, chỉ là những thứ đơn giản như nước tương, dầu ăn, muối - luôn có sẵn trong bếp.'
   },
   {
     title: 'Dùng được nhiều nguyên liệu đã chọn',
-    description: 'Món được chọn sẽ tận dụng tối đa số nguyên liệu bạn đã chọn. Không để thực phẩm nào bị bỏ quên trong tủ lạnh.',
-    gradient: 'bg-gradient-to-br from-warning to-primary-300'
+    description: 'Món được chọn sẽ tận dụng tối đa số nguyên liệu bạn đã chọn. Không để thực phẩm nào bị bỏ quên trong tủ lạnh.'
   },
   {
     title: 'Công thức đơn giản, quen thuộc',
-    description: 'Không phải món lạ hay quá phức tạp. Mỗi món đều là món ăn Việt quen thuộc, dễ làm, ai cũng nấu được trong 15-30 phút.',
-    gradient: 'bg-gradient-to-br from-primary-300 to-primary-400'
+    description: 'Không phải món lạ hay quá phức tạp. Mỗi món đều là món ăn Việt quen thuộc, dễ làm, ai cũng nấu được trong 15-30 phút.'
   }
 ]
 
