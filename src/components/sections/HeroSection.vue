@@ -1,7 +1,7 @@
 <template>
   <section
     ref="heroRef"
-    class="relative min-h-screen overflow-hidden bg-neutral-500 flex flex-col pt-20"
+    class="relative min-h-screen overflow-hidden bg-neutral-500 flex flex-col pt-5"
   >
     <!-- ===== ANIMATED BACKGROUND LAYERS ===== -->
     <div class="absolute inset-0">
@@ -319,7 +319,7 @@
 
       <div
         ref="ctaButtons"
-        class="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center opacity-0 animate-fade-in mt-4"
+        class="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center opacity-0 animate-fade-in mt-4 pt-2"
         style="animation-delay: 0.8s"
       >
         <button
@@ -484,7 +484,7 @@ onUnmounted(() => {
 
 .transform-3d-base {
   transform-style: preserve-3d;
-  transform: perspective(800px) rotateX(58deg) translateY(-40px)
+  transform: perspective(800px) rotateX(62deg) translateY(-40px)
     translateZ(0.01px);
   transition: transform 0.6s cubic-bezier(0.35, 1.56, 0.64, 1);
 
@@ -494,7 +494,7 @@ onUnmounted(() => {
 }
 
 .transform-3d-base:hover {
-  transform: perspective(800px) rotateX(56deg) translateY(-60px) scale(1.2);
+  transform: perspective(800px) rotateX(50deg) translateY(-60px) scale(1.2);
 }
 
 /* Bento Grid Styles */

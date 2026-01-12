@@ -56,7 +56,7 @@ export const recipeService = {
   // Lấy recipe theo ID
   async getRecipeById(id) {
     await delay(400)
-    const recipe = recipes.find(r => r.id === parseInt(id))
+    const recipe = recipes.find(r => r._id === id)
     
     if (!recipe) {
       return {
@@ -83,13 +83,13 @@ export const recipeService = {
   // Vote cho community recipe
   async voteRecipe(recipeId) {
     await delay(300)
-    const recipe = communityRecipes.find(r => r.id === recipeId)
+    const recipe = communityRecipes.find(r => r._id === recipeId)
     if (recipe) {
-      recipe.votes += 1
+      recipe.likeCount += 1
     }
     return {
       success: true,
-      data: { votes: recipe?.votes || 0 }
+      data: { likeCount: recipe?.likeCount || 0 }
     }
   },
 

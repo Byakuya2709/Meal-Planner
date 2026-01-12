@@ -1,55 +1,75 @@
-# Hướng dẫn Copilot cho dự án web "Tủ lạnh nhà bạn hôm nay"
+# Tổng quan dự án
+Đây là repository frontend cho ứng dụng web có tên “Tủ lạnh nhà bạn hôm nay”.
+Ứng dụng được xây dựng bằng Vite, Vue 3 (Composition API) và Tailwind CSS.
 
-## 1. Ngữ cảnh chung
-- Đây là một ứng dụng web frontend sử dụng **Vite**, **Vue 3 (Composition API)** và **Tailwind CSS**.
-- Mục tiêu sản phẩm: giúp người dùng chọn 3–5 nguyên liệu và gợi ý **1 món duy nhất phù hợp** để nấu ngay, giảm lãng phí thực phẩm.
-- Ứng dụng sẽ mở rộng để kết nối với **backend thật** (API) để lấy data, lưu công thức và người dùng.
-- Đảm bảo: **theme/color system** có thể đổi được mà không sửa logic, không thủ công chỉnh màu (không hardcode style).
-- Giao diện phải đồng nhất, trực quan và **hiện đại**, khác với web công thức nấu ăn thông thường.
+Mục tiêu sản phẩm là cho phép người dùng chọn 3–5 nguyên liệu và hệ thống sẽ gợi ý đúng 1 món ăn phù hợp để nấu ngay, nhằm giảm lãng phí thực phẩm.
+Copilot phải sinh mã phù hợp với kiến trúc, UX và tiêu chuẩn kỹ thuật của dự án này.
 
-## 2. Kiến trúc & best practices
-- Tách biệt rõ ràng:
-  - `src/router/index.js` hoặc `src/router/index.ts` cho định nghĩa router.
-  - `src/views/` chứa các trang chính (`Home.vue`, `Recipe.vue`, `Community.vue`, `Impact.vue`).
-  - `src/components/` chứa các UI component dùng chung.
-  - `src/layouts/` nếu có layout wrap các trang.
-  - `src/assets/` chứa image hoặc icon.
-  - `src/styles/` chứa Tailwind `theme` config (không hardcode style trong component).
-- Tailwind config nên được tổ chức để ưu tiên đổi theme:
-  - Sử dụng Tailwind **CSS variables** cho màu sắc chính.
-  - Định nghĩa kiểu theme trong `tailwind.config.js` để dễ chuyển màu.
-- Khi cần UI component:
-  - Viết component reusable + props rõ ràng.
-  - Dùng Tailwind utility classes, hạn chế CSS inline.
+# Kiến trúc & cấu trúc thư mục
+- `src/router/index.js` hoặc `src/router/index.ts`: định nghĩa router.
+- `src/views/`: các trang chính (Home.vue, Recipe.vue, Community.vue, Impact.vue).
+- `src/components/`: các UI component dùng chung, có thể tái sử dụng.
+- `src/layouts/`: layout bao cho các trang (nếu có).
+- `src/assets/`: hình ảnh, icon tĩnh.
+- `src/styles/`: cấu hình Tailwind, CSS variables và hệ thống theme.
+- Không hardcode style hoặc màu sắc trực tiếp trong component.
 
-## 3. Tối ưu SEO & accessibility
-- Tất cả page phải có `<meta>` rõ ràng:
-  - `title`, `description`, `og:` tags
-  - Chú trọng nội dung cho **SEO**
-- Đảm bảo mọi ảnh đều có `alt` text.
-- Dùng semantic HTML (`<main>`, `<header>`, `<section>`).
+# Hệ thống màu sắc & theme (BẮT BUỘC)
+- Luôn sử dụng hệ theme dựa trên CSS variables, được ánh xạ trong Tailwind config:
+  - `--color-primary`
+  - `--color-secondary`
+  - `--color-accent`
+  - `--color-bg`
+- Tuân thủ nghiêm ngặt quy tắc phân bổ màu:
+  - 60%: màu phụ (secondary) – dùng cho background, layout, section lớn.
+  - 30%: màu chính (primary) – dùng cho nội dung chính, card, tiêu đề.
+  - 10%: màu nhấn (accent) – chỉ dùng cho CTA, button chính, highlight, trạng thái active.
+- Màu nền tổng thể (background/body) luôn phải là màu sáng.
+- Copilot không được:
+  - Hardcode màu bằng hex, rgb, hsl trong component.
+  - Phá vỡ tỷ lệ 60–30–10 khi tạo UI mới.
 
-## 4. UX & nội dung
-- CTA nổi bật, văn bản rõ ràng bằng tiếng Việt.
-- Tránh hardcode giao diện phụ thuộc vào dữ liệu tĩnh.
-- Tích hợp loading skeleton component khi async call API.
-- Các trang chính:
-  - `/`: Form chọn nguyên liệu.
-  - `/recipe/:id`: Công thức món gợi ý.
-  - `/community`: Danh sách / chia sẻ công thức cộng đồng.
-  - `/impact`: Số liệu thống kê giảm lãng phí (fake stats nếu chưa backend).
+# Quy chuẩn code & best practices
+- Tuân thủ ESLint và Prettier.
+- Tên file Vue dùng PascalCase.
+- Composable phải bắt đầu bằng `use*`.
+- Tách biệt rõ logic và UI.
+- Component dùng lại phải có props và emits rõ ràng.
+- Ưu tiên Tailwind utility classes, hạn chế CSS custom.
 
-## 5. Linter, format & conventions
-- Tuân theo ESLint + Prettier.
-- Tên file Vue PascalCase; các composable dùng `use*`.
-- Tên class utility Tailwind rõ ràng, dùng helpers nếu cần.
+# SEO & Accessibility
+- Mỗi trang phải có đầy đủ thẻ meta trong `<head>`:
+  - title
+  - description
+  - og:title
+  - og:description
+- Nội dung hướng tới SEO, dùng tiếng Việt tự nhiên.
+- Mọi hình ảnh đều phải có `alt`.
+- Sử dụng semantic HTML: `<main>`, `<header>`, `<section>`, `<footer>`.
 
-## 6. Cách Copilot nên phản hồi
-- Viết code đầy đủ (không thiếu import/props).
-- Mã front-end phải **tách biệt logic & UI**.
-- Với UI output, Copilot sinh ra với Tailwind classes chuẩn.
-- Khi hỗ trợ SEO, Copilot cung cấp cấu trúc `<head>` phù hợp.
-- Khi đề cập backend API, Copilot phải dùng placeholder và chú thích rõ cần đổi khi backend thật sẵn sàng.
+# UX & hành vi giao diện
+- CTA rõ ràng, dễ hiểu, sử dụng màu accent.
+- Không hardcode UI phụ thuộc dữ liệu tĩnh.
+- Khi gọi API async phải có loading skeleton.
+- Các route chính:
+  - `/`: chọn nguyên liệu
+  - `/recipe/:id`: công thức được gợi ý
+  - `/community`: công thức cộng đồng
+  - `/impact`: thống kê giảm lãng phí (có thể dùng fake data)
 
-## 7. Trả lời bằng tiếng Việt
-- Mọi gợi ý mã, giải thích, bình luận code đều phải bằng tiếng Việt.
+# Tích hợp backend
+- Khi viết code liên quan backend, sử dụng API placeholder.
+- Ghi chú rõ ràng cần thay thế khi backend thật sẵn sàng.
+- Không giả định backend đã tồn tại.
+
+# Tailwind & cấu hình theme
+- Tailwind config phải hỗ trợ đổi theme mà không sửa component.
+- Mọi màu sắc phải đi qua CSS variables.
+
+# Ngôn ngữ phản hồi
+- Tất cả comment code, giải thích, hướng dẫn, nội dung UI phải viết bằng tiếng Việt.
+
+# Kỳ vọng hành vi của Copilot
+- Sinh code đầy đủ, không thiếu import, props hoặc logic cần thiết.
+- Không sinh code mẫu sơ sài hoặc thiếu ngữ cảnh.
+- Luôn tuân thủ kiến trúc, hệ màu và quy ước của repository này.
