@@ -1,4 +1,4 @@
-<!-- Recipe.vue - Tuân thủ quy tắc 60-30-10 -->
+<!-- Recipe.vue - Hoàn chỉnh với Supabase -->
 <template>
   <MainLayout>
     <div class="recipe-page bg-neutral-50 min-h-screen">
@@ -39,7 +39,7 @@
 
       <!-- Recipe Content -->
       <div v-else-if="recipe" class="recipe-content">
-        <!-- Hero Section - 60% Secondary background -->
+        <!-- Hero Section -->
         <section
           class="relative bg-secondary-50 border-b border-secondary-200 pt-[80px] lg:pt-[90px]"
         >
@@ -55,19 +55,20 @@
                       :src="recipe.image_url"
                       :alt="recipe.title"
                       class="w-full h-full object-cover"
+                      loading="eager"
                     />
                   </div>
                 </div>
 
-                <!-- Content Column - 30% Primary colors -->
+                <!-- Content Column -->
                 <div class="order-1 md:order-2">
-                  <!-- Badge - Primary -->
+                  <!-- Badge -->
                   <div
                     class="inline-flex items-center gap-2 px-4 py-2 bg-primary-100 border border-primary-300 rounded-full mb-4"
                   >
                     <Sparkles :size="16" class="text-primary-600" />
                     <span class="text-sm font-semibold text-primary-700">
-                      Gợi ý hoàn hảo
+                      {{ recipe.is_community ? 'Từ cộng đồng' : 'Gợi ý hoàn hảo' }}
                     </span>
                   </div>
 
@@ -85,22 +86,42 @@
                     {{ recipe.description }}
                   </p>
 
+                  <!-- Author (nếu là community recipe) -->
+                  <div 
+                    v-if="recipe.is_community && (recipe.author_name || recipe.author)"
+                    class="flex items-center gap-3 mb-6 p-4 bg-white border border-primary-200 rounded-xl"
+                  >
+                    <img 
+                      :src="recipe.author_avatar || recipe.author?.avatar || 'https://i.pravatar.cc/150'" 
+                      :alt="recipe.author_name || recipe.author?.name"
+                      class="w-12 h-12 rounded-full ring-2 ring-primary-200"
+                    />
+                    <div>
+                      <p class="font-semibold text-neutral-900">
+                        {{ recipe.author_name || recipe.author?.name }}
+                      </p>
+                      <p class="text-sm text-neutral-600">
+                        {{ formatDate(recipe.created_at) }}
+                      </p>
+                    </div>
+                  </div>
+
                   <!-- Tags -->
                   <div
                     v-if="recipe.tags && recipe.tags.length > 0"
                     class="flex flex-wrap gap-2 mb-6"
                   >
                     <span
-                      v-for="tag in recipe.tags"
+                      v-for="tag in recipe.tags.slice(0, 5)"
                       :key="tag"
                       class="px-3 py-1.5 bg-primary-50 border border-primary-200 text-primary-700 text-sm font-semibold rounded-full"
                     >
-                      {{ tag }}
+                      #{{ tag }}
                     </span>
                   </div>
 
-                  <!-- Meta Info Cards - Primary color -->
-                  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                  <!-- Meta Info Cards -->
+                  <div class="grid grid-cols-2 gap-3">
                     <div
                       class="bg-primary-50 border border-primary-200 rounded-xl p-4 hover:border-primary-400 hover:bg-primary-100 transition-all duration-300"
                     >
@@ -121,7 +142,7 @@
                         <p class="text-xs font-semibold text-secondary-700">Độ khó</p>
                       </div>
                       <p class="text-lg font-bold text-secondary-900">
-                        {{ getDifficultyText(recipe.difficulty_score) }}
+                        {{ difficultyText }}
                       </p>
                     </div>
 
@@ -130,9 +151,9 @@
                     >
                       <div class="flex items-center gap-2 mb-1">
                         <Users :size="16" class="text-primary-600" />
-                        <p class="text-xs font-semibold text-primary-700 ">Khẩu phần</p>
+                        <p class="text-xs font-semibold text-primary-700">Khẩu phần</p>
                       </div>
-                      <p class="text-lg font-bold text-primary-900 text-center">
+                      <p class="text-base font-bold text-primary-900">
                         {{ recipe.nutrition_facts?.serving_size || '2-3 người' }}
                       </p>
                     </div>
@@ -149,13 +170,24 @@
                       </p>
                     </div>
                   </div>
+
+                  <!-- Like count (nếu có) -->
+                  <div 
+                    v-if="recipe.like_count || recipe.likeCount"
+                    class="mt-4 flex items-center gap-2 text-neutral-600"
+                  >
+                    <Heart :size="18" class="text-error" />
+                    <span class="font-semibold">
+                      {{ recipe.like_count || recipe.likeCount }} lượt thích
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- Main Content Section - 60% Secondary background -->
+        <!-- Main Content Section -->
         <section class="relative bg-gradient-to-b from-secondary-50 via-secondary-100/50 to-white py-16 md:py-24">
           <!-- Decorative elements -->
           <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -171,7 +203,7 @@
             <div class="max-w-7xl mx-auto grid lg:grid-cols-[1fr,400px] gap-12">
               <!-- Left Column: Ingredients & Instructions -->
               <div class="space-y-12">
-                <!-- Ingredients Section - Primary color -->
+                <!-- Ingredients Section -->
                 <div class="space-y-6">
                   <div class="flex items-center gap-4">
                     <div
@@ -210,13 +242,11 @@
                     </div>
                   </div>
 
-                  <!-- Seasoning - Accent color -->
+                  <!-- Seasoning -->
                   <div v-if="recipe.seasoning && recipe.seasoning.length > 0">
-                    
                     <h3
                       class="text-xl font-semibold text-neutral-900 mb-4 flex items-center gap-2"
                     >
-                    
                       <span class="text-accent-500">🧂</span>
                       Gia vị
                     </h3>
@@ -235,7 +265,7 @@
                   </div>
                 </div>
 
-                <!-- Instructions Section - Secondary color -->
+                <!-- Instructions Section -->
                 <div class="space-y-6">
                   <div class="flex items-center gap-4">
                     <div
@@ -258,7 +288,7 @@
                     >
                       <div class="flex-shrink-0">
                         <div
-                          class="w-12 h-12  bg-secondary-500 text-white rounded-2xl flex items-center justify-center font-bold text-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-md"
+                          class="w-12 h-12 bg-secondary-500 text-white rounded-2xl flex items-center justify-center font-bold text-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-md"
                         >
                           {{ index + 1 }}
                         </div>
@@ -273,7 +303,7 @@
                 </div>
               </div>
 
-              <!-- Right Column: Nutrition & Tags - Primary -->
+              <!-- Right Column: Nutrition & More -->
               <div class="space-y-8 lg:sticky lg:top-24 lg:self-start">
                 <!-- Nutrition Facts -->
                 <div
@@ -349,14 +379,14 @@
                     <span
                       v-for="tag in recipe.tags"
                       :key="tag"
-                      class="px-4 py-2 bg-primary-50 border-2 border-primary-200 text-primary-700 text-sm font-semibold rounded-full hover:bg-primary-100 hover:border-primary-300 hover:shadow-md transition-all duration-300 cursor-pointer"
+                      class="px-4 py-2 bg-primary-50 border-2 border-primary-200 text-primary-700 text-sm font-semibold rounded-full hover:bg-primary-100 hover:border-primary-300 hover:shadow-md transition-all duration-300"
                     >
                       #{{ tag }}
                     </span>
                   </div>
                 </div>
 
-                <!-- Share Section - Accent button -->
+                <!-- Share Section -->
                 <div
                   class="bg-gradient-to-br from-primary-50 to-secondary-50 border-2 border-primary-200 rounded-3xl p-6 space-y-4 shadow-sm"
                 >
@@ -370,6 +400,7 @@
                     Bạn thích món này? Chia sẻ với bạn bè nhé!
                   </p>
                   <button
+                    @click="handleShare"
                     class="w-full bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
                   >
                     <Heart :size="18" />
@@ -381,7 +412,7 @@
           </div>
         </section>
 
-        <!-- CTA Section - 10% Accent for main CTA -->
+        <!-- CTA Section -->
         <section
           class="relative bg-gradient-to-b from-neutral-900 to-black py-16 md:py-20 overflow-hidden"
         >
@@ -413,7 +444,6 @@
               </p>
 
               <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <!-- 10% Accent: CTA button chính -->
                 <button
                   @click="$router.push('/')"
                   class="group px-8 py-4 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-2xl font-bold text-lg shadow-2xl hover:shadow-[0_0_50px_rgba(251,146,60,0.5)] transition-all duration-500 hover:scale-105 overflow-hidden relative"
@@ -450,12 +480,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
-import MainLayout from "../layouts/MainLayout.vue";
-import LoadingSpinner from "../components/ui/LoadingSpinner.vue";
-import { useRecipe } from "../composables/useRecipe";
-import { useScrollAnimation } from "../composables/useScrollAnimation";
+import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import MainLayout from '../layouts/MainLayout.vue'
+import LoadingSpinner from '../components/ui/LoadingSpinner.vue'
+import { useRecipe } from '../composables/useRecipe'
+import { useIngredients } from '../composables/useIngredients'
 import {
   Sparkles,
   Clock,
@@ -470,82 +500,86 @@ import {
   Users,
   Home,
   AlertCircle,
-} from "lucide-vue-next";
+} from 'lucide-vue-next'
 
-const route = useRoute();
-const { recipe, loading, error, getRecipeById } = useRecipe();
-const { parallax } = useScrollAnimation();
+const route = useRoute()
+const router = useRouter()
 
-const heroSection = ref(null);
-const parallaxBg = ref(null);
+const { recipe, loading, error, getRecipeById } = useRecipe()
+const { fetchIngredients } = useIngredients()
 
-// Helper function để chuyển difficulty_score thành text
-const getDifficultyText = (score) => {
-  if (score === 1) return 'Dễ';
-  if (score === 2) return 'Trung bình';
-  if (score === 3) return 'Khó';
-  return 'Dễ';
-};
+// Computed properties
+const difficultyText = computed(() => {
+  if (!recipe.value) return 'Dễ'
+  const score = recipe.value.difficulty_score || 1
+  if (score === 1) return 'Dễ'
+  if (score === 2) return 'Trung bình'
+  return 'Khó'
+})
 
-onMounted(async () => {
-  const recipeId = route.params.id;
-  await getRecipeById(recipeId);
+// Format date
+const formatDate = (date) => {
+  if (!date) return ''
+  const d = new Date(date)
+  const now = new Date()
+  const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24))
+  
+  if (diff === 0) return 'Hôm nay'
+  if (diff === 1) return 'Hôm qua'
+  if (diff < 7) return `${diff} ngày trước`
+  if (diff < 30) return `${Math.floor(diff / 7)} tuần trước`
+  return `${Math.floor(diff / 30)} tháng trước`
+}
 
-  // Setup parallax effect for background
-  if (parallaxBg.value) {
-    parallax(parallaxBg.value, 0.5);
+// Handle share (có thể mở rộng sau)
+const handleShare = () => {
+  if (navigator.share && recipe.value) {
+    navigator.share({
+      title: recipe.value.title,
+      text: recipe.value.description,
+      url: window.location.href
+    }).catch(err => console.log('Share failed:', err))
+  } else {
+    // Fallback: copy link
+    navigator.clipboard.writeText(window.location.href)
+    alert('Đã copy link công thức!')
   }
-});
+}
+
+// Fetch data when component mounts
+onMounted(async () => {
+  const recipeId = route.params.id
+  
+  if (!recipeId) {
+    router.push('/')
+    return
+  }
+  
+  // Fetch ingredients và recipe song song
+  await Promise.all([
+    fetchIngredients(),
+    getRecipeById(recipeId)
+  ])
+})
 </script>
 
 <style scoped>
-/* Animations */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.8s ease-out forwards;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes float-delayed {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-30px);
-  }
-}
-
-.animate-float {
-  animation: float 8s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-  animation: float-delayed 10s ease-in-out infinite;
-  animation-delay: 2s;
-}
-
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* Animation for pulse */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 </style>

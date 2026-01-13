@@ -43,7 +43,7 @@
         style="animation-delay: 0s;"
       >
         <div class="text-center space-y-1">
-          <p class="text-2xl lg:text-4xl font-bold text-white">45K+</p>
+          <p class="text-2xl lg:text-4xl font-bold text-white">xxK+</p>
           <p class="text-xs lg:text-sm text-secondary-100">Bữa ăn</p>
         </div>
       </div>
@@ -55,7 +55,7 @@
         style="animation-delay: 1s;"
       >
         <div class="text-center space-y-1">
-          <p class="text-2xl lg:text-4xl font-bold text-white">23</p>
+          <p class="text-2xl lg:text-4xl font-bold text-white">xx</p>
           <p class="text-xs lg:text-sm text-secondary-100">Tấn Tiến kiệm</p>
         </div>
       </div>
@@ -90,7 +90,7 @@
               class="w-2 h-2 bg-accent-400 rounded-full animate-pulse"
             ></div>
             <span class="text-xs lg:text-sm font-medium text-white/90">
-              🌱 Đang có 12,458 người dùng
+              🌱 Đang có x,xxx người dùng
             </span>
           </div>
 
@@ -129,7 +129,7 @@
           </p>
         </div>
 
-        <!-- ===== BOTTOM: BENTO GRID SHOWCASE WITH 3D PERSPECTIVE ===== -->
+             <!-- BOTTOM: BENTO GRID SHOWCASE WITH 3D PERSPECTIVE ===== -->
         <div
           class="w-full flex justify-center perspective-container -mt-7 max-h-[215px] md:max-h-[265px]"
         >
@@ -138,165 +138,168 @@
             class="relative max-w-sm w-full opacity-0 animate-scale-in-3d"
             style="animation-delay: 1s"
           >
-            <!-- Glow effect - Màu Primary -->
-            <div
-              class="absolute inset-0 bg-gradient-to-r from-primary-500/40 to-accent-500/30 rounded-3xl blur-3xl transform-3d-base"
-            ></div>
-
-            <!-- Grid container with 3D transform - Màu Primary (30%) -->
-            <div
-              class="relative -mt-6 [scale:0.5] sm:[scale:0.6] md:[scale:0.7] bg-primary-500/10 backdrop-blur-md border border-primary-400/30 rounded-3xl p-4 lg:p-5 shadow-2xl transform-3d-base"
-            >
-              <!-- Bento Ingredient Grid -->
-              <div class="grid grid-cols-4 gap-2 mb-3">
-                <!-- Large item -->
-                <div
-                  class="col-span-2 row-span-2 group cursor-pointer bento-card"
-                  style="animation-delay: 0.1s"
-                >
-                  <div class="bento-item h-full">
-                    <span class="text-5xl lg:text-6xl">🍗</span>
-                    <div class="checkmark">
-                      <CheckCircle2 :size="18" class="text-white" />
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  class="col-span-1 row-span-2 group cursor-pointer bento-card"
-                  style="animation-delay: 0.2s"
-                >
-                  <div class="bento-item h-full">
-                    <span class="text-4xl lg:text-5xl">🥕</span>
-                    <div class="checkmark">
-                      <CheckCircle2 :size="16" class="text-white" />
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  class="col-span-1 group cursor-pointer bento-card"
-                  style="animation-delay: 0.3s"
-                >
-                  <div class="bento-item aspect-square">
-                    <span class="text-3xl">🥦</span>
-                    <div class="checkmark">
-                      <CheckCircle2 :size="14" class="text-white" />
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  class="col-span-1 group cursor-pointer bento-card"
-                  style="animation-delay: 0.4s"
-                >
-                  <div class="bento-item aspect-square">
-                    <span class="text-3xl">🍅</span>
-                    <div class="checkmark">
-                      <CheckCircle2 :size="14" class="text-white" />
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  class="col-span-1 group cursor-pointer bento-card"
-                  style="animation-delay: 0.5s"
-                >
-                  <div class="bento-item aspect-square">
-                    <span class="text-3xl">🧅</span>
-                    <div class="checkmark">
-                      <CheckCircle2 :size="14" class="text-white" />
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  class="col-span-1 group cursor-pointer bento-card"
-                  style="animation-delay: 0.6s"
-                >
-                  <div class="bento-item aspect-square">
-                    <span class="text-3xl">🧄</span>
-                    <div class="checkmark">
-                      <CheckCircle2 :size="14" class="text-white" />
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  class="col-span-2 group cursor-pointer bento-card"
-                  style="animation-delay: 0.7s"
-                >
-                  <div class="bento-item aspect-[2/1]">
-                    <span class="text-3xl">🌶️</span>
-                    <div class="checkmark">
-                      <CheckCircle2 :size="14" class="text-white" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Floating Cards -->
-              <div class="hidden lg:block">
-                <div
-                  ref="float2"
-                  class="absolute -bottom-6 -right-20 bg-accent-500/20 backdrop-blur-md border border-accent-400/30 rounded-2xl p-3 shadow-2xl opacity-0"
-                  style="animation-delay: 2s"
-                >
-                  <div class="flex items-center gap-2">
-                    <div
-                      class="w-10 h-10 bg-accent-500 rounded-xl flex items-center justify-center"
-                    >
-                      <Clock :size="18" class="text-white" />
-                    </div>
-
-                    <div>
-                      <p
-                        class="text-sm font-semibold text-white whitespace-nowrap"
-                      >
-                        Chỉ 15 phút
-                      </p>
-                      <p class="text-xs text-secondary-100">Nhanh gọn</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Result Badge -->
+            <!-- Wrapper để glow và grid cùng scale -->
+            <div class="relative -mt-6 [scale:0.5] sm:[scale:0.6] md:[scale:0.7]">
+              <!-- Glow effect - Màu Primary -->
               <div
-                class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-3 opacity-0 animate-fade-in"
-                style="animation-delay: 1.5s"
+                class="absolute inset-0 bg-gradient-to-r from-primary-500/40 to-accent-500/30 rounded-3xl blur-3xl transform-3d-base"
+              ></div>
+        
+              <!-- Grid container with 3D transform - Màu Primary (30%) -->
+              <div
+                class="relative bg-primary-500/10 backdrop-blur-md border border-primary-400/30 rounded-3xl p-4 lg:p-5 shadow-2xl transform-3d-base"
               >
-                <div class="flex items-center gap-3">
+                <!-- Bento Ingredient Grid -->
+                <div class="grid grid-cols-4 gap-2 mb-3">
+                  <!-- Large item -->
                   <div
-                    class="w-10 h-10 bg-primary-500/30 rounded-lg flex items-center justify-center"
+                    class="col-span-2 row-span-2 group cursor-pointer bento-card"
+                    style="animation-delay: 0.1s"
                   >
-                    <Sparkles :size="20" class="text-primary-300 animate-pulse" />
-                  </div>
-
-                  <div class="flex-1">
-                    <div
-                      class="h-2 bg-white/30 rounded-full w-3/4 mb-2 overflow-hidden"
-                    >
-                      <div
-                        class="h-full bg-primary-400 rounded-full animate-progress"
-                        style="width: 85%"
-                      ></div>
+                    <div class="bento-item h-full">
+                      <span class="text-5xl lg:text-6xl">🍗</span>
+                      <div class="checkmark">
+                        <CheckCircle2 :size="18" class="text-white" />
+                      </div>
                     </div>
-
-                    <div
-                      class="h-2 bg-white/30 rounded-full w-1/2 overflow-hidden"
-                    >
+                  </div>
+        
+                  <div
+                    class="col-span-1 row-span-2 group cursor-pointer bento-card"
+                    style="animation-delay: 0.2s"
+                  >
+                    <div class="bento-item h-full">
+                      <span class="text-4xl lg:text-5xl">🥕</span>
+                      <div class="checkmark">
+                        <CheckCircle2 :size="16" class="text-white" />
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div
+                    class="col-span-1 group cursor-pointer bento-card"
+                    style="animation-delay: 0.3s"
+                  >
+                    <div class="bento-item aspect-square">
+                      <span class="text-3xl">🥦</span>
+                      <div class="checkmark">
+                        <CheckCircle2 :size="14" class="text-white" />
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div
+                    class="col-span-1 group cursor-pointer bento-card"
+                    style="animation-delay: 0.4s"
+                  >
+                    <div class="bento-item aspect-square">
+                      <span class="text-3xl">🍅</span>
+                      <div class="checkmark">
+                        <CheckCircle2 :size="14" class="text-white" />
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div
+                    class="col-span-1 group cursor-pointer bento-card"
+                    style="animation-delay: 0.5s"
+                  >
+                    <div class="bento-item aspect-square">
+                      <span class="text-3xl">🧅</span>
+                      <div class="checkmark">
+                        <CheckCircle2 :size="14" class="text-white" />
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div
+                    class="col-span-1 group cursor-pointer bento-card"
+                    style="animation-delay: 0.6s"
+                  >
+                    <div class="bento-item aspect-square">
+                      <span class="text-3xl">🧄</span>
+                      <div class="checkmark">
+                        <CheckCircle2 :size="14" class="text-white" />
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div
+                    class="col-span-2 group cursor-pointer bento-card"
+                    style="animation-delay: 0.7s"
+                  >
+                    <div class="bento-item aspect-[2/1]">
+                      <span class="text-3xl">🌶️</span>
+                      <div class="checkmark">
+                        <CheckCircle2 :size="14" class="text-white" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        
+                <!-- Floating Cards -->
+                <div class="hidden lg:block">
+                  <div
+                    ref="float2"
+                    class="absolute -bottom-6 -right-20 bg-accent-500/20 backdrop-blur-md border border-accent-400/30 rounded-2xl p-3 shadow-2xl opacity-0"
+                    style="animation-delay: 2s"
+                  >
+                    <div class="flex items-center gap-2">
                       <div
-                        class="h-full bg-accent-400 rounded-full animate-progress"
-                        style="width: 65%; animation-delay: 0.3s"
-                      ></div>
+                        class="w-10 h-10 bg-accent-500 rounded-xl flex items-center justify-center"
+                      >
+                        <Clock :size="18" class="text-white" />
+                      </div>
+        
+                      <div>
+                        <p
+                          class="text-sm font-semibold text-white whitespace-nowrap"
+                        >
+                          Chỉ 15 phút
+                        </p>
+                        <p class="text-xs text-secondary-100">Nhanh gọn</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        
+                <!-- Result Badge -->
+                <div
+                  class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-3 opacity-0 animate-fade-in"
+                  style="animation-delay: 1.5s"
+                >
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-10 h-10 bg-primary-500/30 rounded-lg flex items-center justify-center"
+                    >
+                      <Sparkles :size="20" class="text-primary-300 animate-pulse" />
+                    </div>
+        
+                    <div class="flex-1">
+                      <div
+                        class="h-2 bg-white/30 rounded-full w-3/4 mb-2 overflow-hidden"
+                      >
+                        <div
+                          class="h-full bg-primary-400 rounded-full animate-progress"
+                          style="width: 85%"
+                        ></div>
+                      </div>
+        
+                      <div
+                        class="h-2 bg-white/30 rounded-full w-1/2 overflow-hidden"
+                      >
+                        <div
+                          class="h-full bg-accent-400 rounded-full animate-progress"
+                          style="width: 65%; animation-delay: 0.3s"
+                        ></div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
+        
           <div
             ref="float1"
             class="hidden lg:inline-block absolute left-[27rem] top-11 bg-primary-500/20 backdrop-blur-md border border-primary-400/30 rounded-2xl p-2 shadow-2xl animate-bounce-subtle opacity-0"
@@ -308,7 +311,7 @@
               >
                 <CheckCircle2 :size="18" class="text-white" />
               </div>
-
+        
               <p class="text-sm font-semibold text-white whitespace-nowrap">
                 Đã tìm món!
               </p>

@@ -1,3 +1,5 @@
+// src/composables/useIngredients.js (CẬP NHẬT HOÀN CHỈNH)
+
 import { ref, computed } from 'vue'
 import { recipeService } from '../services/recipeService'
 
@@ -7,7 +9,7 @@ export function useIngredients() {
   const loading = ref(false)
   const error = ref(null)
 
-  // Fetch ingredients
+  // Fetch ingredients từ backend (Supabase hoặc mock)
   const fetchIngredients = async () => {
     loading.value = true
     error.value = null
@@ -16,6 +18,8 @@ export function useIngredients() {
       const response = await recipeService.getIngredients()
       if (response.success) {
         ingredients.value = response.data
+      } else {
+        error.value = response.error || 'Không thể tải danh sách nguyên liệu'
       }
     } catch (err) {
       error.value = 'Không thể tải danh sách nguyên liệu'
@@ -54,6 +58,17 @@ export function useIngredients() {
     return ingredients.value.filter(i => i.category === category)
   }
 
+  // Get ingredient by ID
+  const getIngredientById = (id) => {
+    return ingredients.value.find(i => i.id === id)
+  }
+
+  // Get ingredient name by ID
+  const getIngredientName = (id) => {
+    const ingredient = ingredients.value.find(i => i.id === id)
+    return ingredient ? ingredient.name : id
+  }
+
   // Computed
   const selectedCount = computed(() => selectedIngredients.value.length)
   const canSelectMore = computed(() => selectedCount.value < 5)
@@ -71,6 +86,8 @@ export function useIngredients() {
     toggleIngredient,
     isSelected,
     clearSelection,
-    getByCategory
+    getByCategory,
+    getIngredientById,
+    getIngredientName
   }
 }

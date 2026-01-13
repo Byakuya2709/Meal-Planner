@@ -1,3 +1,5 @@
+// src/composables/useRecipe.js
+
 import { ref } from 'vue'
 import { recipeService } from '../services/recipeService'
 
@@ -15,7 +17,15 @@ export function useRecipe() {
       const response = await recipeService.findRecipe(ingredientIds)
       if (response.success) {
         recipe.value = response.data
+        
+        // Increment stats sau khi tìm thấy recipe
+        await recipeService.incrementMealCreated().catch(err => {
+          console.warn('Failed to increment stats:', err)
+        })
+        
         return response.data
+      } else {
+        error.value = response.error || 'Không thể tìm món phù hợp'
       }
     } catch (err) {
       error.value = 'Không thể tìm món phù hợp'
@@ -36,7 +46,7 @@ export function useRecipe() {
         recipe.value = response.data
         return response.data
       } else {
-        error.value = response.error
+        error.value = response.error || 'Không thể tải công thức'
       }
     } catch (err) {
       error.value = 'Không thể tải công thức'

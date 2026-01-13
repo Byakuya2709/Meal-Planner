@@ -184,30 +184,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
 import MainLayout from '../layouts/MainLayout.vue'
-import BaseButton from '../components/ui/BaseButton.vue'
 import BaseCard from '../components/ui/BaseCard.vue'
 import LoadingSpinner from '../components/ui/LoadingSpinner.vue'
-import { recipeService } from '../services/recipeService'
+import { useImpactStats } from '../composables/useImpactStats'
 
-const stats = ref({
-  totalUsers: 0,
-  mealsCreated: 0,
-  foodSaved: 0,
-  co2Reduced: 0,
-  moneySaved: 0
-})
-const loading = ref(true)
+// Dùng composable mới
+const { stats, loading, error } = useImpactStats()
 
-onMounted(async () => {
-  const response = await recipeService.getImpactStats()
-  if (response.success) {
-    stats.value = response.data
-  }
-  loading.value = false
-})
-
+// Format helpers
 const formatNumber = (num) => {
   return new Intl.NumberFormat('vi-VN').format(num)
 }

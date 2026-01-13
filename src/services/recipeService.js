@@ -1,40 +1,36 @@
-import { ingredients, recipes, communityRecipes, impactStats } from './mockData'
+// src/services/recipeService.js
 
-// Simulate API delay
+import { supabaseRecipeService } from './supabaseRecipeService'
+import { ingredients as mockIngredients, recipes as mockRecipes, communityRecipes as mockCommunity, impactStats as mockImpact } from './mockData'
+
+// Kiểm tra xem có Supabase config không
+const USE_SUPABASE = !!(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY)
+
+// Simulate API delay cho mock data
 const delay = (ms = 500) => new Promise(resolve => setTimeout(resolve, ms))
 
-export const recipeService = {
-  // Lấy danh sách ingredients
+// Mock service - Fallback khi không có Supabase
+const mockService = {
   async getIngredients() {
     await delay(300)
-    return {
-      success: true,
-      data: ingredients
-    }
+    return { success: true, data: mockIngredients }
   },
 
-  // Lấy ingredient theo category
   async getIngredientsByCategory(category) {
     await delay(200)
-    const filtered = ingredients.filter(ing => ing.category === category)
-    return {
-      success: true,
-      data: filtered
-    }
+    const filtered = mockIngredients.filter(ing => ing.category === category)
+    return { success: true, data: filtered }
   },
 
-  // Tìm recipe phù hợp với ingredients đã chọn
   async findRecipe(selectedIngredientIds) {
-    await delay(800) // Simulate AI processing
-    
-    // Logic đơn giản: tìm recipe có nhiều ingredient match nhất
+    await delay(800)
     let bestMatch = null
     let maxMatches = 0
 
-    for (const recipe of recipes) {
-      const matches = recipe.requiredIngredients.filter(id => 
+    for (const recipe of mockRecipes) {
+      const matches = recipe.requiredIngredients?.filter(id => 
         selectedIngredientIds.includes(id)
-      ).length
+      ).length || 0
 
       if (matches > maxMatches) {
         maxMatches = matches
@@ -42,63 +38,63 @@ export const recipeService = {
       }
     }
 
-    // Fallback nếu không có match
     if (!bestMatch) {
-      bestMatch = recipes[0]
+      bestMatch = mockRecipes[0]
     }
 
-    return {
-      success: true,
-      data: bestMatch
-    }
+    return { success: true, data: bestMatch }
   },
 
-  // Lấy recipe theo ID
   async getRecipeById(id) {
     await delay(400)
-    const recipe = recipes.find(r => r._id === id)
+    // Tìm trong cả recipes và communityRecipes
+    const allRecipes = [...mockRecipes, ...mockCommunity]
+    const recipe = allRecipes.find(r => r._id === id || r.id === id)
     
     if (!recipe) {
-      return {
-        success: false,
-        error: 'Recipe not found'
-      }
+      return { success: false, error: 'Recipe not found' }
     }
 
-    return {
-      success: true,
-      data: recipe
-    }
+    return { success: true, data: recipe }
   },
 
-  // Lấy community recipes
   async getCommunityRecipes(limit = 10) {
     await delay(500)
-    return {
-      success: true,
-      data: communityRecipes.slice(0, limit)
-    }
+    return { success: true, data: mockCommunity.slice(0, limit) }
   },
 
-  // Vote cho community recipe
   async voteRecipe(recipeId) {
     await delay(300)
-    const recipe = communityRecipes.find(r => r._id === recipeId)
+    const recipe = mockCommunity.find(r => r._id === recipeId || r.id === recipeId)
     if (recipe) {
-      recipe.likeCount += 1
+      recipe.likeCount = (recipe.likeCount || 0) + 1
+      recipe.like_count = recipe.likeCount
     }
-    return {
-      success: true,
-      data: { likeCount: recipe?.likeCount || 0 }
+    return { 
+      success: true, 
+      data: { likeCount: recipe?.likeCount || 0 } 
     }
   },
 
-  // Lấy impact statistics
   async getImpactStats() {
     await delay(400)
-    return {
-      success: true,
-      data: impactStats
-    }
+    return { success: true, data: mockImpact }
+  },
+
+  async incrementMealCreated() {
+    await delay(300)
+    mockImpact.mealsCreated += 1
+    mockImpact.foodSaved += 0.5
+    mockImpact.co2Reduced += 0.35
+    mockImpact.moneySaved += 25000
+    return { success: true }
   }
+}
+
+// Export service dựa trên cấu hình
+export const recipeService = USE_SUPABASE ? supabaseRecipeService : mockService
+
+// Log để debug (chỉ trong development)
+if (import.meta.env.DEV) {
+  console.log(USE_SUPABASE ? '✅ Using Supabase backend' : '⚠️ Using mock data')
 }

@@ -1,8 +1,8 @@
-<!-- Community.vue - Cập nhật phần card -->
+<!-- Community.vue - FIXED VERSION -->
 <template>
   <MainLayout>
     <div class="community-page bg-neutral-50 min-h-screen">
-      <!-- Hero Section - Nền sáng -->
+      <!-- Hero Section -->
       <section class="bg-gradient-to-br from-primary-50 via-white to-secondary-50 py-16 md:py-20 border-b border-neutral-200">
         <div class="container mx-auto px-4">
           <div class="max-w-4xl mx-auto text-center">
@@ -30,19 +30,19 @@
         <div class="container mx-auto px-4 py-8">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             <div class="text-center">
-              <p class="text-3xl font-bold text-primary-600 mb-1">1,234</p>
+              <p class="text-3xl font-bold text-primary-600 mb-1">{{ recipes.length }}</p>
               <p class="text-sm text-neutral-600">Công thức</p>
             </div>
             <div class="text-center">
-              <p class="text-3xl font-bold text-primary-500 mb-1">5,678</p>
+              <p class="text-3xl font-bold text-primary-500 mb-1">{{ totalUsers }}</p>
               <p class="text-sm text-neutral-600">Thành viên</p>
             </div>
             <div class="text-center">
-              <p class="text-3xl font-bold text-success mb-1">12.5K</p>
+              <p class="text-3xl font-bold text-success mb-1">{{ totalLikes }}</p>
               <p class="text-sm text-neutral-600">Lượt thích</p>
             </div>
             <div class="text-center">
-              <p class="text-3xl font-bold text-warning mb-1">3.2K</p>
+              <p class="text-3xl font-bold text-warning mb-1">{{ recipes.length * 3 }}</p>
               <p class="text-sm text-neutral-600">Chia sẻ</p>
             </div>
           </div>
@@ -58,10 +58,14 @@
             <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
               <h2 class="text-2xl md:text-3xl font-bold text-neutral-900">Công thức nổi bật</h2>
               <div class="flex gap-3">
-                <select class="px-4 py-2 border border-neutral-300 rounded-lg bg-white text-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                  <option>Mới nhất</option>
-                  <option>Nhiều vote nhất</option>
-                  <option>Dễ làm nhất</option>
+                <select 
+                  v-model="sortBy"
+                  @change="handleSort"
+                  class="px-4 py-2 border border-neutral-300 rounded-lg bg-white text-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                >
+                  <option value="latest">Mới nhất</option>
+                  <option value="popular">Nhiều vote nhất</option>
+                  <option value="easy">Dễ làm nhất</option>
                 </select>
               </div>
             </div>
@@ -83,15 +87,23 @@
               <p class="text-error font-medium text-lg">{{ error }}</p>
             </div>
 
+            <!-- Empty State -->
+            <div v-else-if="!recipes || recipes.length === 0" class="text-center py-12">
+              <div class="inline-flex items-center justify-center w-16 h-16 bg-neutral-100 rounded-2xl mb-4">
+                <span class="text-4xl">📝</span>
+              </div>
+              <p class="text-neutral-600 font-medium text-lg">Chưa có công thức nào</p>
+            </div>
+
             <!-- Recipes List -->
             <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div 
-                v-for="recipe in recipes" 
-                :key="recipe._id"
+                v-for="recipe in sortedRecipes" 
+                :key="recipe.id || recipe._id"
                 class="group bg-white rounded-2xl border border-neutral-200 shadow-card hover:shadow-float overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-pointer"
-                @click="goToRecipe(recipe._id)"
+                @click="goToRecipe(recipe.id || recipe._id)"
               >
-                <!-- Image - Cố định tỷ lệ -->
+                <!-- Image -->
                 <div class="relative aspect-[4/3] overflow-hidden bg-neutral-100">
                   <img 
                     :src="recipe.image_url" 
@@ -104,7 +116,7 @@
                     <span class="text-sm font-bold text-neutral-800">⏱️ {{ recipe.time_minutes }}p</span>
                   </div>
                   
-                  <!-- Difficulty badge - Max 5 -->
+                  <!-- Difficulty badge -->
                   <div class="absolute top-3 left-3 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-1.5 shadow-md">
                     <div class="flex items-center gap-1">
                       <div 
@@ -117,27 +129,29 @@
                   </div>
                 </div>
 
-                <!-- Content - Nền trắng, tách biệt -->
+                <!-- Content -->
                 <div class="p-5 bg-white">
                   <h3 class="text-lg font-bold text-neutral-900 mb-3 line-clamp-2 group-hover:text-primary-600 transition-colors">
                     {{ recipe.title }}
                   </h3>
 
                   <!-- Author -->
-                  <div class="flex items-center gap-3 mb-4" v-if="recipe.author">
+                  <div class="flex items-center gap-3 mb-4" v-if="recipe.author_name || recipe.author">
                     <img 
-                      :src="recipe.author.avatar" 
-                      :alt="recipe.author.name"
+                      :src="recipe.author_avatar || recipe.author?.avatar || 'https://i.pravatar.cc/150'" 
+                      :alt="recipe.author_name || recipe.author?.name"
                       class="w-8 h-8 rounded-full ring-2 ring-primary-100"
                     />
                     <div class="flex-1 min-w-0">
-                      <p class="text-sm font-semibold text-neutral-900 truncate">{{ recipe.author.name }}</p>
+                      <p class="text-sm font-semibold text-neutral-900 truncate">
+                        {{ recipe.author_name || recipe.author?.name || 'Anonymous' }}
+                      </p>
                       <p class="text-xs text-neutral-500">{{ formatDate(recipe.created_at) }}</p>
                     </div>
                   </div>
 
-                  <!-- Tags - Giữ nguyên -->
-                  <div class="flex flex-wrap gap-2 mb-4">
+                  <!-- Tags -->
+                  <div class="flex flex-wrap gap-2 mb-4" v-if="recipe.tags && recipe.tags.length > 0">
                     <span 
                       v-for="tag in recipe.tags.slice(0, 3)" 
                       :key="tag"
@@ -156,13 +170,16 @@
                   <!-- Actions -->
                   <div class="flex items-center justify-between pt-4 border-t border-neutral-100">
                     <button
-                      @click.stop="handleVote(recipe._id)"
+                      @click.stop="handleVote(recipe.id || recipe._id)"
                       class="flex items-center gap-2 text-neutral-600 hover:text-primary-600 transition-colors"
+                      :disabled="votingRecipeId === (recipe.id || recipe._id)"
                     >
                       <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                       </svg>
-                      <span class="text-sm font-semibold">{{ recipe.likeCount }}</span>
+                      <span class="text-sm font-semibold">
+                        {{ recipe.like_count || recipe.likeCount || 0 }}
+                      </span>
                     </button>
 
                     <div class="flex items-center gap-2 text-primary-600 font-semibold text-sm">
@@ -183,27 +200,71 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import MainLayout from '../layouts/MainLayout.vue'
 import BaseButton from '../components/ui/BaseButton.vue'
 import LoadingSpinner from '../components/ui/LoadingSpinner.vue'
 import { useCommunity } from '../composables/useCommunity'
-import { ingredients } from '../services/mockData'
+import { useIngredients } from '../composables/useIngredients'
 
 const router = useRouter()
 const { recipes, loading, error, fetchRecipes, voteRecipe } = useCommunity()
+const { getIngredientName, fetchIngredients } = useIngredients()
 
-onMounted(() => {
-  fetchRecipes()
+const sortBy = ref('latest')
+const votingRecipeId = ref(null)
+
+onMounted(async () => {
+  // Fetch cả ingredients và recipes
+  await Promise.all([
+    fetchIngredients(),
+    fetchRecipes()
+  ])
 })
 
-const getIngredientName = (id) => {
-  const ingredient = ingredients.find(i => i.id === id)
-  return ingredient ? ingredient.name : id
+// Computed stats
+const totalUsers = computed(() => {
+  const uniqueAuthors = new Set(
+    recipes.value.map(r => r.author_name || r.author?.name).filter(Boolean)
+  )
+  return uniqueAuthors.size || 1234 // Fallback
+})
+
+const totalLikes = computed(() => {
+  return recipes.value.reduce((sum, r) => sum + (r.like_count || r.likeCount || 0), 0)
+})
+
+// Sorted recipes
+const sortedRecipes = computed(() => {
+  const sorted = [...recipes.value]
+  
+  switch (sortBy.value) {
+    case 'popular':
+      return sorted.sort((a, b) => {
+        const aLikes = a.like_count || a.likeCount || 0
+        const bLikes = b.like_count || b.likeCount || 0
+        return bLikes - aLikes
+      })
+    case 'easy':
+      return sorted.sort((a, b) => (a.difficulty_score || 1) - (b.difficulty_score || 1))
+    case 'latest':
+    default:
+      return sorted.sort((a, b) => {
+        const aDate = new Date(a.created_at)
+        const bDate = new Date(b.created_at)
+        return bDate - aDate
+      })
+  }
+})
+
+const handleSort = () => {
+  // Trigger re-sort via computed
 }
 
 const formatDate = (date) => {
+  if (!date) return ''
+  
   const d = new Date(date)
   const now = new Date()
   const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24))
@@ -216,7 +277,11 @@ const formatDate = (date) => {
 }
 
 const handleVote = async (recipeId) => {
+  if (votingRecipeId.value) return // Prevent double click
+  
+  votingRecipeId.value = recipeId
   await voteRecipe(recipeId)
+  votingRecipeId.value = null
 }
 
 const goToRecipe = (recipeId) => {
