@@ -1,44 +1,18 @@
 import { createApp } from 'vue'
-import { MotionPlugin } from '@vueuse/motion'
-import './style.css'
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 import router from './router'
+import './style.css'
 
 const app = createApp(App)
+const pinia = createPinia()
 
+// QUAN TRỌNG: Thêm plugin persist
+pinia.use(piniaPluginPersistedstate)
+
+app.use(pinia)
 app.use(router)
-app.use(MotionPlugin, {
-  directives: {
-    'slide-visible-once-left': {
-      initial: {
-        opacity: 0,
-        x: -100,
-      },
-      visibleOnce: {
-        opacity: 1,
-        x: 0,
-        transition: {
-          duration: 800,
-          ease: 'easeOut',
-        },
-      },
-    },
-    'slide-visible-once-right': {
-      initial: {
-        opacity: 0,
-        x: 100,
-      },
-      visibleOnce: {
-        opacity: 1,
-        x: 0,
-        transition: {
-          duration: 800,
-          ease: 'easeOut',
-          delay: 200,
-        },
-      },
-    },
-  },
-})
+
 
 app.mount('#app')

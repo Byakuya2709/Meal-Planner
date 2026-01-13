@@ -9,6 +9,8 @@ export const authService = {
   /**
    * Đăng ký tài khoản mới
    */
+   // src/services/authService.js (CẬP NHẬT signUp)
+  
   async signUp(email, password, fullName) {
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -18,15 +20,24 @@ export const authService = {
           data: {
             full_name: fullName,
           },
+          // KHÔNG yêu cầu email confirmation
+          emailRedirectTo: undefined,
         },
       })
-
+  
       if (error) throw error
-
+  
+      // Auto sign in sau khi đăng ký
+      if (data.user && !data.session) {
+        // Nếu không có session, thử sign in luôn
+        const signInResponse = await this.signIn(email, password)
+        return signInResponse
+      }
+  
       return {
         success: true,
         data: data.user,
-        message: 'Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.',
+        message: 'Đăng ký thành công!',
       }
     } catch (error) {
       console.error('Sign up error:', error)

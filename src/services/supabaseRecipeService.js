@@ -246,38 +246,50 @@ export const supabaseRecipeService = {
   /**
    * Vote cho recipe (optimistic update)
    */
-  async voteRecipe(recipeId, userId = null) {
+  // src/services/supabaseRecipeService.js (CẬP NHẬT vote methods)
+  
+  /**
+   * Vote cho recipe (chỉ dành cho authenticated users)
+   */
+  async voteRecipe(recipeId) {
     try {
-      // Nếu không có userId, tạo anonymous ID từ localStorage
-      if (!userId) {
-        userId = localStorage.getItem('anonymousUserId')
-        if (!userId) {
-          userId = `anon_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-          localStorage.setItem('anonymousUserId', userId)
+      // Lấy user hiện tại từ Supabase Auth
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      
+      if (userError || !user) {
+        return {
+          success: false,
+          error: 'Vui lòng đăng nhập để thích công thức',
+          requireAuth: true
         }
       }
       
-      log('Voting recipe:', { recipeId, userId })
+      log('Voting recipe:', { recipeId, userId: user.id })
       
       // 1. Kiểm tra đã like chưa
-      const { data: existingLike } = await supabase
+      const { data: existingLike, error: checkError } = await supabase
         .from('user_likes')
         .select('*')
-        .eq('user_id', userId)
+        .eq('user_id', user.id)
         .eq('recipe_id', recipeId)
         .maybeSingle()
+      
+      if (checkError) throw checkError
       
       if (existingLike) {
         return {
           success: false,
-          error: 'Bạn đã like recipe này rồi'
+          error: 'Bạn đã thích công thức này rồi'
         }
       }
       
       // 2. Thêm like
       const { error: likeError } = await supabase
         .from('user_likes')
-        .insert({ user_id: userId, recipe_id: recipeId })
+        .insert({ 
+          user_id: user.id, 
+          recipe_id: recipeId 
+        })
       
       if (likeError) throw likeError
       
@@ -308,6 +320,89 @@ export const supabaseRecipeService = {
       
     } catch (error) {
       return handleError('voteRecipe', error)
+    }
+  },
+  
+  /**
+   * Unlike recipe
+   */
+  async unlikeRecipe(recipeId) {
+    try {
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      
+      if (userError || !user) {
+        return {
+          success: false,
+          error: 'Vui lòng đăng nhập',
+          requireAuth: true
+        }
+      }
+      
+      log('Unliking recipe:', { recipeId, userId: user.id })
+      
+      // 1. Xóa like
+      const { error: deleteError } = await supabase
+        .from('user_likes')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('recipe_id', recipeId)
+      
+      if (deleteError) throw deleteError
+      
+      // 2. Giảm like_count
+      const { data: recipeData, error: fetchError } = await supabase
+        .from('recipes')
+        .select('like_count')
+        .eq('id', recipeId)
+        .single()
+      
+      if (fetchError) throw fetchError
+      
+      const newLikeCount = Math.max(0, (recipeData.like_count || 0) - 1)
+      
+      const { error: updateError } = await supabase
+        .from('recipes')
+        .update({ like_count: newLikeCount })
+        .eq('id', recipeId)
+      
+      if (updateError) throw updateError
+      
+      log('Unlike successful, new count:', newLikeCount)
+      
+      return {
+        success: true,
+        data: { likeCount: newLikeCount }
+      }
+      
+    } catch (error) {
+      return handleError('unlikeRecipe', error)
+    }
+  },
+  
+  /**
+   * Kiểm tra user đã like recipe chưa
+   */
+  async checkUserLiked(recipeId) {
+    try {
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      
+      if (userError || !user) {
+        return { success: true, data: false }
+      }
+      
+      const { data, error } = await supabase
+        .from('user_likes')
+        .select('recipe_id')
+        .eq('user_id', user.id)
+        .eq('recipe_id', recipeId)
+        .maybeSingle()
+      
+      if (error) throw error
+      
+      return { success: true, data: !!data }
+      
+    } catch (error) {
+      return handleError('checkUserLiked', error)
     }
   },
 

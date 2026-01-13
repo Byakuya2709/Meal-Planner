@@ -1,3 +1,4 @@
+<!-- src/layouts/MainLayout.vue - CẬP NHẬT -->
 <template>
   <div class="main-layout min-h-screen bg-neutral-50">
     <!-- Modern Navbar - Sticky with gradient transition -->
@@ -15,13 +16,10 @@
             :class="[
               'transition-all duration-500 shadow-lg',
               {
-                // Khi scroll → nền trắng mờ, backdrop blur
                 'bg-white/95 backdrop-blur-xl border border-neutral-200/50 rounded-2xl px-6 py-3 shadow-lg':
                   isScrolled,
-                // Trang chủ khi chưa scroll → transparent
                 'bg-transparent backdrop-blur-sm rounded-2xl px-6 py-4':
                   !isScrolled && route.path === '/',
-                // Các trang khác khi chưa scroll → nền trắng
                 'bg-white/95 border border-neutral-200/50 rounded-2xl px-6 py-4':
                   !isScrolled && route.path !== '/',
               },
@@ -79,18 +77,15 @@
                     :to="item.path"
                     :class="[
                       'relative px-4 py-2 rounded-lg font-medium transition-all duration-300 group flex items-center gap-2',
-                      // Khi đã scroll
                       isScrolled
                         ? route.path === item.path
                           ? 'text-primary-600 font-semibold'
                           : 'text-neutral-700 hover:text-primary-600'
-                        : // Trang chủ chưa scroll
-                        route.path === '/'
+                        : route.path === '/'
                         ? route.path === item.path
                           ? 'text-white font-semibold'
                           : 'text-white/90 hover:text-white'
-                        : // Trang khác chưa scroll
-                        route.path === item.path
+                        : route.path === item.path
                         ? 'text-primary-600 font-semibold'
                         : 'text-neutral-700 hover:text-primary-600',
                     ]"
@@ -114,21 +109,124 @@
                 </li>
               </ul>
 
-              <!-- CTA Button - Accent color -->
+              <!-- User Menu / Login Button - THAY CHO CTA -->
               <div class="hidden md:block">
-                <router-link
-                  to="/"
-                  class="group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden"
+                <!-- Logged In - User Menu -->
+                <div v-if="authStore.isAuthenticated" class="relative" ref="userMenuRef">
+                  <button
+                    @click="isUserMenuOpen = !isUserMenuOpen"
+                    :class="[
+                      'flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300 hover:scale-105',
+                      isScrolled || route.path !== '/'
+                        ? 'bg-primary-50 hover:bg-primary-100 border border-primary-200'
+                        : 'bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30',
+                    ]"
+                  >
+                    <img
+                      :src="authStore.userAvatar"
+                      :alt="authStore.userDisplayName"
+                      class="w-8 h-8 rounded-full ring-2 ring-primary-300"
+                    />
+                    <span
+                      :class="[
+                        'font-semibold hidden lg:block',
+                        isScrolled || route.path !== '/'
+                          ? 'text-neutral-900'
+                          : 'text-white',
+                      ]"
+                    >
+                      {{ authStore.userDisplayName }}
+                    </span>
+                    <ChevronDown
+                      :size="16"
+                      :class="[
+                        'transition-transform',
+                        isUserMenuOpen && 'rotate-180',
+                        isScrolled || route.path !== '/'
+                          ? 'text-neutral-600'
+                          : 'text-white',
+                      ]"
+                    />
+                  </button>
+
+                  <!-- Dropdown Menu -->
+                  <Transition name="dropdown">
+                    <div
+                      v-if="isUserMenuOpen"
+                      class="absolute right-0 top-full mt-2 w-64 bg-white border-2 border-neutral-200 rounded-2xl shadow-2xl py-2 z-50"
+                    >
+                      <!-- User Info -->
+                      <div class="px-4 py-3 border-b border-neutral-200">
+                        <p class="font-bold text-neutral-900">
+                          {{ authStore.userDisplayName }}
+                        </p>
+                        <p class="text-sm text-neutral-600">
+                          {{ authStore.userEmail }}
+                        </p>
+                      </div>
+
+                      <!-- Menu Items -->
+                      <div class="py-2">
+                        <router-link
+                          to="/favorites"
+                          @click="isUserMenuOpen = false"
+                          class="flex items-center gap-3 px-4 py-2.5 hover:bg-primary-50 transition-colors"
+                        >
+                          <Heart :size="18" class="text-neutral-600" />
+                          <span class="text-neutral-900 font-medium"
+                            >Món yêu thích</span
+                          >
+                          <span
+                            class="ml-auto bg-primary-100 text-primary-700 text-xs font-bold px-2 py-1 rounded-full"
+                          >
+                            {{ favoritesStore.favoriteCount }}
+                          </span>
+                        </router-link>
+
+                        <router-link
+                          to="/my-recipes"
+                          @click="isUserMenuOpen = false"
+                          class="flex items-center gap-3 px-4 py-2.5 hover:bg-primary-50 transition-colors"
+                        >
+                          <ChefHat :size="18" class="text-neutral-600" />
+                          <span class="text-neutral-900 font-medium"
+                            >Công thức của tôi</span
+                          >
+                        </router-link>
+                      </div>
+
+                      <!-- Logout -->
+                      <div class="border-t border-neutral-200 py-2">
+                        <button
+                          @click="handleSignOut"
+                          class="flex items-center gap-3 px-4 py-2.5 hover:bg-error/10 transition-colors w-full text-left"
+                        >
+                          <LogOut :size="18" class="text-error" />
+                          <span class="text-error font-medium">Đăng xuất</span>
+                        </button>
+                      </div>
+                    </div>
+                  </Transition>
+                </div>
+
+                <!-- Not Logged In - Login Button -->
+                <button
+                  v-else
+                  @click="showAuthModal = true"
+                  :class="[
+                    ' bg-gradient-to-r from-accent-500 to-accent-600 text-white group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden',
+
+                  ]"
                 >
                   <span class="relative z-10 flex items-center gap-2">
-                    <Sparkles :size="16" />
-                    <span>Tìm món ngay</span>
+                    <LogIn :size="16" />
+                    <span>Đăng nhập</span>
                   </span>
                   <!-- Shimmer effect -->
                   <div
                     class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
                   ></div>
-                </router-link>
+                </button>
               </div>
 
               <!-- Mobile menu button -->
@@ -149,10 +247,10 @@
                   :size="24"
                   :class="[
                     isScrolled
-                      ? 'text-neutral-800'
+                      ? 'text-neutral-900'
                       : route.path === '/'
                       ? 'text-white'
-                      : 'text-neutral-800',
+                      : 'text-neutral-900',
                   ]"
                 />
                 <X
@@ -160,279 +258,307 @@
                   :size="24"
                   :class="[
                     isScrolled
-                      ? 'text-neutral-800'
+                      ? 'text-neutral-900'
                       : route.path === '/'
                       ? 'text-white'
-                      : 'text-neutral-800',
+                      : 'text-neutral-900',
                   ]"
                 />
               </button>
             </div>
-
-            <!-- Mobile menu with slide animation -->
-            <Transition
-              enter-active-class="transition-all duration-300 ease-out"
-              enter-from-class="opacity-0 -translate-y-4"
-              enter-to-class="opacity-100 translate-y-0"
-              leave-active-class="transition-all duration-200 ease-in"
-              leave-from-class="opacity-100 translate-y-0"
-              leave-to-class="opacity-0 -translate-y-4"
-            >
-              <div
-                v-if="isMobileMenuOpen"
-                :class="[
-                  'md:hidden mt-4 pb-4 pt-4',
-                  isScrolled
-                    ? 'border-t border-neutral-200'
-                    : route.path === '/'
-                    ? 'border-t border-white/20'
-                    : 'border-t border-neutral-200',
-                ]"
-              >
-                <ul class="flex flex-col gap-2">
-                  <li v-for="item in navItems" :key="item.path">
-                    <router-link
-                      :to="item.path"
-                      @click="closeMobileMenu"
-                      :class="[
-                        'flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all',
-                        // Đã scroll
-                        isScrolled
-                          ? route.path === item.path
-                            ? 'bg-primary-50 text-primary-600 font-semibold'
-                            : 'text-neutral-700 hover:bg-primary-50 hover:text-primary-600'
-                          : // Trang chủ chưa scroll
-                          route.path === '/'
-                          ? route.path === item.path
-                            ? 'bg-white/15 text-white font-semibold'
-                            : 'text-white/90 hover:bg-white/15 hover:text-white'
-                          : // Trang khác chưa scroll
-                          route.path === item.path
-                          ? 'bg-primary-50 text-primary-600 font-semibold'
-                          : 'text-neutral-700 hover:bg-primary-50 hover:text-primary-600',
-                      ]"
-                    >
-                      <component :is="item.icon" :size="18" />
-                      {{ item.label }}
-                    </router-link>
-                  </li>
-                </ul>
-                <!-- Mobile CTA - Accent color -->
-                <router-link
-                  to="/"
-                  @click="closeMobileMenu"
-                  class="mt-4 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow"
-                >
-                  <Sparkles :size="18" />
-                  <span>Tìm món ngay</span>
-                </router-link>
-              </div>
-            </Transition>
           </nav>
         </div>
       </div>
+
+      <!-- Mobile menu -->
+      <Transition name="slide-down">
+        <div
+          v-if="isMobileMenuOpen"
+          class="md:hidden mt-2 mx-4 bg-white/95 backdrop-blur-xl border border-neutral-200/50 rounded-2xl shadow-xl overflow-hidden"
+        >
+          <ul class="py-2">
+            <li v-for="item in navItems" :key="item.path">
+              <router-link
+                :to="item.path"
+                @click="toggleMobileMenu"
+                :class="[
+                  'flex items-center gap-3 px-6 py-3 transition-colors',
+                  route.path === item.path
+                    ? 'bg-primary-50 text-primary-600 font-semibold'
+                    : 'text-neutral-700 hover:bg-neutral-50',
+                ]"
+              >
+                <component :is="item.icon" :size="18" />
+                <span>{{ item.label }}</span>
+              </router-link>
+            </li>
+          </ul>
+
+          <!-- Mobile User Section -->
+          <div class="border-t border-neutral-200 py-2">
+            <!-- Logged In -->
+            <div v-if="authStore.isAuthenticated">
+              <div class="px-6 py-3 bg-primary-50">
+                <div class="flex items-center gap-3">
+                  <img
+                    :src="authStore.userAvatar"
+                    :alt="authStore.userDisplayName"
+                    class="w-10 h-10 rounded-full ring-2 ring-primary-300"
+                  />
+                  <div>
+                    <p class="font-bold text-neutral-900">
+                      {{ authStore.userDisplayName }}
+                    </p>
+                    <p class="text-sm text-neutral-600">
+                      {{ authStore.userEmail }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <router-link
+                to="/favorites"
+                @click="toggleMobileMenu"
+                class="flex items-center gap-3 px-6 py-3 hover:bg-neutral-50 transition-colors"
+              >
+                <Heart :size="18" class="text-neutral-600" />
+                <span class="text-neutral-900 font-medium">Món yêu thích</span>
+                <span
+                  class="ml-auto bg-primary-100 text-primary-700 text-xs font-bold px-2 py-1 rounded-full"
+                >
+                  {{ favoritesStore.favoriteCount }}
+                </span>
+              </router-link>
+
+              <button
+                @click="handleSignOut"
+                class="flex items-center gap-3 px-6 py-3 hover:bg-error/10 transition-colors w-full text-left"
+              >
+                <LogOut :size="18" class="text-error" />
+                <span class="text-error font-medium">Đăng xuất</span>
+              </button>
+            </div>
+
+            <!-- Not Logged In -->
+            <button
+              v-else
+              @click="showAuthModalMobile"
+              class="flex items-center justify-center gap-2 mx-4 my-2 w-[calc(100%-2rem)] px-5 py-3 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+            >
+              <LogIn :size="18" />
+              <span>Đăng nhập</span>
+            </button>
+          </div>
+        </div>
+      </Transition>
     </header>
 
-    <main>
+    <!-- Main Content -->
+    <main class="">
       <slot />
     </main>
 
-    <!-- Footer - Modern & Clean -->
-    <footer
-      class="relative bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 text-neutral-300 mt-auto overflow-hidden"
-    >
-      <!-- Decorative elements - Primary color -->
-      <div
-        class="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl"
-      ></div>
-      <div
-        class="absolute bottom-0 right-1/4 w-96 h-96 bg-primary-500/5 rounded-full blur-3xl"
-      ></div>
-
-      <div class="relative container mx-auto px-4 py-16">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-          <!-- Brand -->
-          <div class="md:col-span-2">
-            <div class="flex items-center gap-3 mb-4">
-              <div
-                class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg"
-              >
-                <ChefHat :size="24" class="text-white" />
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-white">Meal Planner</h3>
-                <p class="text-sm text-neutral-400">Nấu gì hôm nay?</p>
-              </div>
-            </div>
-            <p class="text-neutral-400 leading-relaxed max-w-md">
-              Giúp bạn tận dụng thực phẩm trong tủ lạnh, giảm lãng phí và bảo vệ
-              môi trường. Mỗi bữa ăn là một hành động ý nghĩa.
-            </p>
-            <!-- Social links - Primary hover -->
-            <div class="flex gap-3 mt-6">
-              <a
-                v-for="social in socials"
-                :key="social.name"
-                href="#"
-                class="w-10 h-10 bg-neutral-800 hover:bg-primary-600 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110"
-                :aria-label="social.name"
-              >
-                <component :is="social.icon" :size="18" class="text-neutral-400 group-hover:text-white" />
-              </a>
-            </div>
-          </div>
-
-          <!-- Quick Links -->
-          <div>
-            <h4 class="text-white font-semibold mb-4 flex items-center gap-2">
-              <Compass :size="18" />
-              <span>Khám phá</span>
-            </h4>
-            <ul class="space-y-3">
-              <li v-for="item in navItems" :key="item.path">
-                <router-link
-                  :to="item.path"
-                  class="text-neutral-400 hover:text-primary-400 transition-colors flex items-center gap-2 group"
+    <!-- Footer giữ nguyên -->
+    <footer class="bg-neutral-900 text-white py-16 mt-20">
+      <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <!-- Column 1 - About -->
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <div
+                  class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center"
                 >
-                  <ArrowRight
-                    :size="14"
-                    class="group-hover:translate-x-1 transition-transform"
-                  />
-                  {{ item.label }}
-                </router-link>
-              </li>
-            </ul>
+                  <ChefHat :size="20" class="text-white" />
+                </div>
+                <h3 class="font-bold text-lg">Meal Planner</h3>
+              </div>
+              <p class="text-neutral-400 text-sm leading-relaxed mb-4">
+                Giảm lãng phí thực phẩm, nấu món ngon mỗi ngày với nguyên liệu có sẵn
+                trong tủ lạnh.
+              </p>
+            </div>
+
+            <!-- Column 2 - Quick Links -->
+            <div>
+              <h4 class="font-bold mb-4">Liên kết</h4>
+              <ul class="space-y-2">
+                <li>
+                  <router-link
+                    to="/"
+                    class="text-neutral-400 hover:text-white transition-colors text-sm"
+                    >Trang chủ</router-link
+                  >
+                </li>
+                <li>
+                  <router-link
+                    to="/community"
+                    class="text-neutral-400 hover:text-white transition-colors text-sm"
+                    >Cộng đồng</router-link
+                  >
+                </li>
+                <li>
+                  <router-link
+                    to="/impact"
+                    class="text-neutral-400 hover:text-white transition-colors text-sm"
+                    >Tác động</router-link
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <!-- Column 3 - Contact -->
+            <div>
+              <h4 class="font-bold mb-4">Liên hệ</h4>
+              <ul class="space-y-2 text-sm text-neutral-400">
+                <li>Email: hello@mealplanner.com</li>
+                <li>Hotline: 1900 1234</li>
+                <li>Địa chỉ: Hà Nội, Việt Nam</li>
+              </ul>
+            </div>
+
+            <!-- Column 4 - Social -->
+            <div>
+              <h4 class="font-bold mb-4">Theo dõi</h4>
+              <div class="flex gap-3">
+                <a
+                  href="#"
+                  class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-primary-500 transition-colors"
+                >
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
 
-          <!-- Contact -->
-          <div>
-            <h4 class="text-white font-semibold mb-4 flex items-center gap-2">
-              <Mail :size="18" />
-              <span>Liên hệ</span>
-            </h4>
-            <ul class="space-y-3 text-sm">
-              <li class="flex items-start gap-2 text-neutral-400">
-                <Mail :size="16" class="mt-0.5 flex-shrink-0" />
-                <span>hello@mealplanner.vn</span>
-              </li>
-              <li class="flex items-start gap-2 text-neutral-400">
-                <Phone :size="16" class="mt-0.5 flex-shrink-0" />
-                <span>1900 xxxx</span>
-              </li>
-              <li class="flex items-start gap-2 text-neutral-400">
-                <MapPin :size="16" class="mt-0.5 flex-shrink-0" />
-                <span>Hà Nội, Việt Nam</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Bottom bar -->
-        <div
-          class="border-t border-neutral-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
-        >
-          <p class="text-sm text-neutral-500">
-            &copy; {{ currentYear }} Meal Planner. Made with 💚 in Vietnam
-          </p>
-          <div class="flex gap-6 text-sm text-neutral-500">
-            <a href="#" class="hover:text-primary-400 transition-colors"
-              >Điều khoản</a
-            >
-            <a href="#" class="hover:text-primary-400 transition-colors"
-              >Bảo mật</a
-            >
-            <a href="#" class="hover:text-primary-400 transition-colors"
-              >Cookies</a
-            >
+          <div class="border-t border-neutral-800 pt-8 text-center">
+            <p class="text-neutral-400 text-sm">
+              © 2026 Meal Planner. All rights reserved.
+            </p>
           </div>
         </div>
       </div>
     </footer>
 
-    <!-- Back to top button - Primary color -->
-    <Transition
-      enter-active-class="transition-all duration-300"
-      enter-from-class="opacity-0 translate-y-4"
-      leave-active-class="transition-all duration-300"
-      leave-to-class="opacity-0 translate-y-4"
-    >
-      <button
-        v-if="showBackToTop"
-        @click="scrollToTop"
-        class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 z-40 group"
-        aria-label="Back to top"
-      >
-        <ArrowUp
-          :size="20"
-          class="group-hover:-translate-y-1 transition-transform"
-        />
-      </button>
-    </Transition>
+    <!-- Auth Modal -->
+    <AuthModal v-model="showAuthModal" @success="handleAuthSuccess" />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
-import { useRoute } from "vue-router";
-import { useScroll } from "@vueuse/core";
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import {
   ChefHat,
   Menu,
   X,
-  Sparkles,
   Home,
   Users,
   TrendingUp,
-  Compass,
-  Mail,
-  Phone,
-  MapPin,
-  ArrowRight,
-  ArrowUp,
-  Facebook,
-  Instagram,
-  Twitter,
-} from "lucide-vue-next";
+  LogIn,
+  LogOut,
+  Heart,
+  ChevronDown,
+} from 'lucide-vue-next'
+import AuthModal from '../components/auth/AuthModal.vue'
+import { useAuthStore } from '../stores/authStore'
+import { useFavoritesStore } from '../stores/favoritesStore'
 
-const route = useRoute();
-const navbarEl = ref(null);
-const isMobileMenuOpen = ref(false);
-const { y } = useScroll(window);
+const route = useRoute()
+const router = useRouter()
+const authStore = useAuthStore()
+const favoritesStore = useFavoritesStore()
 
-const isScrolled = computed(() => y.value > 50);
-const showBackToTop = computed(() => y.value > 500);
-const currentYear = computed(() => new Date().getFullYear());
+const navbarEl = ref(null)
+const userMenuRef = ref(null)
+const isScrolled = ref(false)
+const isMobileMenuOpen = ref(false)
+const isUserMenuOpen = ref(false)
+const showAuthModal = ref(false)
 
 const navItems = [
-  { path: "/", label: "Trang chủ", icon: Home },
-  { path: "/community", label: "Cộng đồng", icon: Users },
-  { path: "/impact", label: "Tác động", icon: TrendingUp },
-];
+  { path: '/', label: 'Trang chủ', icon: Home },
+  { path: '/community', label: 'Cộng đồng', icon: Users },
+  { path: '/impact', label: 'Tác động', icon: TrendingUp },
+]
 
-const socials = [
-  { name: "Facebook", icon: Facebook },
-  { name: "Instagram", icon: Instagram },
-  { name: "Twitter", icon: Twitter },
-];
+// Scroll handler
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 50
+}
 
+// Toggle mobile menu
 const toggleMobileMenu = () => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value;
-};
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
 
-const closeMobileMenu = () => {
-  isMobileMenuOpen.value = false;
-};
+// Show auth modal on mobile
+const showAuthModalMobile = () => {
+  toggleMobileMenu()
+  showAuthModal.value = true
+}
 
-const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
+// Handle sign out
+const handleSignOut = async () => {
+  isUserMenuOpen.value = false
+  isMobileMenuOpen.value = false
+  await authStore.signOut()
+  router.push('/')
+}
 
-// Close mobile menu on escape
+// Handle auth success
+const handleAuthSuccess = async () => {
+  await favoritesStore.loadFavorites()
+}
+
+// Click outside to close user menu
+const handleClickOutside = (event) => {
+  if (userMenuRef.value && !userMenuRef.value.contains(event.target)) {
+    isUserMenuOpen.value = false
+  }
+}
+
 onMounted(() => {
-  const handleEscape = (e) => {
-    if (e.key === "Escape") closeMobileMenu();
-  };
-  window.addEventListener("keydown", handleEscape);
-  onUnmounted(() => window.removeEventListener("keydown", handleEscape));
-});
+  window.addEventListener('scroll', handleScroll)
+  document.addEventListener('click', handleClickOutside)
+  handleScroll()
+
+  // Load favorites nếu đã đăng nhập
+  if (authStore.isAuthenticated) {
+    favoritesStore.loadFavorites()
+  }
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
+
+<style scoped>
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: all 0.2s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+</style>

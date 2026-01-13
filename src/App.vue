@@ -1,19 +1,31 @@
-<template>
-  <div id="app" class="min-h-screen flex flex-col">
-    <router-view />
-  </div>
-</template>
-
+<!-- src/App.vue -->
 <script setup>
 import { onMounted } from 'vue'
+import { useAuthStore } from './stores/authStore'
+import { useFavoritesStore } from './stores/favoritesStore'
+import { clearExpiredItems } from './utils/storageExpire'
+import { cleanupStorage } from './utils/cleanupStorage'
 
-onMounted(() => {
-  // Thêm meta tags cho SEO nếu chưa có
-  if (!document.querySelector('meta[name="description"]')) {
-    const meta = document.createElement('meta')
-    meta.name = 'description'
-    meta.content = 'Tủ lạnh nhà bạn hôm nay - Gợi ý món nấu từ nguyên liệu có sẵn'
-    document.head.appendChild(meta)
+const authStore = useAuthStore()
+const favoritesStore = useFavoritesStore()
+
+onMounted(async () => {
+  // Clean up storage trước
+  cleanupStorage()
+  
+  // Clear expired items
+  clearExpiredItems()
+  
+  // Initialize auth
+  await authStore.initAuth()
+  
+  // Load favorites nếu đã đăng nhập
+  if (authStore.isAuthenticated) {
+    await favoritesStore.loadFavorites()
   }
 })
 </script>
+
+<template>
+  <RouterView />
+</template>

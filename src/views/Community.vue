@@ -196,10 +196,13 @@
         </div>
       </section>
     </div>
+
+    <AuthModal v-model="showAuthModal" />
   </MainLayout>
 </template>
 
 <script setup>
+import { useAuthStore } from '../stores/authStore'
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import MainLayout from '../layouts/MainLayout.vue'
@@ -211,9 +214,11 @@ import { useIngredients } from '../composables/useIngredients'
 const router = useRouter()
 const { recipes, loading, error, fetchRecipes, voteRecipe } = useCommunity()
 const { getIngredientName, fetchIngredients } = useIngredients()
+const authStore = useAuthStore()
 
 const sortBy = ref('latest')
 const votingRecipeId = ref(null)
+const showAuthModal = ref(false)
 
 onMounted(async () => {
   // Fetch cả ingredients và recipes
@@ -277,10 +282,16 @@ const formatDate = (date) => {
 }
 
 const handleVote = async (recipeId) => {
-  if (votingRecipeId.value) return // Prevent double click
+  if (votingRecipeId.value) return
   
   votingRecipeId.value = recipeId
-  await voteRecipe(recipeId)
+  const result = await voteRecipe(recipeId)
+  
+  // Nếu cần đăng nhập, mở auth modal
+  if (result.requireAuth) {
+    showAuthModal.value = true
+  }
+  
   votingRecipeId.value = null
 }
 

@@ -1,4 +1,4 @@
-// src/services/supabaseClient.js
+// src/services/supabaseClient.js (CẬP NHẬT)
 
 import { createClient } from '@supabase/supabase-js'
 
@@ -11,11 +11,21 @@ if (!supabaseUrl || !supabaseAnonKey) {
   }
 }
 
-// Tạo Supabase client với config tối ưu cho production
+// Tạo Supabase client với config tối ưu
 export const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    persistSession: false, // Không cần auth session cho app này
-    autoRefreshToken: false,
+    // Tự động persist session
+    persistSession: true,
+    // Tự động refresh token
+    autoRefreshToken: true,
+    // Detect session từ URL (cho OAuth)
+    detectSessionInUrl: true,
+    // Storage key
+    storageKey: 'supabase-auth',
+    // Storage
+    storage: window.localStorage,
+    // Flow type
+    flowType: 'pkce',
   },
   db: {
     schema: 'public',
@@ -25,7 +35,7 @@ export const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUr
       'x-application-name': 'meal-planner',
     },
   },
-  // Realtime không cần thiết cho app này
+  // Realtime không cần thiết
   realtime: {
     enabled: false,
   },
@@ -34,4 +44,10 @@ export const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUr
 // Log trạng thái kết nối (chỉ trong dev)
 if (import.meta.env.DEV && supabase) {
   console.log('🔌 Supabase client initialized')
+  
+  // Log session khi có thay đổi
+  supabase.auth.onAuthStateChange((event, session) => {
+    console.log('🔐 Supabase Auth Event:', event)
+    console.log('📋 Session:', session ? 'Active' : 'None')
+  })
 }

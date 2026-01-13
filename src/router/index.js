@@ -1,50 +1,46 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+// src/router/index.js
+
+import { createRouter, createWebHashHistory } from 'vue-router'
+import { useAuthStore } from '../stores/authStore'
+import Home from '../views/Home.vue'
+import Recipe from '../views/Recipe.vue'
+import Community from '../views/Community.vue'
+import Impact from '../views/Impact.vue'
+import Favorites from '../views/Favorites.vue'
+import NotFound from '../views/NotFound.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/Home.vue'),
-    meta: {
-      title: 'Tủ lạnh nhà bạn hôm nay - Nấu gì với nguyên liệu có sẵn?',
-      description: 'Chọn nguyên liệu trong tủ lạnh, nhận gợi ý món nấu ngay - Không cần mua thêm, giảm lãng phí thực phẩm',
-    }
+    component: Home,
   },
   {
     path: '/recipe/:id',
     name: 'Recipe',
-    component: () => import('../views/Recipe.vue'),
-    meta: {
-      title: 'Công thức nấu ăn - Tủ lạnh nhà bạn hôm nay',
-      description: 'Công thức nấu ăn đơn giản với nguyên liệu có sẵn trong tủ lạnh',
-    }
+    component: Recipe,
   },
   {
     path: '/community',
     name: 'Community',
-    component: () => import('../views/Community.vue'),
-    meta: {
-      title: 'Cộng đồng chia sẻ công thức - Tủ lạnh nhà bạn hôm nay',
-      description: 'Khám phá và chia sẻ công thức nấu ăn từ cộng đồng người dùng',
-    }
+    component: Community,
   },
   {
     path: '/impact',
     name: 'Impact',
-    component: () => import('../views/Impact.vue'),
-    meta: {
-      title: 'Giảm lãng phí thực phẩm - Tủ lạnh nhà bạn hôm nay',
-      description: 'Cùng nhau giảm thiểu lãng phí thực phẩm, bảo vệ môi trường',
-    }
+    component: Impact,
+  },
+  {
+    path: '/favorites',
+    name: 'Favorites',
+    component: Favorites,
+    meta: { requiresAuth: true },
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('../views/NotFound.vue'),
-    meta: {
-      title: 'Không tìm thấy trang - Tủ lạnh nhà bạn hôm nay',
-    }
-  }
+    component: NotFound,
+  },
 ]
 
 const router = createRouter({
@@ -53,24 +49,27 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
-    } else {
-      return { top: 0, behavior: 'smooth' }
     }
-  }
+    return { top: 0, behavior: 'smooth' }
+  },
 })
 
-// SEO Meta tags handler
-router.beforeEach((to, from, next) => {
-  // Update document title
-  document.title = to.meta.title || 'Tủ lạnh nhà bạn hôm nay'
-  
-  // Update meta description
-  const metaDescription = document.querySelector('meta[name="description"]')
-  if (metaDescription) {
-    metaDescription.setAttribute('content', to.meta.description || '')
+// Navigation guard
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore()
+
+  // Wait for auth to initialize
+  if (!authStore.isInitialized) {
+    await authStore.initAuth()
   }
-  
-  next()
+
+  // Check if route requires auth
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    // Redirect to home
+    next('/')
+  } else {
+    next()
+  }
 })
 
 export default router
