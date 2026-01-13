@@ -23,21 +23,33 @@
           <div class="p-8">
             <!-- Header -->
             <div class="text-center mb-8">
-              <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-accent-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-primary-500 to-accent-500 rounded-2xl flex items-center justify-center mx-auto mb-4"
+              >
                 <User :size="32" class="text-white" />
               </div>
               <h2 class="text-3xl font-bold text-neutral-900 mb-2">
-                {{ mode === 'signin' ? 'Đăng nhập' : 'Đăng ký' }}
+                {{ mode === "signin" ? "Đăng nhập" : "Đăng ký" }}
               </h2>
               <p class="text-neutral-600">
-                {{ mode === 'signin' ? 'Chào mừng bạn quay lại!' : 'Tạo tài khoản mới' }}
+                {{
+                  mode === "signin"
+                    ? "Chào mừng bạn quay lại!"
+                    : "Tạo tài khoản mới"
+                }}
               </p>
             </div>
 
             <!-- Sign In Form -->
-            <form v-if="mode === 'signin'" @submit.prevent="handleSignIn" class="space-y-4">
+            <form
+              v-if="mode === 'signin'"
+              @submit.prevent="handleSignIn"
+              class="space-y-4"
+            >
               <div>
-                <label class="block text-sm font-semibold text-neutral-700 mb-2">
+                <label
+                  class="block text-sm font-semibold text-neutral-700 mb-2"
+                >
                   Email
                 </label>
                 <input
@@ -50,7 +62,9 @@
               </div>
 
               <div>
-                <label class="block text-sm font-semibold text-neutral-700 mb-2">
+                <label
+                  class="block text-sm font-semibold text-neutral-700 mb-2"
+                >
                   Mật khẩu
                 </label>
                 <input
@@ -62,7 +76,10 @@
                 />
               </div>
 
-              <div v-if="error" class="p-3 bg-error/10 border border-error/20 rounded-xl">
+              <div
+                v-if="error"
+                class="p-3 bg-error/10 border border-error/20 rounded-xl"
+              >
                 <p class="text-sm text-error font-medium">{{ error }}</p>
               </div>
 
@@ -71,14 +88,16 @@
                 :disabled="loading"
                 class="w-full py-3 bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50"
               >
-                {{ loading ? 'Đang đăng nhập...' : 'Đăng nhập' }}
+                {{ loading ? "Đang đăng nhập..." : "Đăng nhập" }}
               </button>
             </form>
 
             <!-- Sign Up Form -->
             <form v-else @submit.prevent="handleSignUp" class="space-y-4">
               <div>
-                <label class="block text-sm font-semibold text-neutral-700 mb-2">
+                <label
+                  class="block text-sm font-semibold text-neutral-700 mb-2"
+                >
                   Họ và tên
                 </label>
                 <input
@@ -91,7 +110,9 @@
               </div>
 
               <div>
-                <label class="block text-sm font-semibold text-neutral-700 mb-2">
+                <label
+                  class="block text-sm font-semibold text-neutral-700 mb-2"
+                >
                   Email
                 </label>
                 <input
@@ -104,7 +125,9 @@
               </div>
 
               <div>
-                <label class="block text-sm font-semibold text-neutral-700 mb-2">
+                <label
+                  class="block text-sm font-semibold text-neutral-700 mb-2"
+                >
                   Mật khẩu
                 </label>
                 <input
@@ -117,12 +140,20 @@
                 />
               </div>
 
-              <div v-if="error" class="p-3 bg-error/10 border border-error/20 rounded-xl">
+              <div
+                v-if="error"
+                class="p-3 bg-error/10 border border-error/20 rounded-xl"
+              >
                 <p class="text-sm text-error font-medium">{{ error }}</p>
               </div>
 
-              <div v-if="successMessage" class="p-3 bg-success/10 border border-success/20 rounded-xl">
-                <p class="text-sm text-success font-medium">{{ successMessage }}</p>
+              <div
+                v-if="successMessage"
+                class="p-3 bg-success/10 border border-success/20 rounded-xl"
+              >
+                <p class="text-sm text-success font-medium">
+                  {{ successMessage }}
+                </p>
               </div>
 
               <button
@@ -130,7 +161,7 @@
                 :disabled="loading"
                 class="w-full py-3 bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50"
               >
-                {{ loading ? 'Đang đăng ký...' : 'Đăng ký' }}
+                {{ loading ? "Đang đăng ký..." : "Đăng ký" }}
               </button>
             </form>
 
@@ -142,7 +173,7 @@
             </div>
 
             <!-- Google Sign In -->
-            <button
+            <!-- <button
               @click="handleGoogleSignIn"
               class="w-full py-3 border-2 border-neutral-200 hover:border-primary-300 hover:bg-primary-50 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3"
             >
@@ -153,7 +184,7 @@
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
               <span class="text-neutral-700">Tiếp tục với Google</span>
-            </button>
+            </button> -->
 
             <!-- Toggle mode -->
             <div class="mt-6 text-center">
@@ -161,7 +192,11 @@
                 @click="toggleMode"
                 class="text-primary-600 hover:text-primary-700 font-semibold transition-colors"
               >
-                {{ mode === 'signin' ? 'Chưa có tài khoản? Đăng ký' : 'Đã có tài khoản? Đăng nhập' }}
+                {{
+                  mode === "signin"
+                    ? "Chưa có tài khoản? Đăng ký"
+                    : "Đã có tài khoản? Đăng nhập"
+                }}
               </button>
             </div>
           </div>
@@ -172,86 +207,83 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { User, X } from 'lucide-vue-next'
-import { useAuth } from '../../composables/useAuth'
+import { ref } from "vue";
+import { User, X } from "lucide-vue-next";
+import { useAuth } from "../../composables/useAuth";
 
 const props = defineProps({
   modelValue: Boolean,
   initialMode: {
     type: String,
-    default: 'signin',
+    default: "signin",
   },
-})
+});
 
-const emit = defineEmits(['update:modelValue', 'success'])
+const emit = defineEmits(["update:modelValue", "success"]);
 
-const { signIn, signUp, signInWithGoogle, loading: authLoading } = useAuth()
+const { signIn, signUp, signInWithGoogle, loading: authLoading } = useAuth();
 
-const mode = ref(props.initialMode)
-const email = ref('')
-const password = ref('')
-const fullName = ref('')
-const loading = ref(false)
-const error = ref(null)
-const successMessage = ref(null)
+const mode = ref(props.initialMode);
+const email = ref("");
+const password = ref("");
+const fullName = ref("");
+const loading = ref(false);
+const error = ref(null);
+const successMessage = ref(null);
 
 const close = () => {
-  emit('update:modelValue', false)
+  emit("update:modelValue", false);
   // Reset form
-  email.value = ''
-  password.value = ''
-  fullName.value = ''
-  error.value = null
-  successMessage.value = null
-}
+  email.value = "";
+  password.value = "";
+  fullName.value = "";
+  error.value = null;
+  successMessage.value = null;
+};
 
 const toggleMode = () => {
-  mode.value = mode.value === 'signin' ? 'signup' : 'signin'
-  error.value = null
-  successMessage.value = null
-}
+  mode.value = mode.value === "signin" ? "signup" : "signin";
+  error.value = null;
+  successMessage.value = null;
+};
 
 const handleSignIn = async () => {
-  loading.value = true
-  error.value = null
+  loading.value = true;
+  error.value = null;
 
-  const response = await signIn(email.value, password.value)
+  const response = await signIn(email.value, password.value);
 
   if (response.success) {
-    emit('success', response.data)
-    close()
+    emit("success", response.data);
+    close();
   } else {
-    error.value = response.error
+    error.value = response.error;
   }
 
-  loading.value = false
-}
+  loading.value = false;
+};
 
 const handleSignUp = async () => {
-  loading.value = true
-  error.value = null
-  successMessage.value = null
+  loading.value = true;
+  error.value = null;
+  successMessage.value = null;
 
-  const response = await signUp(email.value, password.value, fullName.value)
+  const response = await signUp(email.value, password.value, fullName.value);
 
   if (response.success) {
-    successMessage.value = response.message
-    // Auto switch to sign in after 2s
-    setTimeout(() => {
-      mode.value = 'signin'
-      successMessage.value = null
-    }, 2000)
+    successMessage.value = response.message;
+    emit("success", response.data);
+    close();
   } else {
-    error.value = response.error
+    error.value = response.error;
   }
 
-  loading.value = false
-}
+  loading.value = false;
+};
 
 const handleGoogleSignIn = async () => {
-  await signInWithGoogle()
-}
+  await signInWithGoogle();
+};
 </script>
 
 <style scoped>

@@ -4,7 +4,7 @@
     <!-- Modern Navbar - Sticky with gradient transition -->
     <header ref="navbarEl" class="fixed top-0 left-0 right-0 z-50">
       <div
-        :class="['transition-all duration-500', isScrolled ? 'py-3' : 'py-4']"
+        :class="['transition-all duration-500', isScrolled ? 'py-0' : 'py-0']"
       >
         <div
           :class="[
@@ -274,8 +274,9 @@
       <Transition name="slide-down">
         <div
           v-if="isMobileMenuOpen"
-          class="md:hidden mt-2 mx-4 bg-white/95 backdrop-blur-xl border border-neutral-200/50 rounded-2xl shadow-xl overflow-hidden"
+          class="md:hidden mx-4 bg-white/95 backdrop-blur-xl border border-neutral-200/50 rounded-2xl shadow-xl overflow-hidden"
         >
+          <!-- Navigation Links -->
           <ul class="py-2">
             <li v-for="item in navItems" :key="item.path">
               <router-link
@@ -295,59 +296,89 @@
           </ul>
 
           <!-- Mobile User Section -->
-          <div class="border-t border-neutral-200 py-2">
+          <div class="border-t border-neutral-200">
             <!-- Logged In -->
             <div v-if="authStore.isAuthenticated">
-              <div class="px-6 py-3 bg-primary-50">
+              <!-- User Info Header -->
+              <div class="px-6 py-4 bg-primary-50 border-b border-primary-100">
                 <div class="flex items-center gap-3">
                   <img
                     :src="authStore.userAvatar"
                     :alt="authStore.userDisplayName"
-                    class="w-10 h-10 rounded-full ring-2 ring-primary-300"
+                    class="w-12 h-12 rounded-full ring-2 ring-primary-300"
                   />
-                  <div>
-                    <p class="font-bold text-neutral-900">
+                  <div class="flex-1 min-w-0">
+                    <p class="font-bold text-neutral-900 truncate">
                       {{ authStore.userDisplayName }}
                     </p>
-                    <p class="text-sm text-neutral-600">
+                    <p class="text-sm text-neutral-600 truncate">
                       {{ authStore.userEmail }}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <router-link
-                to="/favorites"
-                @click="toggleMobileMenu"
-                class="flex items-center gap-3 px-6 py-3 hover:bg-neutral-50 transition-colors"
-              >
-                <Heart :size="18" class="text-neutral-600" />
-                <span class="text-neutral-900 font-medium">Món yêu thích</span>
-                <span
-                  class="ml-auto bg-primary-100 text-primary-700 text-xs font-bold px-2 py-1 rounded-full"
+              <!-- User Menu Items -->
+              <div class="py-2">
+                <router-link
+                  to="/favorites"
+                  @click="toggleMobileMenu"
+                  class="flex items-center gap-3 px-6 py-3 hover:bg-neutral-50 active:bg-primary-50 transition-colors"
                 >
-                  {{ favoritesStore.favoriteCount }}
-                </span>
-              </router-link>
+                  <div class="w-10 h-10 rounded-lg bg-error-50 flex items-center justify-center flex-shrink-0">
+                    <Heart :size="18" class="text-error" />
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-neutral-900 font-medium">Món yêu thích</p>
+                    <p class="text-xs text-neutral-600">Xem công thức đã lưu</p>
+                  </div>
+                  <span
+                    class="bg-primary-100 text-primary-700 text-xs font-bold px-2.5 py-1 rounded-full"
+                  >
+                    {{ favoritesStore.favoriteCount }}
+                  </span>
+                </router-link>
 
-              <button
-                @click="handleSignOut"
-                class="flex items-center gap-3 px-6 py-3 hover:bg-error/10 transition-colors w-full text-left"
-              >
-                <LogOut :size="18" class="text-error" />
-                <span class="text-error font-medium">Đăng xuất</span>
-              </button>
+                <router-link
+                  to="/my-recipes"
+                  @click="toggleMobileMenu"
+                  class="flex items-center gap-3 px-6 py-3 hover:bg-neutral-50 active:bg-primary-50 transition-colors"
+                >
+                  <div class="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center flex-shrink-0">
+                    <ChefHat :size="18" class="text-primary-600" />
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-neutral-900 font-medium">Công thức của tôi</p>
+                    <p class="text-xs text-neutral-600">Quản lý công thức riêng</p>
+                  </div>
+                </router-link>
+              </div>
+
+              <!-- Logout Button -->
+              <div class="border-t border-neutral-200 p-4">
+                <button
+                  @click="handleSignOut"
+                  class="flex items-center justify-center gap-3 w-full px-5 py-3 bg-error-50 hover:bg-error-100 active:bg-error-200 rounded-xl transition-colors"
+                >
+                  <LogOut :size="18" class="text-error" />
+                  <span class="text-error font-semibold">Đăng xuất</span>
+                </button>
+              </div>
             </div>
 
             <!-- Not Logged In -->
-            <button
-              v-else
-              @click="showAuthModalMobile"
-              class="flex items-center justify-center gap-2 mx-4 my-2 w-[calc(100%-2rem)] px-5 py-3 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
-            >
-              <LogIn :size="18" />
-              <span>Đăng nhập</span>
-            </button>
+            <div v-else class="p-4">
+              <button
+                @click="showAuthModalMobile"
+                class="flex items-center justify-center gap-2 w-full px-5 py-3 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-xl font-semibold shadow-lg active:scale-95 transition-all"
+              >
+                <LogIn :size="18" />
+                <span>Đăng nhập ngay</span>
+              </button>
+              <p class="text-center text-xs text-neutral-600 mt-3">
+                Đăng nhập để lưu món yêu thích và tạo công thức
+              </p>
+            </div>
           </div>
         </div>
       </Transition>
@@ -515,8 +546,12 @@ const handleAuthSuccess = async () => {
   await favoritesStore.loadFavorites()
 }
 
-// Click outside to close user menu
+// Click outside to close user menu (CHỈ DESKTOP)
 const handleClickOutside = (event) => {
+  // Bỏ qua nếu là mobile menu
+  if (isMobileMenuOpen.value) return
+  
+  // Chỉ xử lý desktop user menu
   if (userMenuRef.value && !userMenuRef.value.contains(event.target)) {
     isUserMenuOpen.value = false
   }
@@ -524,7 +559,10 @@ const handleClickOutside = (event) => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
-  document.addEventListener('click', handleClickOutside)
+  // Sử dụng mousedown thay vì click để tốt hơn trên cả desktop và mobile
+  document.addEventListener('mousedown', handleClickOutside)
+  // Thêm touchstart cho mobile
+  document.addEventListener('touchstart', handleClickOutside)
   handleScroll()
 
   // Load favorites nếu đã đăng nhập
@@ -535,7 +573,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
-  document.removeEventListener('click', handleClickOutside)
+  document.removeEventListener('mousedown', handleClickOutside)
+  document.removeEventListener('touchstart', handleClickOutside)
 })
 </script>
 
