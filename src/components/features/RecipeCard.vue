@@ -6,7 +6,7 @@
     <!-- Favorite Button -->
     <button
       v-if="authStore.isAuthenticated"
-      @click.stop="$emit('toggle-favorite')"
+      @click.stop="handleToggleFavorite"
       class="absolute top-3 right-3 z-10 w-10 h-10 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
       :class="isFavorite ? 'text-error' : 'text-neutral-400'"
     >
@@ -58,7 +58,9 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
 import { useAuthStore } from '../../stores/authStore'
+import { useFavoritesStore } from '../../stores/favoritesStore'
 import { Heart, ArrowRight } from 'lucide-vue-next'
 
 const props = defineProps({
@@ -72,13 +74,25 @@ const props = defineProps({
   },
 })
 
-defineEmits(['toggle-favorite'])
+const emit = defineEmits(['toggle-favorite'])
 
 const router = useRouter()
+const toast = useToast()
 const authStore = useAuthStore()
+const favoritesStore = useFavoritesStore()
 
 const goToRecipe = () => {
   router.push(`/recipe/${props.recipe.id || props.recipe._id}`)
+}
+
+const handleToggleFavorite = async () => {
+  if (!authStore.isAuthenticated) {
+    toast.warning('Vui lòng đăng nhập để lưu món yêu thích')
+    return
+  }
+  
+  // Emit để parent component xử lý
+  emit('toggle-favorite')
 }
 </script>
 

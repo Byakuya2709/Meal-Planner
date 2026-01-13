@@ -1,4 +1,4 @@
-// src/stores/authStore.js
+// src/stores/authStore.js - TỐI ƯU SPEED
 
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
@@ -26,6 +26,31 @@ export const useAuthStore = defineStore('auth', () => {
 
   const userEmail = computed(() => user.value?.email || '')
 
+  // Helper: Clear all user-related stores
+  async function clearUserStores() {
+    try {
+      
+      // Dynamic import để tránh circular dependency
+      const [favoritesModule, likesModule] = await Promise.all([
+        import('./favoritesStore'),
+        import('./likesStore')
+      ])
+      
+      const favoritesStore = favoritesModule.useFavoritesStore()
+      const likesStore = likesModule.useLikesStore()
+      
+      favoritesStore.$reset()
+      likesStore.$reset()
+      
+      // Clear localStorage manually
+      localStorage.removeItem('favorites-storage')
+      localStorage.removeItem('likes-storage')
+      
+    } catch (err) {
+      console.error('[AuthStore] Error clearing user stores:', err)
+    }
+  }
+
   // Actions
   async function signUp(email, password, fullName) {
     loading.value = true
@@ -35,7 +60,8 @@ export const useAuthStore = defineStore('auth', () => {
     
     if (response.success) {
       user.value = response.data
-      await loadProfile()
+      // Load profile trong background, không block UI
+      loadProfile().catch(err => console.error('[AuthStore] Profile load error:', err))
     } else {
       error.value = response.error
     }
@@ -52,13 +78,20 @@ export const useAuthStore = defineStore('auth', () => {
     
     if (response.success) {
       user.value = response.data
-      await loadProfile()
+      console.log('[AuthStore] Sign in success, user:', user.value?.email)
+      
+      // KHÔNG CHỜ loadProfile, để nó chạy background
+      loadProfile().catch(err => console.error('[AuthStore] Profile load error:', err))
+      
+      // Return ngay để UI không bị block
+      loading.value = false
+      return response
     } else {
       error.value = response.error
+      console.error('[AuthStore] Sign in error:', response.error)
+      loading.value = false
+      return response
     }
-
-    loading.value = false
-    return response
   }
 
   async function signInWithGoogle() {
@@ -72,28 +105,45 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function signOut() {
-    loading.value = true
+    console.log('[AuthStore] Signing out...')
     
-    const response = await authService.signOut()
+    // Clear state trước để UI update nhanh
+    user.value = null
+    profile.value = null
+    error.value = null
     
-    if (response.success) {
-      user.value = null
-      profile.value = null
-      error.value = null
-      isInitialized.value = false
-    }
+    // Clear stores trong background
+    clearUserStores().catch(err => console.error('[AuthStore] Clear stores error:', err))
     
-    loading.value = false
-    return response
+    // Call signOut API trong background
+    authService.signOut().then(response => {
+      if (response.success) {
+        console.log('[AuthStore] Signed out from server')
+      }
+    })
+    
+    return { success: true }
   }
 
   async function loadProfile() {
-    if (!user.value) return
+    if (!user.value) {
+      console.log('[AuthStore] No user to load profile')
+      return
+    }
 
+    console.log('[AuthStore] Loading profile for user:', user.value.id)
     const response = await authService.getUserProfile(user.value.id)
     
     if (response.success) {
       profile.value = response.data
+      console.log('[AuthStore] Profile loaded:', profile.value?.display_name)
+    } else {
+      console.warn('[AuthStore] Profile load failed, using defaults')
+      // Tạo profile mặc định từ user data
+      profile.value = {
+        display_name: user.value.email?.split('@')[0],
+        avatar_url: null
+      }
     }
   }
 
@@ -115,34 +165,46 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function initAuth() {
-    if (isInitialized.value) return
+    if (isInitialized.value) {
+      console.log('[AuthStore] Already initialized')
+      return
+    }
 
-    loading.value = true
+    console.log('[AuthStore] Initializing auth...')
 
-    // Nếu có user trong localStorage (từ persist), verify lại với Supabase
+    // CHỈ check session, không gọi API nếu đã có user trong localStorage
     if (user.value) {
-      console.log('🔄 Found user in storage, verifying...')
-      const response = await authService.getCurrentUser()
+      console.log('[AuthStore] Found cached user:', user.value.email)
+      isInitialized.value = true
       
-      if (response.success && response.data) {
-        // Token còn valid, update user data
-        user.value = response.data
-        await loadProfile()
-        console.log('✅ User verified and restored')
-      } else {
-        // Token expired hoặc invalid, clear user
-        console.log('❌ Token expired, clearing user')
-        user.value = null
-        profile.value = null
-      }
+      // Verify session trong background
+      authService.getCurrentUser().then(response => {
+        if (response.success && response.data) {
+          user.value = response.data
+          console.log('[AuthStore] Session verified')
+          if (!profile.value) {
+            loadProfile().catch(err => console.error('[AuthStore] Profile load error:', err))
+          }
+        } else {
+          console.warn('[AuthStore] Session expired, clearing user')
+          user.value = null
+          profile.value = null
+        }
+      })
+      
+      return
+    }
+
+    // Nếu không có cached user, check với server
+    loading.value = true
+    const response = await authService.getCurrentUser()
+    
+    if (response.success && response.data) {
+      user.value = response.data
+      console.log('[AuthStore] Current user loaded:', user.value.email)
+      loadProfile().catch(err => console.error('[AuthStore] Profile load error:', err))
     } else {
-      // Không có user trong storage, check session
-      const response = await authService.getCurrentUser()
-      
-      if (response.success && response.data) {
-        user.value = response.data
-        await loadProfile()
-      }
+      console.log('[AuthStore] No current user')
     }
 
     loading.value = false
@@ -150,20 +212,18 @@ export const useAuthStore = defineStore('auth', () => {
 
     // Subscribe to auth changes
     authService.onAuthStateChange(async (event, session) => {
-      console.log('🔐 Auth state changed:', event)
+      console.log('[AuthStore] Auth state changed:', event)
       
       if (event === 'SIGNED_IN' && session?.user) {
         user.value = session.user
-        await loadProfile()
+        loadProfile().catch(err => console.error('[AuthStore] Profile load error:', err))
       } else if (event === 'SIGNED_OUT') {
         user.value = null
         profile.value = null
-        isInitialized.value = false
+        clearUserStores().catch(err => console.error('[AuthStore] Clear stores error:', err))
       } else if (event === 'TOKEN_REFRESHED' && session?.user) {
         user.value = session.user
-      } else if (event === 'USER_UPDATED' && session?.user) {
-        user.value = session.user
-        await loadProfile()
+        console.log('[AuthStore] Token refreshed')
       }
     })
   }
@@ -195,17 +255,9 @@ export const useAuthStore = defineStore('auth', () => {
     clearError,
   }
 }, {
-  // QUAN TRỌNG: Cấu hình persist
   persist: {
     key: 'auth-storage',
     storage: localStorage,
-    paths: ['user', 'profile'], // Chỉ lưu user và profile
-    // Thời gian expire: 7 ngày
-    beforeRestore: (context) => {
-      console.log('🔄 Restoring auth state from storage...')
-    },
-    afterRestore: (context) => {
-      console.log('✅ Auth state restored:', !!context.store.user)
-    },
+    paths: ['user', 'profile']
   }
 })

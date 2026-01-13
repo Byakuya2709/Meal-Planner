@@ -1,4 +1,4 @@
-<!-- Recipe.vue - Hoàn chỉnh với Supabase -->
+<!-- Recipe.vue - Hoàn chỉnh với Supabase, Favorites & Likes -->
 <template>
   <MainLayout>
     <div class="recipe-page bg-neutral-50 min-h-screen">
@@ -121,7 +121,7 @@
                   </div>
 
                   <!-- Meta Info Cards -->
-                  <div class="grid grid-cols-2 gap-3">
+                  <div class="grid grid-cols-2 gap-3 mb-6">
                     <div
                       class="bg-primary-50 border border-primary-200 rounded-xl p-4 hover:border-primary-400 hover:bg-primary-100 transition-all duration-300"
                     >
@@ -171,15 +171,67 @@
                     </div>
                   </div>
 
-                  <!-- Like count (nếu có) -->
-                  <div 
-                    v-if="recipe.like_count || recipe.likeCount"
-                    class="mt-4 flex items-center gap-2 text-neutral-600"
-                  >
-                    <Heart :size="18" class="text-error" />
-                    <span class="font-semibold">
-                      {{ recipe.like_count || recipe.likeCount }} lượt thích
-                    </span>
+                  <!-- Actions: Favorite, Like & Share -->
+                  <div class="flex flex-wrap items-center gap-3">
+                    <!-- Favorite Button -->
+                    <button
+                      v-if="authStore.isAuthenticated"
+                      @click="handleToggleFavorite"
+                      :disabled="favoritesStore.loading"
+                      class="flex items-center gap-2 px-5 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 disabled:opacity-50"
+                      :class="[
+                        favoritesStore.isFavorite(recipe.id)
+                          ? 'bg-error text-white hover:bg-error-600 shadow-lg'
+                          : 'bg-error-50 text-error border-2 border-error-200 hover:bg-error-100'
+                      ]"
+                    >
+                      <Heart 
+                        :size="20" 
+                        :fill="favoritesStore.isFavorite(recipe.id) ? 'currentColor' : 'none'"
+                      />
+                      <span>
+                        {{ favoritesStore.isFavorite(recipe.id) ? 'Đã lưu' : 'Lưu công thức' }}
+                      </span>
+                    </button>
+
+                    <!-- Like Button (chỉ cho community recipes) -->
+                    <button
+                      v-if="recipe.is_community && authStore.isAuthenticated"
+                      @click="handleLikeRecipe"
+                      :disabled="voting"
+                      class="flex items-center gap-2 px-5 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 disabled:opacity-50"
+                      :class="[
+                        likesStore.isLiked(recipe.id)
+                          ? 'bg-primary-600 text-white shadow-lg'
+                          : 'bg-primary-50 text-primary-600 border-2 border-primary-200 hover:bg-primary-100'
+                      ]"
+                    >
+                      <ThumbsUp 
+                        :size="20" 
+                        :fill="likesStore.isLiked(recipe.id) ? 'currentColor' : 'none'"
+                      />
+                      <span>{{ recipe.like_count || 0 }}</span>
+                    </button>
+
+                    <!-- Share Button -->
+                    <button
+                      @click="handleShare"
+                      class="flex items-center gap-2 px-5 py-3 bg-neutral-100 text-neutral-700 rounded-xl font-semibold hover:bg-neutral-200 transition-all duration-300 hover:scale-105"
+                    >
+                      <Share2 :size="20" />
+                      <span>Chia sẻ</span>
+                    </button>
+
+                    <!-- Login prompt if not authenticated -->
+                    <p 
+                      v-if="!authStore.isAuthenticated"
+                      class="text-sm text-neutral-600 ml-2"
+                    >
+                      <router-link to="/" class="text-primary-600 hover:underline font-semibold">
+                        Đăng nhập
+                      </router-link>
+                      để lưu và thích công thức
+                    </p>
                   </div>
                 </div>
               </div>
@@ -229,14 +281,20 @@
                       class="flex items-center justify-between py-4 border-b border-neutral-200 last:border-0 group hover:bg-primary-50 px-4 rounded-xl transition-all duration-300"
                     >
                       <div class="flex items-center gap-4">
+                        <!-- Icon nguyên liệu -->
                         <div
-                          class="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center font-bold text-primary-700 group-hover:scale-110 transition-transform"
+                          class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform"
                         >
-                          {{ index + 1 }}
+                          {{ getIngredientIcon(ingredient) }}
                         </div>
-                        <span class="font-medium text-neutral-900">
-                          {{ ingredient }}
-                        </span>
+                        <div>
+                          <span class="font-semibold text-neutral-900 block">
+                            {{ ingredient }}
+                          </span>
+                          <span class="text-xs text-neutral-500">
+                            {{ getIngredientCategory(ingredient) }}
+                          </span>
+                        </div>
                       </div>
                       <CheckCircle2 :size="20" class="text-primary-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
@@ -386,26 +444,31 @@
                   </div>
                 </div>
 
-                <!-- Share Section -->
+                <!-- Stats (nếu là community recipe) -->
                 <div
+                  v-if="recipe.is_community"
                   class="bg-gradient-to-br from-primary-50 to-secondary-50 border-2 border-primary-200 rounded-3xl p-6 space-y-4 shadow-sm"
                 >
                   <h3
                     class="text-xl font-bold text-neutral-900 flex items-center gap-2"
                   >
-                    <Share2 :size="20" class="text-primary-600" />
-                    Chia sẻ công thức
+                    <TrendingUp :size="20" class="text-primary-600" />
+                    Thống kê
                   </h3>
-                  <p class="text-neutral-700 text-sm font-medium">
-                    Bạn thích món này? Chia sẻ với bạn bè nhé!
-                  </p>
-                  <button
-                    @click="handleShare"
-                    class="w-full bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-semibold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
-                  >
-                    <Heart :size="18" />
-                    Yêu thích
-                  </button>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white rounded-xl p-4 text-center">
+                      <p class="text-3xl font-bold text-error mb-1">
+                        {{ recipe.like_count || 0 }}
+                      </p>
+                      <p class="text-xs text-neutral-600 font-medium">Lượt thích</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 text-center">
+                      <p class="text-3xl font-bold text-primary-600 mb-1">
+                        {{ formatDate(recipe.created_at) }}
+                      </p>
+                      <p class="text-xs text-neutral-600 font-medium">Ngày đăng</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -482,10 +545,14 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
 import MainLayout from '../layouts/MainLayout.vue'
 import LoadingSpinner from '../components/ui/LoadingSpinner.vue'
 import { useRecipe } from '../composables/useRecipe'
 import { useIngredients } from '../composables/useIngredients'
+import { useAuthStore } from '../stores/authStore'
+import { useFavoritesStore } from '../stores/favoritesStore'
+import { useLikesStore } from '../stores/likesStore'
 import {
   Sparkles,
   Clock,
@@ -500,13 +567,21 @@ import {
   Users,
   Home,
   AlertCircle,
+  ThumbsUp,
+  TrendingUp,
 } from 'lucide-vue-next'
 
 const route = useRoute()
 const router = useRouter()
+const toast = useToast()
 
 const { recipe, loading, error, getRecipeById } = useRecipe()
-const { fetchIngredients } = useIngredients()
+const { fetchIngredients, getIngredientByName } = useIngredients()
+const authStore = useAuthStore()
+const favoritesStore = useFavoritesStore()
+const likesStore = useLikesStore()
+
+const voting = ref(false)
 
 // Computed properties
 const difficultyText = computed(() => {
@@ -516,6 +591,29 @@ const difficultyText = computed(() => {
   if (score === 2) return 'Trung bình'
   return 'Khó'
 })
+
+// Get ingredient icon from name
+const getIngredientIcon = (ingredientName) => {
+  const ingredient = getIngredientByName(ingredientName)
+  return ingredient?.icon || '🥘'
+}
+
+// Get ingredient category label
+const getIngredientCategory = (ingredientName) => {
+  const ingredient = getIngredientByName(ingredientName)
+  if (!ingredient) return ''
+  
+  const categoryMap = {
+    'protein': 'Protein',
+    'vegetable': 'Rau củ',
+    'spice': 'Gia vị',
+    'seasoning': 'Gia vị',
+    'grain': 'Ngũ cốc',
+    'other': 'Khác'
+  }
+  
+  return categoryMap[ingredient.category] || ''
+}
 
 // Format date
 const formatDate = (date) => {
@@ -531,7 +629,38 @@ const formatDate = (date) => {
   return `${Math.floor(diff / 30)} tháng trước`
 }
 
-// Handle share (có thể mở rộng sau)
+// Handle favorite toggle
+const handleToggleFavorite = async () => {
+  if (!authStore.isAuthenticated) {
+    toast.warning('Vui lòng đăng nhập để lưu món yêu thích')
+    return
+  }
+  
+  await favoritesStore.toggleFavorite(recipe.value.id)
+}
+
+// Handle like recipe
+const handleLikeRecipe = async () => {
+  if (!authStore.isAuthenticated) {
+    toast.warning('Vui lòng đăng nhập để thích công thức')
+    return
+  }
+  
+  if (voting.value) return
+  
+  voting.value = true
+  const result = await likesStore.likeRecipe(recipe.value.id)
+  
+  // Cập nhật like_count nếu thành công
+  if (result.success && result.data) {
+    recipe.value.like_count = result.data.likeCount
+    recipe.value.likeCount = result.data.likeCount
+  }
+  
+  voting.value = false
+}
+
+// Handle share
 const handleShare = () => {
   if (navigator.share && recipe.value) {
     navigator.share({
@@ -542,11 +671,12 @@ const handleShare = () => {
   } else {
     // Fallback: copy link
     navigator.clipboard.writeText(window.location.href)
-    alert('Đã copy link công thức!')
+    toast.success('Đã copy link công thức!')
   }
 }
 
 // Fetch data when component mounts
+
 onMounted(async () => {
   const recipeId = route.params.id
   
@@ -560,6 +690,15 @@ onMounted(async () => {
     fetchIngredients(),
     getRecipeById(recipeId)
   ])
+  
+  // Lazy load favorites và likes nếu đã đăng nhập
+  if (authStore.isAuthenticated) {
+    // Stores sẽ tự check loaded flag và skip nếu đã load
+    await Promise.all([
+      favoritesStore.loadFavorites(),
+      likesStore.loadLikedRecipes()
+    ])
+  }
 })
 </script>
 

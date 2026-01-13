@@ -1,0 +1,35 @@
+/* src/styles/toast.css - Tạo file mới */
+
+/* Custom toast styles phù hợp với theme */
+:root {
+  --toastify-color-success: #10b981;
+  --toastify-color-error: #ef4444;
+  --toastify-color-warning: #f59e0b;
+  --toastify-color-info: #3b82f6;
+}
+
+.Vue-Toastification__toast {
+  border-radius: 12px !important;
+  font-family: inherit;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+}
+
+.Vue-Toastification__toast--success {
+  background-color: var(--toastify-color-success) !important;
+}
+
+.Vue-Toastification__toast--error {
+  background-color: var(--toastify-color-error) !important;
+}
+
+.Vue-Toastification__toast--warning {
+  background-color: var(--toastify-color-warning) !important;
+}
+
+.Vue-Toastification__toast--info {
+  background-color: var(--toastify-color-info) !important;
+}
+
+.Vue-Toastification__progress-bar {
+  height: 3px !important;
+}

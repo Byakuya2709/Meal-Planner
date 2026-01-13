@@ -153,7 +153,7 @@
                   <Transition name="dropdown">
                     <div
                       v-if="isUserMenuOpen"
-                      class="absolute right-0 top-full mt-2 w-64 bg-white border-2 border-neutral-200 rounded-2xl shadow-2xl py-2 z-50"
+                      class="absolute right-0 top-full mt-2 w-62 bg-white border-2 border-neutral-200 rounded-2xl shadow-2xl py-2 z-50"
                     >
                       <!-- User Info -->
                       <div class="px-4 py-3 border-b border-neutral-200">
@@ -390,7 +390,7 @@
     </main>
 
     <!-- Footer giữ nguyên -->
-    <footer class="bg-neutral-900 text-white py-16 mt-20">
+    <footer class="bg-neutral-900 text-white py-16">
       <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">

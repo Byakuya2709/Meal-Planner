@@ -42,9 +42,8 @@ const handleError = (context, error) => {
 }
 
 export const supabaseRecipeService = {
-  /**
-   * Lấy danh sách ingredients (có cache)
-   */
+
+
   async getIngredients() {
     try {
       // Kiểm tra cache
@@ -467,6 +466,36 @@ export const supabaseRecipeService = {
       return { success: true }
     } catch (error) {
       return handleError('incrementMealCreated', error)
+    }
+  },
+
+
+
+    /**
+   * Lấy danh sách recipe_id mà user đã like
+   */
+  async getUserLikedRecipes() {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (!user) {
+        return { success: true, data: [] }
+      }
+
+      log('Fetching user liked recipes for user:', user.id)
+      
+      const { data, error } = await supabase
+        .from('user_likes')
+        .select('recipe_id')
+        .eq('user_id', user.id)
+      
+      if (error) throw error
+      
+      const recipeIds = (data || []).map(item => item.recipe_id)
+      
+      return { success: true, data: recipeIds }
+    } catch (error) {
+      return handleError('getUserLikedRecipes', error)
     }
   },
 

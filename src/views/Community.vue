@@ -1,8 +1,8 @@
-<!-- Community.vue - FIXED VERSION -->
+<!-- Community.vue - UPDATED WITH LIKES TRACKING -->
 <template>
   <MainLayout>
-    <div class="community-page bg-neutral-50 min-h-screen">
-      <!-- Hero Section -->
+    <div class="community-page bg-neutral-50 min-h-screen mt-16">
+      <!-- Hero Section giữ nguyên -->
       <section class="bg-gradient-to-br from-primary-50 via-white to-secondary-50 py-16 md:py-20 border-b border-neutral-200">
         <div class="container mx-auto px-4">
           <div class="max-w-4xl mx-auto text-center">
@@ -17,7 +17,7 @@
               <BaseButton variant="primary" size="lg">
                 Chia sẻ công thức của bạn
               </BaseButton>
-              <BaseButton variant="outline" size="lg">
+              <BaseButton variant="outline" size="lg" @click="$router.push('/favorites')">
                 Công thức đã lưu
               </BaseButton>
             </div>
@@ -25,7 +25,7 @@
         </div>
       </section>
 
-      <!-- Stats -->
+      <!-- Stats giữ nguyên -->
       <section class="border-b border-neutral-200 bg-white">
         <div class="container mx-auto px-4 py-8">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
@@ -171,10 +171,20 @@
                   <div class="flex items-center justify-between pt-4 border-t border-neutral-100">
                     <button
                       @click.stop="handleVote(recipe.id || recipe._id)"
-                      class="flex items-center gap-2 text-neutral-600 hover:text-primary-600 transition-colors"
+                      class="flex items-center gap-2 transition-colors disabled:opacity-50"
+                      :class="[
+                        likesStore.isLiked(recipe.id || recipe._id)
+                          ? 'text-primary-600'
+                          : 'text-neutral-600 hover:text-primary-600'
+                      ]"
                       :disabled="votingRecipeId === (recipe.id || recipe._id)"
                     >
-                      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg 
+                        class="w-5 h-5" 
+                        :fill="likesStore.isLiked(recipe.id || recipe._id) ? 'currentColor' : 'none'" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                       </svg>
                       <span class="text-sm font-semibold">
@@ -203,18 +213,21 @@
 
 <script setup>
 import { useAuthStore } from '../stores/authStore'
+import { useLikesStore } from '../stores/likesStore'
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import MainLayout from '../layouts/MainLayout.vue'
 import BaseButton from '../components/ui/BaseButton.vue'
 import LoadingSpinner from '../components/ui/LoadingSpinner.vue'
+import AuthModal from '../components/auth/AuthModal.vue'
 import { useCommunity } from '../composables/useCommunity'
 import { useIngredients } from '../composables/useIngredients'
 
 const router = useRouter()
-const { recipes, loading, error, fetchRecipes, voteRecipe } = useCommunity()
+const { recipes, loading, error, fetchRecipes } = useCommunity()
 const { getIngredientName, fetchIngredients } = useIngredients()
 const authStore = useAuthStore()
+const likesStore = useLikesStore()
 
 const sortBy = ref('latest')
 const votingRecipeId = ref(null)
@@ -226,6 +239,11 @@ onMounted(async () => {
     fetchIngredients(),
     fetchRecipes()
   ])
+  
+  // Load liked recipes nếu đã đăng nhập
+  if (authStore.isAuthenticated) {
+    await likesStore.loadLikedRecipes()
+  }
 })
 
 // Computed stats
@@ -285,11 +303,20 @@ const handleVote = async (recipeId) => {
   if (votingRecipeId.value) return
   
   votingRecipeId.value = recipeId
-  const result = await voteRecipe(recipeId)
+  const result = await likesStore.likeRecipe(recipeId)
   
   // Nếu cần đăng nhập, mở auth modal
   if (result.requireAuth) {
     showAuthModal.value = true
+  }
+  
+  // Nếu like thành công, cập nhật like_count trong recipes
+  if (result.success && result.data) {
+    const recipe = recipes.value.find(r => (r.id || r._id) === recipeId)
+    if (recipe) {
+      recipe.like_count = result.data.likeCount
+      recipe.likeCount = result.data.likeCount
+    }
   }
   
   votingRecipeId.value = null

@@ -11,24 +11,41 @@ export const favoritesService = {
       const { data: { user } } = await supabase.auth.getUser()
       
       if (!user) {
+        console.warn('[Favorites] User not authenticated')
         return {
           success: false,
           error: 'Vui lòng đăng nhập để lưu món yêu thích',
         }
       }
 
-      const { error } = await supabase
+      console.log('[Favorites] Adding favorite:', { userId: user.id, recipeId })
+
+      const { data, error } = await supabase
         .from('user_favorites')
         .insert({
           user_id: user.id,
           recipe_id: recipeId,
         })
+        .select()
 
-      if (error) throw error
+      if (error) {
+        console.error('[Favorites] Insert error:', error)
+        
+        // Check duplicate
+        if (error.code === '23505') {
+          return {
+            success: false,
+            error: 'Món này đã có trong danh sách yêu thích',
+          }
+        }
+        
+        throw error
+      }
 
-      return { success: true }
+      console.log('[Favorites] Added successfully:', data)
+      return { success: true, data }
     } catch (error) {
-      console.error('Add favorite error:', error)
+      console.error('[Favorites] Add favorite error:', error)
       return {
         success: false,
         error: error.message || 'Không thể lưu món yêu thích',
@@ -47,6 +64,8 @@ export const favoritesService = {
         return { success: false, error: 'Vui lòng đăng nhập' }
       }
 
+      console.log('[Favorites] Removing favorite:', { userId: user.id, recipeId })
+
       const { error } = await supabase
         .from('user_favorites')
         .delete()
@@ -55,9 +74,10 @@ export const favoritesService = {
 
       if (error) throw error
 
+      console.log('[Favorites] Removed successfully')
       return { success: true }
     } catch (error) {
-      console.error('Remove favorite error:', error)
+      console.error('[Favorites] Remove favorite error:', error)
       return {
         success: false,
         error: error.message,
@@ -85,7 +105,7 @@ export const favoritesService = {
 
       return { success: true, data: !!data }
     } catch (error) {
-      console.error('Check favorite error:', error)
+      console.error('[Favorites] Check favorite error:', error)
       return { success: false, error: error.message }
     }
   },
@@ -98,30 +118,58 @@ export const favoritesService = {
       const { data: { user } } = await supabase.auth.getUser()
       
       if (!user) {
+        console.warn('[Favorites] User not authenticated for getUserFavorites')
         return { success: false, error: 'Vui lòng đăng nhập' }
       }
 
-      const { data, error } = await supabase
+      console.log('[Favorites] Fetching favorites for user:', user.id)
+
+      // Bước 1: Lấy danh sách recipe_id từ user_favorites
+      const { data: favoriteRecords, error: favError } = await supabase
         .from('user_favorites')
-        .select(`
-          recipe_id,
-          created_at,
-          recipes (*)
-        `)
+        .select('recipe_id, created_at')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
 
-      if (error) throw error
+      if (favError) {
+        console.error('[Favorites] Error fetching favorites:', favError)
+        throw favError
+      }
 
+      console.log('[Favorites] Found favorite records:', favoriteRecords?.length || 0)
+
+      if (!favoriteRecords || favoriteRecords.length === 0) {
+        return { success: true, data: [] }
+      }
+
+      // Bước 2: Lấy chi tiết recipes từ bảng recipes
+      const recipeIds = favoriteRecords.map(f => f.recipe_id)
+      console.log('[Favorites] Fetching recipes:', recipeIds)
+
+      const { data: recipes, error: recipeError } = await supabase
+        .from('recipes')
+        .select('*')
+        .in('id', recipeIds)
+
+      if (recipeError) {
+        console.error('[Favorites] Error fetching recipes:', recipeError)
+        throw recipeError
+      }
+
+      console.log('[Favorites] Found recipes:', recipes?.length || 0)
+
+      // Lọc null và sort theo thứ tự created_at
+      const validRecipes = (recipes || []).filter(r => r !== null)
+      
       return {
         success: true,
-        data: data.map(item => item.recipes),
+        data: validRecipes,
       }
     } catch (error) {
-      console.error('Get favorites error:', error)
+      console.error('[Favorites] Get favorites error:', error)
       return {
         success: false,
-        error: error.message,
+        error: error.message || 'Không thể tải danh sách yêu thích',
       }
     }
   },
