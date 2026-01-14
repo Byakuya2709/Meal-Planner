@@ -43,8 +43,8 @@
         style="animation-delay: 0s;"
       >
         <div class="text-center space-y-1">
-          <p class="text-2xl lg:text-4xl font-bold text-white">xxK+</p>
-          <p class="text-xs lg:text-sm text-secondary-100">Bữa ăn</p>
+          <p class="text-2xl lg:text-4xl font-bold text-white">3-5</p>
+          <p class="text-xs lg:text-sm text-secondary-100">Nguyên liệu</p>
         </div>
       </div>
 
@@ -55,8 +55,8 @@
         style="animation-delay: 1s;"
       >
         <div class="text-center space-y-1">
-          <p class="text-2xl lg:text-4xl font-bold text-white">xx</p>
-          <p class="text-xs lg:text-sm text-secondary-100">Tấn Tiến kiệm</p>
+          <p class="text-2xl lg:text-4xl font-bold text-white">100+</p>
+          <p class="text-xs lg:text-sm text-secondary-100">Công thức</p>
         </div>
       </div>
 

@@ -96,11 +96,18 @@ export const useLikesStore = defineStore('likes', () => {
     }
   }
 
+  
   function $reset() {
     likedRecipeIds.value.clear()
     loading.value = false
     loaded.value = false
     console.log('[LikesStore] Reset complete')
+    
+    // Force xóa localStorage ngay sau đó
+    queueMicrotask(() => {
+      localStorage.removeItem('likes-storage')
+      console.log('[LikesStore] Removed localStorage')
+    })
   }
 
   return {

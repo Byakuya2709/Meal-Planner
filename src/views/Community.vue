@@ -1,7 +1,7 @@
 <!-- Community.vue - UPDATED WITH LIKES TRACKING -->
 <template>
   <MainLayout>
-    <div class="community-page bg-neutral-50 min-h-screen mt-16">
+    <div class="community-page bg-neutral-50 min-h-screen">
       <!-- Hero Section giữ nguyên -->
       <section class="bg-gradient-to-br from-primary-50 via-white to-secondary-50 py-16 md:py-20 border-b border-neutral-200">
         <div class="container mx-auto px-4">

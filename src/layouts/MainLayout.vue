@@ -4,7 +4,7 @@
     <!-- Modern Navbar - Sticky with gradient transition -->
     <header ref="navbarEl" class="fixed top-0 left-0 right-0 z-50">
       <div
-        :class="['transition-all duration-500', isScrolled ? 'py-0' : 'py-0']"
+        :class="['transition-all duration-500', isScrolled ? 'mt-2' : 'mt-0']"
       >
         <div
           :class="[
@@ -112,7 +112,11 @@
               <!-- User Menu / Login Button - THAY CHO CTA -->
               <div class="hidden md:block">
                 <!-- Logged In - User Menu -->
-                <div v-if="authStore.isAuthenticated" class="relative" ref="userMenuRef">
+                <div
+                  v-if="authStore.isAuthenticated"
+                  class="relative"
+                  ref="userMenuRef"
+                >
                   <button
                     @click="isUserMenuOpen = !isUserMenuOpen"
                     :class="[
@@ -215,7 +219,6 @@
                   @click="showAuthModal = true"
                   :class="[
                     ' bg-gradient-to-r from-accent-500 to-accent-600 text-white group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden',
-
                   ]"
                 >
                   <span class="relative z-10 flex items-center gap-2">
@@ -325,7 +328,9 @@
                   @click="toggleMobileMenu"
                   class="flex items-center gap-3 px-6 py-3 hover:bg-neutral-50 active:bg-primary-50 transition-colors"
                 >
-                  <div class="w-10 h-10 rounded-lg bg-error-50 flex items-center justify-center flex-shrink-0">
+                  <div
+                    class="w-10 h-10 rounded-lg bg-error-50 flex items-center justify-center flex-shrink-0"
+                  >
                     <Heart :size="18" class="text-error" />
                   </div>
                   <div class="flex-1">
@@ -344,12 +349,18 @@
                   @click="toggleMobileMenu"
                   class="flex items-center gap-3 px-6 py-3 hover:bg-neutral-50 active:bg-primary-50 transition-colors"
                 >
-                  <div class="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center flex-shrink-0">
+                  <div
+                    class="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center flex-shrink-0"
+                  >
                     <ChefHat :size="18" class="text-primary-600" />
                   </div>
                   <div class="flex-1">
-                    <p class="text-neutral-900 font-medium">Công thức của tôi</p>
-                    <p class="text-xs text-neutral-600">Quản lý công thức riêng</p>
+                    <p class="text-neutral-900 font-medium">
+                      Công thức của tôi
+                    </p>
+                    <p class="text-xs text-neutral-600">
+                      Quản lý công thức riêng
+                    </p>
                   </div>
                 </router-link>
               </div>
@@ -405,8 +416,8 @@
                 <h3 class="font-bold text-lg">Meal Planner</h3>
               </div>
               <p class="text-neutral-400 text-sm leading-relaxed mb-4">
-                Giảm lãng phí thực phẩm, nấu món ngon mỗi ngày với nguyên liệu có sẵn
-                trong tủ lạnh.
+                Giảm lãng phí thực phẩm, nấu món ngon mỗi ngày với nguyên liệu
+                có sẵn trong tủ lạnh.
               </p>
             </div>
 
@@ -442,9 +453,9 @@
             <div>
               <h4 class="font-bold mb-4">Liên hệ</h4>
               <ul class="space-y-2 text-sm text-neutral-400">
-                <li>Email: hello@mealplanner.com</li>
-                <li>Hotline: 1900 1234</li>
-                <li>Địa chỉ: Hà Nội, Việt Nam</li>
+                <li>Email: khanhnguyen147348@gmail.com</li>
+                <li>Hotline: 0707 479 452</li>
+                <li>Địa chỉ: Cần Thơ, Việt Nam</li>
               </ul>
             </div>
 
@@ -453,12 +464,38 @@
               <h4 class="font-bold mb-4">Theo dõi</h4>
               <div class="flex gap-3">
                 <a
-                  href="#"
+                  href="https://www.facebook.com/khanh.nguyenminh.79827/"
                   class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-primary-500 transition-colors"
                 >
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path
                       d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                    />
+                  </svg>
+                </a>
+
+                <a
+                  href="https://github.com/Byakuya2709/"
+                  class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-primary-500 transition-colors"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M12 0.297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
+    0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757
+    -1.09-.745.084-.729.084-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305
+    3.495.998.108-.776.418-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93
+    0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176
+    0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405
+    1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23
+    .645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
+    0 4.61-2.805 5.625-5.475 5.92.435.375.81 1.102.81 2.222
+    0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57
+    C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12z"
                     />
                   </svg>
                 </a>
@@ -481,8 +518,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, onMounted, onUnmounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import {
   ChefHat,
   Menu,
@@ -494,88 +531,88 @@ import {
   LogOut,
   Heart,
   ChevronDown,
-} from 'lucide-vue-next'
-import AuthModal from '../components/auth/AuthModal.vue'
-import { useAuthStore } from '../stores/authStore'
-import { useFavoritesStore } from '../stores/favoritesStore'
+} from "lucide-vue-next";
+import AuthModal from "../components/auth/AuthModal.vue";
+import { useAuthStore } from "../stores/authStore";
+import { useFavoritesStore } from "../stores/favoritesStore";
 
-const route = useRoute()
-const router = useRouter()
-const authStore = useAuthStore()
-const favoritesStore = useFavoritesStore()
+const route = useRoute();
+const router = useRouter();
+const authStore = useAuthStore();
+const favoritesStore = useFavoritesStore();
 
-const navbarEl = ref(null)
-const userMenuRef = ref(null)
-const isScrolled = ref(false)
-const isMobileMenuOpen = ref(false)
-const isUserMenuOpen = ref(false)
-const showAuthModal = ref(false)
+const navbarEl = ref(null);
+const userMenuRef = ref(null);
+const isScrolled = ref(false);
+const isMobileMenuOpen = ref(false);
+const isUserMenuOpen = ref(false);
+const showAuthModal = ref(false);
 
 const navItems = [
-  { path: '/', label: 'Trang chủ', icon: Home },
-  { path: '/community', label: 'Cộng đồng', icon: Users },
-  { path: '/impact', label: 'Tác động', icon: TrendingUp },
-]
+  { path: "/", label: "Trang chủ", icon: Home },
+  { path: "/community", label: "Cộng đồng", icon: Users },
+  { path: "/impact", label: "Tác động", icon: TrendingUp },
+];
 
 // Scroll handler
 const handleScroll = () => {
-  isScrolled.value = window.scrollY > 50
-}
+  isScrolled.value = window.scrollY > 50;
+};
 
 // Toggle mobile menu
 const toggleMobileMenu = () => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value
-}
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+};
 
 // Show auth modal on mobile
 const showAuthModalMobile = () => {
-  toggleMobileMenu()
-  showAuthModal.value = true
-}
+  toggleMobileMenu();
+  showAuthModal.value = true;
+};
 
 // Handle sign out
 const handleSignOut = async () => {
-  isUserMenuOpen.value = false
-  isMobileMenuOpen.value = false
-  await authStore.signOut()
-  router.push('/')
-}
+  isUserMenuOpen.value = false;
+  isMobileMenuOpen.value = false;
+  await authStore.signOut();
+  router.push("/");
+};
 
 // Handle auth success
 const handleAuthSuccess = async () => {
-  await favoritesStore.loadFavorites()
-}
+  await favoritesStore.loadFavorites();
+};
 
 // Click outside to close user menu (CHỈ DESKTOP)
 const handleClickOutside = (event) => {
   // Bỏ qua nếu là mobile menu
-  if (isMobileMenuOpen.value) return
-  
+  if (isMobileMenuOpen.value) return;
+
   // Chỉ xử lý desktop user menu
   if (userMenuRef.value && !userMenuRef.value.contains(event.target)) {
-    isUserMenuOpen.value = false
+    isUserMenuOpen.value = false;
   }
-}
+};
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
+  window.addEventListener("scroll", handleScroll);
   // Sử dụng mousedown thay vì click để tốt hơn trên cả desktop và mobile
-  document.addEventListener('mousedown', handleClickOutside)
+  document.addEventListener("mousedown", handleClickOutside);
   // Thêm touchstart cho mobile
-  document.addEventListener('touchstart', handleClickOutside)
-  handleScroll()
+  document.addEventListener("touchstart", handleClickOutside);
+  handleScroll();
 
   // Load favorites nếu đã đăng nhập
   if (authStore.isAuthenticated) {
-    favoritesStore.loadFavorites()
+    favoritesStore.loadFavorites();
   }
-})
+});
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-  document.removeEventListener('mousedown', handleClickOutside)
-  document.removeEventListener('touchstart', handleClickOutside)
-})
+  window.removeEventListener("scroll", handleScroll);
+  document.removeEventListener("mousedown", handleClickOutside);
+  document.removeEventListener("touchstart", handleClickOutside);
+});
 </script>
 
 <style scoped>

@@ -10,6 +10,36 @@ import './styles/toast.css'
 import './style.css'
 import App from './App.vue'
 import router from './router'
+import { supabase } from './services/supabaseClient'
+
+// BƯỚC 1: Kiểm tra session TRƯỚC KHI khởi tạo Pinia
+// Để tránh Pinia persist restore data cũ khi không có session hợp lệ
+const checkAndCleanStorage = async () => {
+  if (!supabase) return
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession()
+    
+    if (!session) {
+      // Không có session hợp lệ → xóa tất cả data cũ
+      console.log('[Main] No valid session - cleaning up storage')
+      localStorage.removeItem('auth-storage')
+      localStorage.removeItem('favorites-storage')
+      localStorage.removeItem('likes-storage')
+    } else {
+      console.log('[Main] Valid session found:', session.user.email)
+    }
+  } catch (error) {
+    console.error('[Main] Session check error:', error)
+    // Nếu có lỗi, xóa hết để an toàn
+    localStorage.removeItem('auth-storage')
+    localStorage.removeItem('favorites-storage')
+    localStorage.removeItem('likes-storage')
+  }
+}
+
+// Chạy cleanup ĐỒNG BỘ trước khi khởi tạo app
+await checkAndCleanStorage()
 
 const app = createApp(App)
 

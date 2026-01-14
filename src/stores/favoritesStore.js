@@ -135,12 +135,20 @@ export const useFavoritesStore = defineStore('favorites', () => {
     error.value = null
   }
 
+    // src/stores/favoritesStore.js - XÓA localStorage TRONG $reset()
+  
   function $reset() {
     favorites.value = []
     loading.value = false
     error.value = null
     loaded.value = false
     console.log('[FavStore] Reset complete')
+    
+    // Force xóa localStorage ngay sau đó
+    queueMicrotask(() => {
+      localStorage.removeItem('favorites-storage')
+      console.log('[FavStore] Removed localStorage')
+    })
   }
 
   return {
