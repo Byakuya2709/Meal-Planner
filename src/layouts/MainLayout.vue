@@ -401,7 +401,9 @@
     </main>
 
     <!-- Footer giữ nguyên -->
-    <footer class="bg-neutral-900 text-white py-16">
+    <footer
+      class="bg-gradient-to-br to-primary-500 via-primary-800 from-accent-200 text-white py-16 relative"
+    >
       <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
@@ -415,7 +417,7 @@
                 </div>
                 <h3 class="font-bold text-lg">Meal Planner</h3>
               </div>
-              <p class="text-neutral-400 text-sm leading-relaxed mb-4">
+              <p class="text-neutral-200 text-sm leading-relaxed mb-4">
                 Giảm lãng phí thực phẩm, nấu món ngon mỗi ngày với nguyên liệu
                 có sẵn trong tủ lạnh.
               </p>
@@ -428,21 +430,21 @@
                 <li>
                   <router-link
                     to="/"
-                    class="text-neutral-400 hover:text-white transition-colors text-sm"
+                    class="text-neutral-200 hover:text-white transition-colors text-sm"
                     >Trang chủ</router-link
                   >
                 </li>
                 <li>
                   <router-link
                     to="/community"
-                    class="text-neutral-400 hover:text-white transition-colors text-sm"
+                    class="text-neutral-200 hover:text-white transition-colors text-sm"
                     >Cộng đồng</router-link
                   >
                 </li>
                 <li>
                   <router-link
                     to="/impact"
-                    class="text-neutral-400 hover:text-white transition-colors text-sm"
+                    class="text-neutral-200 hover:text-white transition-colors text-sm"
                     >Tác động</router-link
                   >
                 </li>
@@ -452,7 +454,7 @@
             <!-- Column 3 - Contact -->
             <div>
               <h4 class="font-bold mb-4">Liên hệ</h4>
-              <ul class="space-y-2 text-sm text-neutral-400">
+              <ul class="space-y-2 text-sm text-neutral-200">
                 <li>Email: khanhnguyen147348@gmail.com</li>
                 <li>Hotline: 0707 479 452</li>
                 <li>Địa chỉ: Cần Thơ, Việt Nam</li>
@@ -504,7 +506,7 @@
           </div>
 
           <div class="border-t border-neutral-800 pt-8 text-center">
-            <p class="text-neutral-400 text-sm">
+            <p class="text-neutral-100 text-sm">
               © 2026 Meal Planner. All rights reserved.
             </p>
           </div>

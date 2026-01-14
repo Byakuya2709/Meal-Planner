@@ -53,6 +53,88 @@ const mockService = {
     return { success: true, data: bestMatch };
   },
 
+  // Tìm nhiều món ăn dựa trên nguyên liệu với thuật toán chấm điểm
+  async findRecipesByIngredients(selectedIngredientIds) {
+    await delay(1000); // Tạo thời gian cho hiệu ứng loading
+
+    // Thuật toán chấm điểm
+    const scoredRecipes = mockRecipes.map((recipe) => {
+      const requiredIngredients = recipe.requiredIngredients || [];
+
+      // Đếm số nguyên liệu khớp
+      const matchedCount = requiredIngredients.filter((id) =>
+        selectedIngredientIds.includes(id)
+      ).length;
+
+      // Đếm tổng số nguyên liệu cần thiết của món
+      const totalRequired = requiredIngredients.length;
+
+      // Tính điểm phù hợp (0-100)
+      let matchScore = 0;
+
+      if (matchedCount === 0) {
+        // Không khớp nguyên liệu nào -> loại bỏ
+        matchScore = 0;
+      } else {
+        // Điểm cơ bản: tỷ lệ nguyên liệu khớp
+        const baseScore = (matchedCount / totalRequired) * 100;
+
+        // Bonus: ưu tiên món dùng nhiều nguyên liệu đã chọn
+        const usageBonus = (matchedCount / selectedIngredientIds.length) * 20;
+
+        // Bonus: ưu tiên món có ít nguyên liệu cần thêm
+        const missingIngredients = totalRequired - matchedCount;
+        const simplicityBonus = Math.max(0, (3 - missingIngredients) * 10);
+
+        matchScore = Math.min(100, baseScore + usageBonus + simplicityBonus);
+      }
+
+      return {
+        ...recipe,
+        matchScore: Math.round(matchScore),
+        matchedCount,
+        totalRequired,
+        matchedIngredients: requiredIngredients
+          .filter((id) => selectedIngredientIds.includes(id))
+          .map((id) => mockIngredients.find((ing) => ing.id === id))
+          .filter(Boolean),
+      };
+    });
+
+    // Lọc và sắp xếp
+    const validRecipes = scoredRecipes
+      .filter((recipe) => recipe.matchScore > 0) // Chỉ lấy món có ít nhất 1 nguyên liệu khớp
+      .sort((a, b) => {
+        // Ưu tiên theo điểm
+        if (b.matchScore !== a.matchScore) {
+          return b.matchScore - a.matchScore;
+        }
+        // Nếu bằng điểm, ưu tiên món dùng nhiều nguyên liệu đã chọn hơn
+        if (b.matchedCount !== a.matchedCount) {
+          return b.matchedCount - a.matchedCount;
+        }
+        // Cuối cùng ưu tiên món có ít nguyên liệu cần thiết hơn
+        return a.totalRequired - b.totalRequired;
+      });
+
+    // Lấy tối đa 3 món phù hợp nhất
+    const topRecipes = validRecipes.slice(0, 3);
+
+    // Đảm bảo luôn có ít nhất 1 món
+    if (topRecipes.length === 0 && mockRecipes.length > 0) {
+      const fallback = {
+        ...mockRecipes[0],
+        matchScore: 30,
+        matchedCount: 0,
+        totalRequired: mockRecipes[0].requiredIngredients?.length || 0,
+        matchedIngredients: [],
+      };
+      topRecipes.push(fallback);
+    }
+
+    return { success: true, data: topRecipes };
+  },
+
   async getRecipeById(id) {
     await delay(400);
     // Tìm trong cả recipes và communityRecipes

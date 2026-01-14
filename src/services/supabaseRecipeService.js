@@ -15,6 +15,81 @@ const normalizeText = (text) => {
 }
 
 /**
+ * Parse ingredients_list_fixed để lấy danh sách ingredient IDs
+ */
+const parseIngredientsListFixed = (ingredientsListFixed) => {
+  if (!ingredientsListFixed || !Array.isArray(ingredientsListFixed)) {
+    return []
+  }
+  
+  return ingredientsListFixed.map(str => {
+    // Format: "ingredient_id quantity" (ví dụ: "pepper 2", "shrimp 300g")
+    return str.trim().split(/\s+/)[0].toLowerCase()
+  }).filter(Boolean)
+}
+
+/**
+ * Enrich recipe với thông tin nguyên liệu chính và phụ
+ */
+const enrichRecipeWithIngredientTypes = async (recipe) => {
+  try {
+    // Parse tất cả ingredients từ ingredients_list_fixed
+    const allIngredientIds = parseIngredientsListFixed(recipe.ingredients_list_fixed)
+    
+    if (allIngredientIds.length === 0) {
+      return recipe
+    }
+    
+    // Lấy thông tin chi tiết của tất cả ingredients
+    const { data: ingredientsData, error } = await supabase
+      .from('ingredients')
+      .select('*')
+      .in('id', allIngredientIds)
+    
+    if (error) throw error
+    
+    // Tạo map để dễ lookup
+    const ingredientsMap = {}
+    ingredientsData.forEach(ing => {
+      ingredientsMap[ing.id] = ing
+    })
+    
+    // Lấy danh sách required ingredients từ recipe_ingredients
+    const { data: recipeIngredientsData, error: riError } = await supabase
+      .from('recipe_ingredients')
+      .select('ingredient_id')
+      .eq('recipe_id', recipe.id)
+    
+    const requiredIds = riError ? [] : (recipeIngredientsData || []).map(ri => ri.ingredient_id)
+    
+    // Phân loại nguyên liệu
+    const mainIngredients = []      // Nguyên liệu chính (required)
+    const secondaryIngredients = [] // Nguyên liệu phụ (gia vị, optional)
+    
+    allIngredientIds.forEach(id => {
+      const ingredient = ingredientsMap[id]
+      if (!ingredient) return
+      
+      if (requiredIds.includes(id)) {
+        mainIngredients.push(ingredient)
+      } else {
+        secondaryIngredients.push(ingredient)
+      }
+    })
+    
+    return {
+      ...recipe,
+      mainIngredients,      // Nguyên liệu chính
+      secondaryIngredients, // Nguyên liệu phụ (gia vị)
+      allIngredientIds      // Tất cả ingredient IDs để fallback search
+    }
+  } catch (error) {
+    log('Error enriching recipe:', error)
+    return recipe
+  }
+}
+
+/**
  * Cache đơn giản cho ingredients (tránh query lặp lại)
  */
 let ingredientsCache = null
@@ -42,8 +117,6 @@ const handleError = (context, error) => {
 }
 
 export const supabaseRecipeService = {
-
-
   async getIngredients() {
     try {
       // Kiểm tra cache
@@ -165,6 +238,209 @@ export const supabaseRecipeService = {
   },
 
   /**
+   * Tìm nhiều recipes phù hợp với ingredients đã chọn (CẢI TIẾN với fallback)
+   * Tìm trong recipe_ingredients (requiredIngredients) trước
+   * Nếu không tìm thấy thì fallback sang ingredients_list_fixed
+   */
+  async findRecipesByIngredients(selectedIngredientIds) {
+    try {
+      log('Finding multiple recipes for ingredients:', selectedIngredientIds)
+      
+      // 1. Lấy thông tin đầy đủ của các ingredients đã chọn
+      const { data: selectedIngredients, error: ingredientsError } = await supabase
+        .from('ingredients')
+        .select('*')
+        .in('id', selectedIngredientIds)
+      
+      if (ingredientsError) throw ingredientsError
+      
+      log('Selected ingredients:', selectedIngredients.map(i => ({ id: i.id, name: i.name })))
+      
+      // 2. BƯỚC 1: Tìm trong recipe_ingredients (requiredIngredients)
+      const { data: allRecipeIngredients, error: riError } = await supabase
+        .from('recipe_ingredients')
+        .select('recipe_id, ingredient_id')
+      
+      if (riError) throw riError
+      
+      log(`Total recipe_ingredients entries: ${allRecipeIngredients.length}`)
+      
+      // 3. Nhóm theo recipe_id và tính điểm
+      const recipeMatchMap = {}
+      
+      allRecipeIngredients.forEach(ri => {
+        if (!recipeMatchMap[ri.recipe_id]) {
+          recipeMatchMap[ri.recipe_id] = {
+            allIngredients: [],
+            matchedIngredients: []
+          }
+        }
+        
+        recipeMatchMap[ri.recipe_id].allIngredients.push(ri.ingredient_id)
+        
+        if (selectedIngredientIds.includes(ri.ingredient_id)) {
+          recipeMatchMap[ri.recipe_id].matchedIngredients.push(ri.ingredient_id)
+        }
+      })
+      
+      // 4. Lọc recipes có ít nhất 1 ingredient khớp
+      let matchedRecipeIds = Object.keys(recipeMatchMap).filter(
+        recipeId => recipeMatchMap[recipeId].matchedIngredients.length > 0
+      )
+      
+      log(`Found ${matchedRecipeIds.length} recipes matching in recipe_ingredients (required only)`)
+      
+      // 5. BƯỚC 2: FALLBACK - Nếu không tìm thấy trong requiredIngredients
+      //    Tìm trong ingredients_list_fixed (bao gồm cả gia vị phụ)
+      if (matchedRecipeIds.length === 0) {
+        log('⚠️  No matches in recipe_ingredients (required), fallback to ingredients_list_fixed...')
+        
+        const { data: allRecipes, error: allRecipesError } = await supabase
+          .from('recipes')
+          .select('id, ingredients_list_fixed')
+          .eq('is_community', false)
+        
+        if (allRecipesError) throw allRecipesError
+        
+        log(`Checking ${allRecipes.length} recipes in fallback...`)
+        
+        // Tìm trong ingredients_list_fixed
+        allRecipes.forEach(recipe => {
+          const allIngredientIds = parseIngredientsListFixed(recipe.ingredients_list_fixed)
+          const matchedIds = allIngredientIds.filter(id => selectedIngredientIds.includes(id))
+          
+          if (matchedIds.length > 0) {
+            recipeMatchMap[recipe.id] = {
+              allIngredients: allIngredientIds,
+              matchedIngredients: matchedIds,
+              isFromFallback: true // Đánh dấu là từ fallback
+            }
+            matchedRecipeIds.push(recipe.id)
+          }
+        })
+        
+        log(`✅ Found ${matchedRecipeIds.length} recipes from ingredients_list_fixed fallback`)
+      }
+      
+      // 6. Nếu vẫn không có kết quả
+      if (matchedRecipeIds.length === 0) {
+        log('❌ No matches found anywhere, using random fallback')
+        const { data: fallbackRecipes, error: fallbackError } = await supabase
+          .from('recipes')
+          .select('*')
+          .eq('is_community', false)
+          .order('like_count', { ascending: false })
+          .limit(3)
+        
+        if (fallbackError) throw fallbackError
+        
+        return {
+          success: true,
+          data: await Promise.all((fallbackRecipes || []).map(async recipe => {
+            const enriched = await enrichRecipeWithIngredientTypes(recipe)
+            return {
+              ...enriched,
+              matchScore: 20,
+              matchedCount: 0,
+              totalRequired: 0,
+              matchedIngredients: []
+            }
+          }))
+        }
+      }
+      
+      // 7. Lấy thông tin chi tiết của các recipes match
+      const { data: recipes, error: recipesError } = await supabase
+        .from('recipes')
+        .select('*')
+        .in('id', matchedRecipeIds)
+        .eq('is_community', false)
+      
+      if (recipesError) throw recipesError
+      
+      log(`Retrieved ${recipes.length} full recipe details`)
+      
+      // 8. Enrich recipes với thông tin match và tính điểm
+      const enrichedRecipes = await Promise.all(recipes.map(async recipe => {
+        const matchData = recipeMatchMap[recipe.id]
+        const matchedIngredientIds = matchData.matchedIngredients
+        const totalRecipeIngredients = matchData.allIngredients.length
+        const matchedCount = matchedIngredientIds.length
+        const totalSelected = selectedIngredientIds.length
+        
+        // Lấy thông tin chi tiết các ingredients đã khớp
+        const matchedIngredientsList = matchedIngredientIds
+          .map(id => selectedIngredients.find(ing => ing.id === id))
+          .filter(Boolean)
+        
+        // Tính điểm match
+        const matchRatio = matchedCount / totalSelected
+        const coverageRatio = matchedCount / totalRecipeIngredients
+        const simplicityScore = Math.max(0, (6 - totalRecipeIngredients) / 6)
+        
+        // Nếu là từ fallback, giảm điểm một chút
+        const fallbackPenalty = matchData.isFromFallback ? 0.8 : 1.0
+        
+        const matchScore = Math.round(
+          ((matchRatio * 60) + 
+          (coverageRatio * 25) + 
+          (simplicityScore * 15)) * fallbackPenalty
+        )
+        
+        // Enrich với thông tin nguyên liệu chính/phụ
+        const enriched = await enrichRecipeWithIngredientTypes(recipe)
+        
+        return {
+          ...enriched,
+          matchScore,
+          matchedCount,
+          totalRequired: totalRecipeIngredients,
+          matchedIngredients: matchedIngredientsList,
+          matchSource: matchData.isFromFallback ? 'fallback' : 'primary' // Debug info
+        }
+      }))
+      
+      // 9. Sắp xếp theo độ ưu tiên
+      enrichedRecipes.sort((a, b) => {
+        // Ưu tiên món match từ requiredIngredients
+        if (a.matchSource !== b.matchSource) {
+          return a.matchSource === 'primary' ? -1 : 1
+        }
+        // Số nguyên liệu khớp
+        if (b.matchedCount !== a.matchedCount) {
+          return b.matchedCount - a.matchedCount
+        }
+        // Điểm match
+        if (b.matchScore !== a.matchScore) {
+          return b.matchScore - a.matchScore
+        }
+        // Món đơn giản hơn
+        return a.totalRequired - b.totalRequired
+      })
+      
+      // 10. Lấy top 3
+      const topRecipes = enrichedRecipes.slice(0, 3)
+      
+      log('✅ Final top 3:', topRecipes.map(r => ({
+        title: r.title,
+        matchedCount: r.matchedCount,
+        matchScore: r.matchScore,
+        matchSource: r.matchSource,
+        mainIngredients: r.mainIngredients?.map(i => i.name) || [],
+        secondaryIngredients: r.secondaryIngredients?.map(i => i.name) || []
+      })))
+      
+      return {
+        success: true,
+        data: topRecipes
+      }
+      
+    } catch (error) {
+      return handleError('findRecipesByIngredients', error)
+    }
+  },
+
+  /**
    * Lấy recipe theo ID
    */
   async getRecipeById(id) {
@@ -178,7 +454,10 @@ export const supabaseRecipeService = {
       
       if (error) throw error
       
-      return { success: true, data }
+      // Enrich với thông tin nguyên liệu chính/phụ
+      const enriched = await enrichRecipeWithIngredientTypes(data)
+      
+      return { success: true, data: enriched }
     } catch (error) {
       return handleError('getRecipeById', error)
     }
@@ -187,7 +466,7 @@ export const supabaseRecipeService = {
   /**
    * Lấy community recipes
    */
-  async getCommunityRecipes(limit = 10, filterIngredients = []) {
+  async getCommunityRecipes(limit = 6, filterIngredients = []) {
     try {
       log('Fetching community recipes', { limit, filterIngredients })
       
@@ -242,11 +521,6 @@ export const supabaseRecipeService = {
     }
   },
 
-  /**
-   * Vote cho recipe (optimistic update)
-   */
-  // src/services/supabaseRecipeService.js (CẬP NHẬT vote methods)
-  
   /**
    * Vote cho recipe (chỉ dành cho authenticated users)
    */
@@ -469,9 +743,7 @@ export const supabaseRecipeService = {
     }
   },
 
-
-
-    /**
+  /**
    * Lấy danh sách recipe_id mà user đã like
    */
   async getUserLikedRecipes() {

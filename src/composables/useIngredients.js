@@ -30,14 +30,15 @@ export function useIngredients() {
   }
 
   // Toggle ingredient selection
+  
   const toggleIngredient = (ingredient) => {
     const index = selectedIngredients.value.findIndex(i => i.id === ingredient.id)
     
     if (index > -1) {
       selectedIngredients.value.splice(index, 1)
     } else {
-      // Giới hạn tối đa 5 nguyên liệu
-      if (selectedIngredients.value.length < 5) {
+      // Giới hạn tối đa 3 nguyên liệu (đổi từ 5)
+      if (selectedIngredients.value.length < 3) {
         selectedIngredients.value.push(ingredient)
       }
     }
@@ -146,9 +147,11 @@ export function useIngredients() {
   }
 
   // Computed
+  // Cập nhật trong src/composables/useIngredients.js
+  
   const selectedCount = computed(() => selectedIngredients.value.length)
-  const canSelectMore = computed(() => selectedCount.value < 5)
-  const canSubmit = computed(() => selectedCount.value >= 3 && selectedCount.value <= 5)
+  const canSelectMore = computed(() => selectedCount.value < 3) // Đổi từ 5 -> 3
+  const canSubmit = computed(() => selectedCount.value >= 1 && selectedCount.value <= 3) // Đổi từ 3-5 -> 1-3
 
   return {
     ingredients,

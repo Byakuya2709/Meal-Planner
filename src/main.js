@@ -38,37 +38,40 @@ const checkAndCleanStorage = async () => {
   }
 }
 
-// Chạy cleanup ĐỒNG BỘ trước khi khởi tạo app
-await checkAndCleanStorage()
+// Bọc logic khởi tạo trong async IIFE
+;(async () => {
+  // Chạy cleanup trước khi khởi tạo app
+  await checkAndCleanStorage()
 
-const app = createApp(App)
+  const app = createApp(App)
 
-// Pinia setup
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
+  // Pinia setup
+  const pinia = createPinia()
+  pinia.use(piniaPluginPersistedstate)
 
-// Toast setup với custom options
-const toastOptions = {
-  position: 'top-right',
-  timeout: 3000,
-  closeOnClick: true,
-  pauseOnFocusLoss: true,
-  pauseOnHover: true,
-  draggable: true,
-  draggablePercent: 0.6,
-  showCloseButtonOnHover: false,
-  hideProgressBar: false,
-  closeButton: 'button',
-  icon: true,
-  rtl: false,
-  transition: 'Vue-Toastification__bounce',
-  maxToasts: 3,
-  newestOnTop: true
-}
+  // Toast setup với custom options
+  const toastOptions = {
+    position: 'top-right',
+    timeout: 3000,
+    closeOnClick: true,
+    pauseOnFocusLoss: true,
+    pauseOnHover: true,
+    draggable: true,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: false,
+    hideProgressBar: false,
+    closeButton: 'button',
+    icon: true,
+    rtl: false,
+    transition: 'Vue-Toastification__bounce',
+    maxToasts: 3,
+    newestOnTop: true
+  }
 
-app.use(pinia)
-app.use(router)
-app.use(MotionPlugin)
-app.use(Toast, toastOptions)
+  app.use(pinia)
+  app.use(router)
+  app.use(MotionPlugin)
+  app.use(Toast, toastOptions)
 
-app.mount('#app')
+  app.mount('#app')
+})()

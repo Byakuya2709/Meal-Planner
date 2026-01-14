@@ -1,14 +1,14 @@
 <template>
   <section
     ref="heroRef"
-    class="relative min-h-screen overflow-hidden bg-gradient-to-br from-secondary-600 via-secondary-700 to-secondary-800 flex flex-col pt-5"
+    class="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-300 via-primary-700 to-accent-200  flex flex-col pt-5"
   >
     <!-- ===== ANIMATED BACKGROUND LAYERS - 60% Secondary ===== -->
     <div class="absolute inset-0">
       <!-- Gradient base - Màu phụ (Secondary) -->
-      <div
+      <!-- <div
         class="absolute inset-0 bg-gradient-to-br from-secondary-500/90 via-secondary-600 to-secondary-700/80"
-      ></div>
+      ></div> -->
 
       <!-- Animated mesh gradient -->
       <div ref="meshBg" class="absolute inset-0 opacity-40">

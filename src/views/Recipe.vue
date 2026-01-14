@@ -68,7 +68,9 @@
                   >
                     <Sparkles :size="16" class="text-primary-600" />
                     <span class="text-sm font-semibold text-primary-700">
-                      {{ recipe.is_community ? 'Từ cộng đồng' : 'Gợi ý hoàn hảo' }}
+                      {{
+                        recipe.is_community ? "Từ cộng đồng" : "Gợi ý hoàn hảo"
+                      }}
                     </span>
                   </div>
 
@@ -87,12 +89,19 @@
                   </p>
 
                   <!-- Author (nếu là community recipe) -->
-                  <div 
-                    v-if="recipe.is_community && (recipe.author_name || recipe.author)"
+                  <div
+                    v-if="
+                      recipe.is_community &&
+                      (recipe.author_name || recipe.author)
+                    "
                     class="flex items-center gap-3 mb-6 p-4 bg-white border border-primary-200 rounded-xl"
                   >
-                    <img 
-                      :src="recipe.author_avatar || recipe.author?.avatar || 'https://i.pravatar.cc/150'" 
+                    <img
+                      :src="
+                        recipe.author_avatar ||
+                        recipe.author?.avatar ||
+                        'https://i.pravatar.cc/150'
+                      "
                       :alt="recipe.author_name || recipe.author?.name"
                       class="w-12 h-12 rounded-full ring-2 ring-primary-200"
                     />
@@ -127,7 +136,9 @@
                     >
                       <div class="flex items-center gap-2 mb-1">
                         <Clock :size="16" class="text-primary-600" />
-                        <p class="text-xs font-semibold text-primary-700">Thời gian</p>
+                        <p class="text-xs font-semibold text-primary-700">
+                          Thời gian
+                        </p>
                       </div>
                       <p class="text-lg font-bold text-primary-900">
                         {{ recipe.time_minutes }} phút
@@ -139,7 +150,9 @@
                     >
                       <div class="flex items-center gap-2 mb-1">
                         <ChefHat :size="16" class="text-secondary-600" />
-                        <p class="text-xs font-semibold text-secondary-700">Độ khó</p>
+                        <p class="text-xs font-semibold text-secondary-700">
+                          Độ khó
+                        </p>
                       </div>
                       <p class="text-lg font-bold text-secondary-900">
                         {{ difficultyText }}
@@ -151,10 +164,14 @@
                     >
                       <div class="flex items-center gap-2 mb-1">
                         <Users :size="16" class="text-primary-600" />
-                        <p class="text-xs font-semibold text-primary-700">Khẩu phần</p>
+                        <p class="text-xs font-semibold text-primary-700">
+                          Khẩu phần
+                        </p>
                       </div>
                       <p class="text-base font-bold text-primary-900">
-                        {{ recipe.nutrition_facts?.serving_size || '2-3 người' }}
+                        {{
+                          recipe.nutrition_facts?.serving_size || "2-3 người"
+                        }}
                       </p>
                     </div>
 
@@ -163,10 +180,12 @@
                     >
                       <div class="flex items-center gap-2 mb-1">
                         <Flame :size="16" class="text-accent-600" />
-                        <p class="text-xs font-semibold text-accent-700">Calories</p>
+                        <p class="text-xs font-semibold text-accent-700">
+                          Calories
+                        </p>
                       </div>
                       <p class="text-lg font-bold text-accent-900">
-                        {{ recipe.nutrition_facts?.calories || 'N/A' }}
+                        {{ recipe.nutrition_facts?.calories || "N/A" }}
                       </p>
                     </div>
                   </div>
@@ -182,15 +201,23 @@
                       :class="[
                         favoritesStore.isFavorite(recipe.id)
                           ? 'bg-error text-white hover:bg-error-600 shadow-lg'
-                          : 'bg-error-50 text-error border-2 border-error-200 hover:bg-error-100'
+                          : 'bg-error-50 text-error border-2 border-error-200 hover:bg-error-100',
                       ]"
                     >
-                      <Heart 
-                        :size="20" 
-                        :fill="favoritesStore.isFavorite(recipe.id) ? 'currentColor' : 'none'"
+                      <Heart
+                        :size="20"
+                        :fill="
+                          favoritesStore.isFavorite(recipe.id)
+                            ? 'currentColor'
+                            : 'none'
+                        "
                       />
                       <span>
-                        {{ favoritesStore.isFavorite(recipe.id) ? 'Đã lưu' : 'Lưu công thức' }}
+                        {{
+                          favoritesStore.isFavorite(recipe.id)
+                            ? "Đã lưu"
+                            : "Lưu công thức"
+                        }}
                       </span>
                     </button>
 
@@ -203,12 +230,16 @@
                       :class="[
                         likesStore.isLiked(recipe.id)
                           ? 'bg-primary-600 text-white shadow-lg'
-                          : 'bg-primary-50 text-primary-600 border-2 border-primary-200 hover:bg-primary-100'
+                          : 'bg-primary-50 text-primary-600 border-2 border-primary-200 hover:bg-primary-100',
                       ]"
                     >
-                      <ThumbsUp 
-                        :size="20" 
-                        :fill="likesStore.isLiked(recipe.id) ? 'currentColor' : 'none'"
+                      <ThumbsUp
+                        :size="20"
+                        :fill="
+                          likesStore.isLiked(recipe.id)
+                            ? 'currentColor'
+                            : 'none'
+                        "
                       />
                       <span>{{ recipe.like_count || 0 }}</span>
                     </button>
@@ -223,11 +254,14 @@
                     </button>
 
                     <!-- Login prompt if not authenticated -->
-                    <p 
+                    <p
                       v-if="!authStore.isAuthenticated"
                       class="text-sm text-neutral-600 ml-2"
                     >
-                      <router-link to="/" class="text-primary-600 hover:underline font-semibold">
+                      <router-link
+                        to="/"
+                        class="text-primary-600 hover:underline font-semibold"
+                      >
                         Đăng nhập
                       </router-link>
                       để lưu và thích công thức
@@ -240,7 +274,9 @@
         </section>
 
         <!-- Main Content Section -->
-        <section class="relative bg-gradient-to-b from-secondary-50 via-secondary-100/50 to-white py-16 md:py-24">
+        <section
+          class="relative bg-gradient-to-b from-secondary-50 via-secondary-100/50 to-white py-16 md:py-24"
+        >
           <!-- Decorative elements -->
           <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div
@@ -266,13 +302,132 @@
                     <div>
                       <h2 class="heading-2 text-neutral-900">Nguyên liệu</h2>
                       <p class="text-neutral-600">
-                        {{ recipe.ingredients_list?.length || 0 }} nguyên liệu
+                        {{
+                          (recipe.mainIngredients?.length || 0) +
+                            (recipe.secondaryIngredients?.length || 0) ||
+                          recipe.ingredients_list?.length ||
+                          0
+                        }}
+                        nguyên liệu
                       </p>
                     </div>
                   </div>
 
-                  <!-- Ingredients List -->
+                  <!-- Nguyên liệu CHÍNH -->
                   <div
+                    v-if="
+                      recipe.mainIngredients &&
+                      recipe.mainIngredients.length > 0
+                    "
+                    class="bg-white border-2 border-primary-200 rounded-3xl p-6 md:p-8 space-y-4 shadow-sm"
+                  >
+                    <div
+                      class="flex items-center gap-2 mb-4 pb-3 border-b-2 border-primary-100"
+                    >
+                      <ChefHat :size="20" class="text-primary-600" />
+                      <h3 class="text-lg font-bold text-primary-900">
+                        Nguyên liệu chính
+                      </h3>
+                    </div>
+
+                    <div
+                      v-for="(ingredient, index) in recipe.mainIngredients"
+                      :key="`main-${index}`"
+                      class="flex items-center justify-between py-4 border-b border-neutral-200 last:border-0 group hover:bg-primary-50 px-4 rounded-xl transition-all duration-300"
+                    >
+                      <div class="flex items-center gap-4">
+                        <div
+                          class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform"
+                        >
+                          {{ ingredient.icon || "🥘" }}
+                        </div>
+                        <div>
+                          <span class="font-bold text-neutral-900 block">{{
+                            ingredient.name
+                          }}</span>
+                          <span
+                            class="text-xs text-primary-600 font-semibold"
+                            >{{ getCategoryName(ingredient.category) }}</span
+                          >
+                        </div>
+                      </div>
+                      <CheckCircle2
+                        :size="20"
+                        class="text-primary-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Nguyên liệu PHỤ (Gia vị & phụ liệu) -->
+                  <div
+                    v-if="
+                      recipe.secondaryIngredients &&
+                      recipe.secondaryIngredients.length > 0
+                    "
+                    class="bg-white border-2 border-secondary-200 rounded-3xl p-6 md:p-8 space-y-4 shadow-sm"
+                  >
+                    <div
+                      class="flex items-center gap-2 mb-4 pb-3 border-b-2 border-secondary-100"
+                    >
+                      <Sparkles :size="20" class="text-secondary-600" />
+                      <h3 class="text-lg font-bold text-secondary-900">
+                        Phụ liệu & Gia vị
+                      </h3>
+                    </div>
+
+                    <div class="flex flex-col lg:flex-row gap-6">
+                      <div class="flex-1">
+                        <div
+                          v-for="(
+                            ingredient, index
+                          ) in recipe.secondaryIngredients"
+                          :key="`secondary-${index}`"
+                          class="flex items-center justify-between py-3 border-b border-neutral-200 last:border-0 group hover:bg-secondary-50 px-4 rounded-xl transition-all duration-300"
+                        >
+                          <div class="flex items-center gap-4">
+                            <div
+                              class="w-10 h-10 bg-secondary-100 rounded-lg flex items-center justify-center text-xl group-hover:scale-110 transition-transform"
+                            >
+                              {{ ingredient.icon || "🧂" }}
+                            </div>
+                            <div>
+                              <span
+                                class="font-semibold text-neutral-800 block"
+                              >
+                                {{ ingredient.name }}
+                              </span>
+                              <span class="text-xs text-secondary-600">
+                                {{ getCategoryName(ingredient.category) }}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Seasoning -->
+                      <div class="flex-1 grid gap-3">
+                        <div
+                          v-for="(item, index) in recipe.seasoning"
+                          :key="index"
+                          class="flex items-center gap-3 py-3 px-4 bg-white/60 rounded-xl"
+                        >
+                          <div class="w-2 h-2 bg-accent-500 rounded-full"></div>
+                          <span class="text-neutral-800 font-medium">{{
+                            item
+                          }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Fallback: Nếu không có mainIngredients/secondaryIngredients thì dùng ingredients_list cũ -->
+                  <div
+                    v-if="
+                      (!recipe.mainIngredients ||
+                        recipe.mainIngredients.length === 0) &&
+                      (!recipe.secondaryIngredients ||
+                        recipe.secondaryIngredients.length === 0)
+                    "
                     class="bg-white border-2 border-primary-100 rounded-3xl p-6 md:p-8 space-y-4 shadow-sm"
                   >
                     <div
@@ -281,44 +436,24 @@
                       class="flex items-center justify-between py-4 border-b border-neutral-200 last:border-0 group hover:bg-primary-50 px-4 rounded-xl transition-all duration-300"
                     >
                       <div class="flex items-center gap-4">
-                        <!-- Icon nguyên liệu -->
                         <div
                           class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform"
                         >
                           {{ getIngredientIcon(ingredient) }}
                         </div>
                         <div>
-                          <span class="font-semibold text-neutral-900 block">
-                            {{ ingredient }}
-                          </span>
-                          <span class="text-xs text-neutral-500">
-                            {{ getIngredientCategory(ingredient) }}
-                          </span>
+                          <span class="font-semibold text-neutral-900 block">{{
+                            ingredient
+                          }}</span>
+                          <span class="text-xs text-neutral-500">{{
+                            getIngredientCategory(ingredient)
+                          }}</span>
                         </div>
                       </div>
-                      <CheckCircle2 :size="20" class="text-primary-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                  </div>
-
-                  <!-- Seasoning -->
-                  <div v-if="recipe.seasoning && recipe.seasoning.length > 0">
-                    <h3
-                      class="text-xl font-semibold text-neutral-900 mb-4 flex items-center gap-2"
-                    >
-                      <span class="text-accent-500">🧂</span>
-                      Gia vị
-                    </h3>
-                    <div
-                      class="bg-accent-50 border-2 border-accent-200 rounded-2xl p-6 space-y-3"
-                    >
-                      <div
-                        v-for="(item, index) in recipe.seasoning"
-                        :key="index"
-                        class="flex items-center gap-3"
-                      >
-                        <div class="w-2 h-2 bg-accent-500 rounded-full"></div>
-                        <span class="text-neutral-800">{{ item }}</span>
-                      </div>
+                      <CheckCircle2
+                        :size="20"
+                        class="text-primary-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                      />
                     </div>
                   </div>
                 </div>
@@ -333,7 +468,9 @@
                     </div>
                     <div>
                       <h2 class="heading-2 text-neutral-900">Cách làm</h2>
-                      <p class="text-neutral-600">{{ recipe.instructions?.length || 0 }} bước</p>
+                      <p class="text-neutral-600">
+                        {{ recipe.instructions?.length || 0 }} bước
+                      </p>
                     </div>
                   </div>
 
@@ -354,7 +491,9 @@
                       <div
                         class="flex-1 bg-white border-2 border-secondary-100 rounded-2xl p-6 group-hover:border-secondary-300 group-hover:shadow-lg transition-all duration-300"
                       >
-                        <p class="text-neutral-800 leading-relaxed">{{ step }}</p>
+                        <p class="text-neutral-800 leading-relaxed">
+                          {{ step }}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -374,7 +513,9 @@
                     >
                       <Flame :size="24" class="text-white" />
                     </div>
-                    <h3 class="text-2xl font-bold text-neutral-900">Dinh dưỡng</h3>
+                    <h3 class="text-2xl font-bold text-neutral-900">
+                      Dinh dưỡng
+                    </h3>
                   </div>
 
                   <div class="space-y-4">
@@ -385,38 +526,58 @@
                       <p class="text-5xl font-bold text-accent-500 mb-1">
                         {{ recipe.nutrition_facts.calories || 0 }}
                       </p>
-                      <p class="text-sm font-semibold text-neutral-600">Calories</p>
+                      <p class="text-sm font-semibold text-neutral-600">
+                        Calories
+                      </p>
                     </div>
 
                     <!-- Other nutrients -->
                     <div class="grid grid-cols-2 gap-4">
-                      <div class="bg-white border border-primary-200 rounded-xl p-4 text-center">
+                      <div
+                        class="bg-white border border-primary-200 rounded-xl p-4 text-center"
+                      >
                         <p class="text-2xl font-bold text-primary-600">
                           {{ recipe.nutrition_facts.protein_g || 0 }}g
                         </p>
-                        <p class="text-xs text-neutral-600 font-medium">Protein</p>
+                        <p class="text-xs text-neutral-600 font-medium">
+                          Protein
+                        </p>
                       </div>
-                      <div class="bg-white border border-primary-200 rounded-xl p-4 text-center">
+                      <div
+                        class="bg-white border border-primary-200 rounded-xl p-4 text-center"
+                      >
                         <p class="text-2xl font-bold text-primary-600">
                           {{ recipe.nutrition_facts.carbohydrates_g || 0 }}g
                         </p>
-                        <p class="text-xs text-neutral-600 font-medium">Carbs</p>
+                        <p class="text-xs text-neutral-600 font-medium">
+                          Carbs
+                        </p>
                       </div>
-                      <div class="bg-white border border-primary-200 rounded-xl p-4 text-center">
+                      <div
+                        class="bg-white border border-primary-200 rounded-xl p-4 text-center"
+                      >
                         <p class="text-2xl font-bold text-primary-600">
                           {{ recipe.nutrition_facts.fat_total_g || 0 }}g
                         </p>
-                        <p class="text-xs text-neutral-600 font-medium">Chất béo</p>
+                        <p class="text-xs text-neutral-600 font-medium">
+                          Chất béo
+                        </p>
                       </div>
-                      <div class="bg-white border border-primary-200 rounded-xl p-4 text-center">
+                      <div
+                        class="bg-white border border-primary-200 rounded-xl p-4 text-center"
+                      >
                         <p class="text-2xl font-bold text-primary-600">
                           {{ recipe.nutrition_facts.fiber_g || 0 }}g
                         </p>
-                        <p class="text-xs text-neutral-600 font-medium">Chất xơ</p>
+                        <p class="text-xs text-neutral-600 font-medium">
+                          Chất xơ
+                        </p>
                       </div>
                     </div>
 
-                    <div class="text-xs text-neutral-500 text-center pt-2 font-medium">
+                    <div
+                      class="text-xs text-neutral-500 text-center pt-2 font-medium"
+                    >
                       * Giá trị dinh dưỡng/khẩu phần
                     </div>
                   </div>
@@ -460,13 +621,17 @@
                       <p class="text-3xl font-bold text-error mb-1">
                         {{ recipe.like_count || 0 }}
                       </p>
-                      <p class="text-xs text-neutral-600 font-medium">Lượt thích</p>
+                      <p class="text-xs text-neutral-600 font-medium">
+                        Lượt thích
+                      </p>
                     </div>
                     <div class="bg-white rounded-xl p-4 text-center">
                       <p class="text-3xl font-bold text-primary-600 mb-1">
                         {{ formatDate(recipe.created_at) }}
                       </p>
-                      <p class="text-xs text-neutral-600 font-medium">Ngày đăng</p>
+                      <p class="text-xs text-neutral-600 font-medium">
+                        Ngày đăng
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -543,16 +708,16 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
-import MainLayout from '../layouts/MainLayout.vue'
-import LoadingSpinner from '../components/ui/LoadingSpinner.vue'
-import { useRecipe } from '../composables/useRecipe'
-import { useIngredients } from '../composables/useIngredients'
-import { useAuthStore } from '../stores/authStore'
-import { useFavoritesStore } from '../stores/favoritesStore'
-import { useLikesStore } from '../stores/likesStore'
+import { ref, computed, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
+import MainLayout from "../layouts/MainLayout.vue";
+import LoadingSpinner from "../components/ui/LoadingSpinner.vue";
+import { useRecipe } from "../composables/useRecipe";
+import { useIngredients } from "../composables/useIngredients";
+import { useAuthStore } from "../stores/authStore";
+import { useFavoritesStore } from "../stores/favoritesStore";
+import { useLikesStore } from "../stores/likesStore";
 import {
   Sparkles,
   Clock,
@@ -569,137 +734,144 @@ import {
   AlertCircle,
   ThumbsUp,
   TrendingUp,
-} from 'lucide-vue-next'
+} from "lucide-vue-next";
 
-const route = useRoute()
-const router = useRouter()
-const toast = useToast()
+const route = useRoute();
+const router = useRouter();
+const toast = useToast();
 
-const { recipe, loading, error, getRecipeById } = useRecipe()
-const { fetchIngredients, getIngredientByName } = useIngredients()
-const authStore = useAuthStore()
-const favoritesStore = useFavoritesStore()
-const likesStore = useLikesStore()
+const { recipe, loading, error, getRecipeById } = useRecipe();
+const { fetchIngredients, getIngredientByName } = useIngredients();
+const authStore = useAuthStore();
+const favoritesStore = useFavoritesStore();
+const likesStore = useLikesStore();
 
-const voting = ref(false)
+const voting = ref(false);
 
 // Computed properties
 const difficultyText = computed(() => {
-  if (!recipe.value) return 'Dễ'
-  const score = recipe.value.difficulty_score || 1
-  if (score === 1) return 'Dễ'
-  if (score === 2) return 'Trung bình'
-  return 'Khó'
-})
+  if (!recipe.value) return "Dễ";
+  const score = recipe.value.difficulty_score || 1;
+  if (score === 1) return "Dễ";
+  if (score === 2) return "Trung bình";
+  return "Khó";
+});
 
 // Get ingredient icon from name
 const getIngredientIcon = (ingredientName) => {
-  const ingredient = getIngredientByName(ingredientName)
-  return ingredient?.icon || '🥘'
-}
+  const ingredient = getIngredientByName(ingredientName);
+  return ingredient?.icon || "🧂";
+};
 
 // Get ingredient category label
 const getIngredientCategory = (ingredientName) => {
-  const ingredient = getIngredientByName(ingredientName)
-  if (!ingredient) return ''
-  
+  const ingredient = getIngredientByName(ingredientName);
+  if (!ingredient) return "";
+
   const categoryMap = {
-    'protein': 'Protein',
-    'vegetable': 'Rau củ',
-    'spice': 'Gia vị',
-    'seasoning': 'Gia vị',
-    'grain': 'Ngũ cốc',
-    'other': 'Khác'
-  }
-  
-  return categoryMap[ingredient.category] || ''
-}
+    protein: "Protein",
+    vegetable: "Rau củ",
+    spice: "Gia vị",
+    seasoning: "Gia vị",
+    grain: "Ngũ cốc",
+    other: "Khác",
+  };
+
+  return categoryMap[ingredient.category] || "";
+};
 
 // Format date
 const formatDate = (date) => {
-  if (!date) return ''
-  const d = new Date(date)
-  const now = new Date()
-  const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24))
-  
-  if (diff === 0) return 'Hôm nay'
-  if (diff === 1) return 'Hôm qua'
-  if (diff < 7) return `${diff} ngày trước`
-  if (diff < 30) return `${Math.floor(diff / 7)} tuần trước`
-  return `${Math.floor(diff / 30)} tháng trước`
-}
+  if (!date) return "";
+  const d = new Date(date);
+  const now = new Date();
+  const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24));
+
+  if (diff === 0) return "Hôm nay";
+  if (diff === 1) return "Hôm qua";
+  if (diff < 7) return `${diff} ngày trước`;
+  if (diff < 30) return `${Math.floor(diff / 7)} tuần trước`;
+  return `${Math.floor(diff / 30)} tháng trước`;
+};
 
 // Handle favorite toggle
 const handleToggleFavorite = async () => {
   if (!authStore.isAuthenticated) {
-    toast.warning('Vui lòng đăng nhập để lưu món yêu thích')
-    return
+    toast.warning("Vui lòng đăng nhập để lưu món yêu thích");
+    return;
   }
-  
-  await favoritesStore.toggleFavorite(recipe.value.id)
-}
+
+  await favoritesStore.toggleFavorite(recipe.value.id);
+};
 
 // Handle like recipe
 const handleLikeRecipe = async () => {
   if (!authStore.isAuthenticated) {
-    toast.warning('Vui lòng đăng nhập để thích công thức')
-    return
+    toast.warning("Vui lòng đăng nhập để thích công thức");
+    return;
   }
-  
-  if (voting.value) return
-  
-  voting.value = true
-  const result = await likesStore.likeRecipe(recipe.value.id)
-  
+
+  if (voting.value) return;
+
+  voting.value = true;
+  const result = await likesStore.likeRecipe(recipe.value.id);
+
   // Cập nhật like_count nếu thành công
   if (result.success && result.data) {
-    recipe.value.like_count = result.data.likeCount
-    recipe.value.likeCount = result.data.likeCount
+    recipe.value.like_count = result.data.likeCount;
+    recipe.value.likeCount = result.data.likeCount;
   }
-  
-  voting.value = false
-}
+
+  voting.value = false;
+};
 
 // Handle share
 const handleShare = () => {
   if (navigator.share && recipe.value) {
-    navigator.share({
-      title: recipe.value.title,
-      text: recipe.value.description,
-      url: window.location.href
-    }).catch(err => console.log('Share failed:', err))
+    navigator
+      .share({
+        title: recipe.value.title,
+        text: recipe.value.description,
+        url: window.location.href,
+      })
+      .catch((err) => console.log("Share failed:", err));
   } else {
     // Fallback: copy link
-    navigator.clipboard.writeText(window.location.href)
-    toast.success('Đã copy link công thức!')
+    navigator.clipboard.writeText(window.location.href);
+    toast.success("Đã copy link công thức!");
   }
-}
-
+};
+const getCategoryName = (category) => {
+  const categories = {
+    protein: "Protein",
+    carb: "Tinh bột",
+    vegetable: "Rau củ",
+    dairy: "Sữa & Dầu mỡ",
+  };
+  return categories[category] || "Khác";
+};
 // Fetch data when component mounts
 
 onMounted(async () => {
-  const recipeId = route.params.id
-  
+  const recipeId = route.params.id;
+
   if (!recipeId) {
-    router.push('/')
-    return
+    router.push("/");
+    return;
   }
-  
+
   // Fetch ingredients và recipe song song
-  await Promise.all([
-    fetchIngredients(),
-    getRecipeById(recipeId)
-  ])
-  
+  await Promise.all([fetchIngredients(), getRecipeById(recipeId)]);
+
   // Lazy load favorites và likes nếu đã đăng nhập
   if (authStore.isAuthenticated) {
     // Stores sẽ tự check loaded flag và skip nếu đã load
     await Promise.all([
       favoritesStore.loadFavorites(),
-      likesStore.loadLikedRecipes()
-    ])
+      likesStore.loadLikedRecipes(),
+    ]);
   }
-})
+});
 </script>
 
 <style scoped>
@@ -710,7 +882,8 @@ html {
 
 /* Animation for pulse */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {

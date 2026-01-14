@@ -8,6 +8,34 @@ export function useRecipe() {
   const loading = ref(false)
   const error = ref(null)
 
+
+
+const recipes = ref([])
+
+// Find multiple recipes based on ingredients
+const findRecipesByIngredients = async (ingredientIds) => {
+  loading.value = true
+  error.value = null
+  recipes.value = []
+  
+  try {
+    const response = await recipeService.findRecipesByIngredients(ingredientIds)
+    if (response.success) {
+      recipes.value = response.data
+      return response.data
+    } else {
+      error.value = response.error || 'Không thể tìm món phù hợp'
+    }
+  } catch (err) {
+    error.value = 'Không thể tìm món phù hợp'
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
+}
+
+
+
   // Find recipe based on ingredients
   const findRecipe = async (ingredientIds) => {
     loading.value = true
@@ -58,9 +86,11 @@ export function useRecipe() {
 
   return {
     recipe,
+    recipes,
     loading,
     error,
     findRecipe,
+    findRecipesByIngredients,
     getRecipeById
   }
 }
