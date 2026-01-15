@@ -1,6 +1,5 @@
 // src/services/supabaseRecipeService.js
 
-import { data } from "autoprefixer";
 import { supabase } from "./supabaseClient";
 
 /**

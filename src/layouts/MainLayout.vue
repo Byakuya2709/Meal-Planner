@@ -513,7 +513,16 @@
         </div>
       </div>
     </footer>
-
+    <Transition name="fade">
+      <button
+        v-if="backToTopVisible"
+        @click="scrollToTop"
+        aria-label="Lên đầu trang"
+        class="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 bg-accent-500 text-white p-3 rounded-full shadow-lg hover:scale-105 transition-transform focus:outline-none focus:ring-2 focus:ring-accent-300"
+      >
+        <ArrowUp :size="18" />
+      </button>
+    </Transition>
     <!-- Auth Modal -->
     <AuthModal v-model="showAuthModal" @success="handleAuthSuccess" />
   </div>
@@ -533,6 +542,7 @@ import {
   LogOut,
   Heart,
   ChevronDown,
+  ArrowUp,
 } from "lucide-vue-next";
 import AuthModal from "../components/auth/AuthModal.vue";
 import { useAuthStore } from "../stores/authStore";
@@ -549,6 +559,7 @@ const isScrolled = ref(false);
 const isMobileMenuOpen = ref(false);
 const isUserMenuOpen = ref(false);
 const showAuthModal = ref(false);
+const backToTopVisible = ref(false);
 
 const navItems = [
   { path: "/", label: "Trang chủ", icon: Home },
@@ -559,6 +570,11 @@ const navItems = [
 // Scroll handler
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50;
+  backToTopVisible.value = window.scrollY > 400;
+};
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 // Toggle mobile menu
@@ -618,6 +634,15 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
 .slide-down-enter-active,
 .slide-down-leave-active {
   transition: all 0.3s ease;

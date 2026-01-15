@@ -456,19 +456,34 @@ const handleFindRecipe = async () => {
   }
 };
 
-// THÊM: Xử lý khi người dùng chọn món
+// THÊM: Xử lý khi người dùng chọn món (chỉ ghi khi có nguyên liệu khớp)
 const handleSelectRecipe = async (recipe) => {
   showRecipeModal.value = false;
 
-  // ✅ GHI NHẬN USER ĐÃ CHỌN RECIPE
-  // Trigger trong database sẽ tự động cập nhật impact_stats
+  // Lấy id các nguyên liệu đang được chọn
+  const selectedIds = selectedIngredients.value.map((i) => i.id);
 
-  const ingredientIds = selectedIngredients.value.map((i) => i.name);
+  // Kiểm tra xem recipe có fields báo match hay chứa requiredIngredients trùng với selectedIds
+  const hasMatch =
+    (recipe.matchedCount && recipe.matchedCount > 0) ||
+    (Array.isArray(recipe.matchedIngredients) &&
+      recipe.matchedIngredients.length > 0) ||
+    (Array.isArray(recipe.requiredIngredients) &&
+      recipe.requiredIngredients.some((id) => selectedIds.includes(id)));
 
-  await supabaseRecipeService.recordRecipeSelection(
-    recipe.id || recipe._id,
-    ingredientIds
-  );
+  if (hasMatch) {
+    // Ghi nhận user chọn recipe (dùng id nguyên liệu để nhất quán)
+    try {
+      await supabaseRecipeService.recordRecipeSelection(
+        recipe.id || recipe._id,
+        selectedIds
+      );
+    } catch (err) {
+      console.error("Failed to record selection:", err);
+    }
+  } else {
+    console.log("Không ghi nhận selection — không có nguyên liệu khớp với món đã chọn");
+  }
 
   // Chuyển đến trang chi tiết món
   router.push(`/recipe/${recipe._id || recipe.id}`);
