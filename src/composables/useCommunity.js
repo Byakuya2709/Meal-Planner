@@ -1,9 +1,9 @@
-// src/composables/useCommunity.js - FIXED PAGINATION LOGIC
-
-import { ref } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import { useToast } from 'vue-toastification'
 import { recipeService } from '../services/recipeService'
 import { useAuthStore } from '../stores/authStore'
+
+const CACHE_KEY = 'community_recipes_cache'
 
 export function useCommunity() {
   const recipes = ref([])
@@ -16,6 +16,44 @@ export function useCommunity() {
   
   const toast = useToast()
   const authStore = useAuthStore()
+
+  // Restore cache khi init
+  const restoreCache = () => {
+    try {
+      const cached = sessionStorage.getItem(CACHE_KEY)
+      if (cached) {
+        const data = JSON.parse(cached)
+        recipes.value = data.recipes || []
+        currentPage.value = data.currentPage || 0
+        hasMore.value = data.hasMore !== undefined ? data.hasMore : true
+        totalCount.value = data.totalCount || 0
+        return true
+      }
+    } catch (e) {
+      console.error('Failed to restore cache:', e)
+    }
+    return false
+  }
+
+  // Save cache
+  const saveCache = () => {
+    try {
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+        recipes: recipes.value,
+        currentPage: currentPage.value,
+        hasMore: hasMore.value,
+        totalCount: totalCount.value,
+        timestamp: Date.now()
+      }))
+    } catch (e) {
+      console.error('Failed to save cache:', e)
+    }
+  }
+
+  // Clear cache
+  const clearCache = () => {
+    sessionStorage.removeItem(CACHE_KEY)
+  }
 
   // Fetch community recipes với pagination và filters
   const fetchRecipes = async (options = {}) => {
@@ -43,22 +81,16 @@ export function useCommunity() {
           recipes.value = response.data
         }
         
-        // Cập nhật total count nếu có
         if (response.total !== undefined) {
           totalCount.value = response.total
         }
         
-        // Kiểm tra còn data không dựa trên:
-        // 1. Response có hasMore field
-        // 2. Hoặc so sánh với total
-        // 3. Hoặc check data length < limit
         if (response.hasMore !== undefined) {
           hasMore.value = response.hasMore
         } else if (response.total !== undefined) {
           const loadedCount = append ? recipes.value.length : response.data.length
           hasMore.value = loadedCount < response.total
         } else {
-          // Fallback: nếu data trả về ít hơn limit thì hết rồi
           hasMore.value = response.data.length === limit
         }
         
@@ -67,6 +99,9 @@ export function useCommunity() {
         } else {
           currentPage.value = 0
         }
+
+        // Save to cache
+        saveCache()
       } else {
         error.value = response.error || 'Không thể tải công thức cộng đồng'
         toast.error(error.value)
@@ -96,10 +131,11 @@ export function useCommunity() {
   const resetAndFetch = async (filters = {}) => {
     currentPage.value = 0
     hasMore.value = true
+    clearCache() // Clear cache khi filter
     await fetchRecipes({ filters })
   }
 
-  // Vote for recipe - yêu cầu đăng nhập
+  // Vote for recipe
   const voteRecipe = async (recipeId) => {
     if (!authStore.isAuthenticated) {
       error.value = 'Vui lòng đăng nhập để thích công thức'
@@ -117,6 +153,7 @@ export function useCommunity() {
       if (response.success) {
         recipe.like_count = response.data.likeCount
         recipe.likeCount = response.data.likeCount
+        saveCache() // Update cache
         toast.success('Đã thích công thức! 👍')
         return { success: true }
       } else {
@@ -146,6 +183,8 @@ export function useCommunity() {
     fetchRecipes,
     loadMore,
     resetAndFetch,
-    voteRecipe
+    voteRecipe,
+    restoreCache,
+    clearCache
   }
 }

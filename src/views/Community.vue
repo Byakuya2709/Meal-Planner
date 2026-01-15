@@ -4,9 +4,9 @@
     <div class="community-page bg-neutral-50 min-h-screen">
       <!-- Hero Section -->
       <section
-        class=" bg-gradient-to-br from-primary-50 via-white to-secondary-50 md:py-20 border-b border-neutral-200"
-      style="padding-top: 9rem; padding-bottom: 4rem ;"
-        >
+        class="bg-gradient-to-br from-primary-50 via-white to-secondary-50 md:py-20 border-b border-neutral-200"
+        style="padding-top: 9rem; padding-bottom: 4rem"
+      >
         <div class="container mx-auto px-4">
           <div class="max-w-4xl mx-auto text-center">
             <h1 class="text-4xl md:text-5xl font-bold text-neutral-900 mb-6">
@@ -32,7 +32,7 @@
           </div>
         </div>
       </section>
-         <!-- Stats -->
+      <!-- Stats -->
       <section class="border-b border-neutral-200 bg-white">
         <div class="container mx-auto px-4 py-4">
           <div class="grid grid-cols-3 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
@@ -364,8 +364,17 @@ import AuthModal from "../components/auth/AuthModal.vue";
 import { useCommunity } from "../composables/useCommunity";
 
 const router = useRouter();
-const { recipes, loading, error, hasMore, totalCount,totalRecipes, loadMore, resetAndFetch } =
-  useCommunity();
+const {
+  recipes,
+  loading,
+  error,
+  hasMore,
+  totalCount,
+  loadMore,
+  resetAndFetch,
+  restoreCache,
+  clearCache,
+} = useCommunity();
 const authStore = useAuthStore();
 const likesStore = useLikesStore();
 
@@ -450,8 +459,16 @@ const retryFetch = async () => {
 };
 
 onMounted(async () => {
-  // Fetch ingredients và recipes
-  await Promise.all([resetAndFetch({ sortBy: sortBy.value })]);
+  // Try restore cache first
+  const hasCache = restoreCache();
+
+  if (!hasCache) {
+    // No cache, fetch fresh data
+    await resetAndFetch({ sortBy: sortBy.value });
+  } else {
+    // Has cache, just setup lazy loading
+    console.log("✅ Restored from cache:", recipes.value.length, "recipes");
+  }
 
   // Load liked recipes nếu đã đăng nhập
   if (authStore.isAuthenticated) {
@@ -462,7 +479,6 @@ onMounted(async () => {
   setupLazyLoading();
   lazyLoadImages();
 });
-
 
 const totalLikes = computed(() => {
   return recipes.value.reduce(
