@@ -3,7 +3,7 @@
     <div class="home-page">
       <!-- HERO - New Component -->
 
-    <RecipeSelectionModal
+      <RecipeSelectionModal
         :show="showRecipeModal"
         :loading="findingRecipe"
         :recipes="recipes"
@@ -139,7 +139,11 @@
         </section>
       </Transition>
       <!-- ===== INGREDIENT SELECTION SECTION ===== -->
-      <section id="selection" ref="ingredientsSection" class="section-md bg-white">
+      <section
+        id="selection"
+        ref="ingredientsSection"
+        class="section-md bg-white"
+      >
         <div class="container-wide">
           <div class="text-center mb-1">
             <div
@@ -158,7 +162,7 @@
             <div
               class="inline-flex items-center gap-4 bg-neutral-50 rounded-2xl px-8 py-4 border-2 border-neutral-200"
             >
-              <div class="flex items-center gap-2 ">
+              <div class="flex items-center gap-2">
                 <div
                   v-for="n in 3"
                   :key="n"
@@ -196,98 +200,98 @@
           </div>
 
           <!-- Ingredients Grid -->
-                 <!-- Thay thế phần Ingredients Grid (từ dòng 205-314) bằng code này -->
-          
-                    <!-- Ingredients Carousel Grid -->
-                    <div v-else class="space-y-10">
-                      <!-- Category: Protein -->
-                      <div>
-                        <div class="flex items-center gap-3 mb-6">
-                          <IconBox variant="secondary" size="sm"> 🥩 </IconBox>
-                          <h3 class="heading-3">Protein</h3>
-                          <div class="flex-1 h-px bg-neutral-200"></div>
-                          <span class="text-sm text-neutral-500 font-medium">
-                            {{ getByCategory('protein').length }} loại
-                          </span>
-                        </div>
-                        <IngredientCarousel>
-                          <IngredientCard
-                            v-for="ingredient in getByCategory('protein')"
-                            :key="ingredient.id"
-                            :ingredient="ingredient"
-                            :selected="isSelected(ingredient.id)"
-                            @click="handleIngredientClick(ingredient)"
-                            class="flex-shrink-0 w-32"
-                          />
-                        </IngredientCarousel>
-                      </div>
-          
-                      <!-- Category: Vegetables -->
-                      <div>
-                        <div class="flex items-center gap-3 mb-6">
-                          <IconBox variant="success" size="sm"> 🥬 </IconBox>
-                          <h3 class="heading-3">Rau củ</h3>
-                          <div class="flex-1 h-px bg-neutral-200"></div>
-                          <span class="text-sm text-neutral-500 font-medium">
-                            {{ getByCategory('vegetable').length }} loại
-                          </span>
-                        </div>
-                        <IngredientCarousel>
-                          <IngredientCard
-                            v-for="ingredient in getByCategory('vegetable')"
-                            :key="ingredient.id"
-                            :ingredient="ingredient"
-                            :selected="isSelected(ingredient.id)"
-                            @click="handleIngredientClick(ingredient)"
-                            class="flex-shrink-0 w-32"
-                          />
-                        </IngredientCarousel>
-                      </div>
-          
-                      <!-- Category: Carbs -->
-                      <div>
-                        <div class="flex items-center gap-3 mb-6">
-                          <IconBox variant="warning" size="sm"> 🍚 </IconBox>
-                          <h3 class="heading-3">Tinh bột</h3>
-                          <div class="flex-1 h-px bg-neutral-200"></div>
-                          <span class="text-sm text-neutral-500 font-medium">
-                            {{ getByCategory('carb').length }} loại
-                          </span>
-                        </div>
-                        <IngredientCarousel>
-                          <IngredientCard
-                            v-for="ingredient in getByCategory('carb')"
-                            :key="ingredient.id"
-                            :ingredient="ingredient"
-                            :selected="isSelected(ingredient.id)"
-                            @click="handleIngredientClick(ingredient)"
-                            class="flex-shrink-0 w-32"
-                          />
-                        </IngredientCarousel>
-                      </div>
-          
-                      <!-- Category: Dairy -->
-                      <div>
-                        <div class="flex items-center gap-3 mb-6">
-                          <IconBox variant="info" size="sm"> 🥛 </IconBox>
-                          <h3 class="heading-3">Sữa & Phô mai</h3>
-                          <div class="flex-1 h-px bg-neutral-200"></div>
-                          <span class="text-sm text-neutral-500 font-medium">
-                            {{ getByCategory('dairy').length }} loại
-                          </span>
-                        </div>
-                        <IngredientCarousel>
-                          <IngredientCard
-                            v-for="ingredient in getByCategory('dairy')"
-                            :key="ingredient.id"
-                            :ingredient="ingredient"
-                            :selected="isSelected(ingredient.id)"
-                            @click="handleIngredientClick(ingredient)"
-                            class="flex-shrink-0 w-32 pt-2"
-                          />
-                        </IngredientCarousel>
-                      </div>
-                    </div>
+          <!-- Thay thế phần Ingredients Grid (từ dòng 205-314) bằng code này -->
+
+          <!-- Ingredients Carousel Grid -->
+          <div v-else class="space-y-10">
+            <!-- Category: Protein -->
+            <div>
+              <div class="flex items-center gap-3 mb-6">
+                <IconBox variant="secondary" size="sm"> 🥩 </IconBox>
+                <h3 class="heading-3">Protein</h3>
+                <div class="flex-1 h-px bg-neutral-200"></div>
+                <span class="text-sm text-neutral-500 font-medium">
+                  {{ getByCategory("protein").length }} loại
+                </span>
+              </div>
+              <IngredientCarousel>
+                <IngredientCard
+                  v-for="ingredient in getByCategory('protein')"
+                  :key="ingredient.id"
+                  :ingredient="ingredient"
+                  :selected="isSelected(ingredient.id)"
+                  @click="handleIngredientClick(ingredient)"
+                  class="flex-shrink-0 w-32"
+                />
+              </IngredientCarousel>
+            </div>
+
+            <!-- Category: Vegetables -->
+            <div>
+              <div class="flex items-center gap-3 mb-6">
+                <IconBox variant="success" size="sm"> 🥬 </IconBox>
+                <h3 class="heading-3">Rau củ</h3>
+                <div class="flex-1 h-px bg-neutral-200"></div>
+                <span class="text-sm text-neutral-500 font-medium">
+                  {{ getByCategory("vegetable").length }} loại
+                </span>
+              </div>
+              <IngredientCarousel>
+                <IngredientCard
+                  v-for="ingredient in getByCategory('vegetable')"
+                  :key="ingredient.id"
+                  :ingredient="ingredient"
+                  :selected="isSelected(ingredient.id)"
+                  @click="handleIngredientClick(ingredient)"
+                  class="flex-shrink-0 w-32"
+                />
+              </IngredientCarousel>
+            </div>
+
+            <!-- Category: Carbs -->
+            <div>
+              <div class="flex items-center gap-3 mb-6">
+                <IconBox variant="warning" size="sm"> 🍚 </IconBox>
+                <h3 class="heading-3">Tinh bột</h3>
+                <div class="flex-1 h-px bg-neutral-200"></div>
+                <span class="text-sm text-neutral-500 font-medium">
+                  {{ getByCategory("carb").length }} loại
+                </span>
+              </div>
+              <IngredientCarousel>
+                <IngredientCard
+                  v-for="ingredient in getByCategory('carb')"
+                  :key="ingredient.id"
+                  :ingredient="ingredient"
+                  :selected="isSelected(ingredient.id)"
+                  @click="handleIngredientClick(ingredient)"
+                  class="flex-shrink-0 w-32"
+                />
+              </IngredientCarousel>
+            </div>
+
+            <!-- Category: Dairy -->
+            <div>
+              <div class="flex items-center gap-3 mb-6">
+                <IconBox variant="info" size="sm"> 🥛 </IconBox>
+                <h3 class="heading-3">Sữa & Phô mai</h3>
+                <div class="flex-1 h-px bg-neutral-200"></div>
+                <span class="text-sm text-neutral-500 font-medium">
+                  {{ getByCategory("dairy").length }} loại
+                </span>
+              </div>
+              <IngredientCarousel>
+                <IngredientCard
+                  v-for="ingredient in getByCategory('dairy')"
+                  :key="ingredient.id"
+                  :ingredient="ingredient"
+                  :selected="isSelected(ingredient.id)"
+                  @click="handleIngredientClick(ingredient)"
+                  class="flex-shrink-0 w-32 pt-2"
+                />
+              </IngredientCarousel>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -370,7 +374,7 @@ import IconBox from "../components/ui/IconBox.vue";
 import RecipeSelectionModal from "../components/features/RecipeSelectionModal.vue"; // THÊM
 import { useIngredients } from "../composables/useIngredients";
 import { useRecipe } from "../composables/useRecipe";
-
+import { supabaseRecipeService } from '../services/supabaseRecipeService'
 const router = useRouter();
 const ingredientsSection = ref(null);
 
@@ -456,8 +460,15 @@ const handleFindRecipe = async () => {
 const handleSelectRecipe = async (recipe) => {
   showRecipeModal.value = false;
 
-  // Increment stats
-  // (có thể thêm vào recipeService sau)
+  // ✅ GHI NHẬN USER ĐÃ CHỌN RECIPE
+  // Trigger trong database sẽ tự động cập nhật impact_stats
+
+  const ingredientIds = selectedIngredients.value.map((i) => i.name);
+
+  await supabaseRecipeService.recordRecipeSelection(
+    recipe.id || recipe._id,
+    ingredientIds
+  );
 
   // Chuyển đến trang chi tiết món
   router.push(`/recipe/${recipe._id || recipe.id}`);
@@ -468,8 +479,6 @@ const handleCloseModal = () => {
   showRecipeModal.value = false;
 };
 </script>
-
-
 
 <style scoped>
 .slide-up-enter-active,
