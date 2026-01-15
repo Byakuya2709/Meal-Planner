@@ -1,16 +1,29 @@
 // src/main.js
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { registerSW } from 'virtual:pwa-register';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { MotionPlugin } from '@vueuse/motion'
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
-
 import './styles/toast.css'
 import './style.css'
 import App from './App.vue'
 import router from './router'
 import { supabase } from './services/supabaseClient'
+
+
+
+// const updateSW = registerSW({
+//   onNeedRefresh() {
+//     // Có version mới, có thể hiện toast thông báo
+//     console.log('Có phiên bản mới của ứng dụng!');
+//   },
+//   onOfflineReady() {
+//     // App đã sẵn sàng hoạt động offline
+//     console.log('Ứng dụng đã sẵn sàng hoạt động offline!');
+//   },
+// });
 
 // BƯỚC 1: Kiểm tra session TRƯỚC KHI khởi tạo Pinia
 // Để tránh Pinia persist restore data cũ khi không có session hợp lệ

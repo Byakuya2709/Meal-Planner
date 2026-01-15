@@ -1,4 +1,121 @@
-<!-- src/layouts/MainLayout.vue - CẬP NHẬT -->
+<!-- Thêm vào phần <script setup> của MainLayout.vue -->
+<script setup>
+import { ref, onMounted, onUnmounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import {
+  ChefHat,
+  Menu,
+  X,
+  Home,
+  Users,
+  TrendingUp,
+  LogIn,
+  LogOut,
+  Heart,
+  ChevronDown,
+  ArrowUp,
+  Download, // THÊM icon này
+} from "lucide-vue-next";
+import AuthModal from "../components/auth/AuthModal.vue";
+import { useAuthStore } from "../stores/authStore";
+import { useFavoritesStore } from "../stores/favoritesStore";
+import { usePWA } from "../composables/usePWA"; // THÊM import này
+
+const route = useRoute();
+const router = useRouter();
+const authStore = useAuthStore();
+const favoritesStore = useFavoritesStore();
+const { canInstall, installApp, showInstallPrompt, isInstalled } = usePWA(); // THÊM dòng này
+
+const navbarEl = ref(null);
+const userMenuRef = ref(null);
+const isScrolled = ref(false);
+const isMobileMenuOpen = ref(false);
+const isUserMenuOpen = ref(false);
+const showAuthModal = ref(false);
+const backToTopVisible = ref(false);
+
+const navItems = [
+  { path: "/", label: "Trang chủ", icon: Home },
+  { path: "/community", label: "Cộng đồng", icon: Users },
+  { path: "/impact", label: "Tác động", icon: TrendingUp },
+];
+
+// Scroll handler
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 50;
+  backToTopVisible.value = window.scrollY > 400;
+};
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+// Toggle mobile menu
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+};
+
+// Show auth modal on mobile
+const showAuthModalMobile = () => {
+  toggleMobileMenu();
+  showAuthModal.value = true;
+};
+
+// Handle sign out
+const handleSignOut = async () => {
+  isUserMenuOpen.value = false;
+  isMobileMenuOpen.value = false;
+  await authStore.signOut();
+  router.push("/");
+};
+
+// Handle auth success
+const handleAuthSuccess = async () => {
+  await favoritesStore.loadFavorites();
+};
+
+// THÊM hàm xử lý cài đặt PWA
+const handleInstallClick = async () => {
+  const installed = await installApp();
+  if (installed) {
+    // Có thể hiện toast thông báo thành công
+    console.log('Đã cài đặt ứng dụng thành công!');
+  }
+};
+
+// Click outside to close user menu (CHỈ DESKTOP)
+const handleClickOutside = (event) => {
+  // Bỏ qua nếu là mobile menu
+  if (isMobileMenuOpen.value) return;
+
+  // Chỉ xử lý desktop user menu
+  if (userMenuRef.value && !userMenuRef.value.contains(event.target)) {
+    isUserMenuOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll);
+  document.addEventListener("mousedown", handleClickOutside);
+  document.addEventListener("touchstart", handleClickOutside);
+  handleScroll();
+
+  // Load favorites nếu đã đăng nhập
+  if (authStore.isAuthenticated) {
+    favoritesStore.loadFavorites();
+  }
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+  document.removeEventListener("mousedown", handleClickOutside);
+  document.removeEventListener("touchstart", handleClickOutside);
+});
+</script>
+
+<!-- Trong phần template, thêm nút cài đặt PWA -->
+<!-- Thêm sau phần User Menu / Login Button, trước Mobile menu button -->
 <template>
   <div class="main-layout min-h-screen bg-neutral-50">
     <!-- Modern Navbar - Sticky with gradient transition -->
@@ -109,127 +226,146 @@
                 </li>
               </ul>
 
-              <!-- User Menu / Login Button - THAY CHO CTA -->
-              <div class="hidden md:block">
-                <!-- Logged In - User Menu -->
-                <div
-                  v-if="authStore.isAuthenticated"
-                  class="relative"
-                  ref="userMenuRef"
+              <!-- Right side actions -->
+              <div class="hidden md:flex items-center gap-3">
+                <!-- Nút cài đặt PWA -->
+                <button
+                  v-if="canInstall()"
+                  @click="handleInstallClick"
+                  :class="[
+                    'flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:scale-105 border-2',
+                    isScrolled || route.path !== '/'
+                      ? 'bg-primary-50 hover:bg-primary-100 border-primary-200 text-primary-700'
+                      : 'bg-white/20 hover:bg-white/30 backdrop-blur-sm border-white/30 text-white',
+                  ]"
+                  title="Cài đặt ứng dụng"
                 >
+                  <Download :size="18" />
+                  <span class="hidden lg:inline">Cài đặt</span>
+                </button>
+
+                <!-- User Menu / Login Button -->
+                <div>
+                  <!-- Logged In - User Menu -->
+                  <div
+                    v-if="authStore.isAuthenticated"
+                    class="relative"
+                    ref="userMenuRef"
+                  >
+                    <button
+                      @click="isUserMenuOpen = !isUserMenuOpen"
+                      :class="[
+                        'flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300 hover:scale-105',
+                        isScrolled || route.path !== '/'
+                          ? 'bg-primary-50 hover:bg-primary-100 border border-primary-200'
+                          : 'bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30',
+                      ]"
+                    >
+                      <img
+                        :src="authStore.userAvatar"
+                        :alt="authStore.userDisplayName"
+                        class="w-8 h-8 rounded-full ring-2 ring-primary-300"
+                      />
+                      <span
+                        :class="[
+                          'font-semibold hidden lg:block',
+                          isScrolled || route.path !== '/'
+                            ? 'text-neutral-900'
+                            : 'text-white',
+                        ]"
+                      >
+                        {{ authStore.userDisplayName }}
+                      </span>
+                      <ChevronDown
+                        :size="16"
+                        :class="[
+                          'transition-transform',
+                          isUserMenuOpen && 'rotate-180',
+                          isScrolled || route.path !== '/'
+                            ? 'text-neutral-600'
+                            : 'text-white',
+                        ]"
+                      />
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <Transition name="dropdown">
+                      <div
+                        v-if="isUserMenuOpen"
+                        class="absolute right-0 top-full mt-2 w-62 bg-white border-2 border-neutral-200 rounded-2xl shadow-2xl py-2 z-50"
+                      >
+                        <!-- User Info -->
+                        <div class="px-4 py-3 border-b border-neutral-200">
+                          <p class="font-bold text-neutral-900">
+                            {{ authStore.userDisplayName }}
+                          </p>
+                          <p class="text-sm text-neutral-600">
+                            {{ authStore.userEmail }}
+                          </p>
+                        </div>
+
+                        <!-- Menu Items -->
+                        <div class="py-2">
+                          <router-link
+                            to="/favorites"
+                            @click="isUserMenuOpen = false"
+                            class="flex items-center gap-3 px-4 py-2.5 hover:bg-primary-50 transition-colors"
+                          >
+                            <Heart :size="18" class="text-neutral-600" />
+                            <span class="text-neutral-900 font-medium"
+                              >Món yêu thích</span
+                            >
+                            <span
+                              class="ml-auto bg-primary-100 text-primary-700 text-xs font-bold px-2 py-1 rounded-full"
+                            >
+                              {{ favoritesStore.favoriteCount }}
+                            </span>
+                          </router-link>
+
+                          <router-link
+                            to="/my-recipes"
+                            @click="isUserMenuOpen = false"
+                            class="flex items-center gap-3 px-4 py-2.5 hover:bg-primary-50 transition-colors"
+                          >
+                            <ChefHat :size="18" class="text-neutral-600" />
+                            <span class="text-neutral-900 font-medium"
+                              >Công thức của tôi</span
+                            >
+                          </router-link>
+                        </div>
+
+                        <!-- Logout -->
+                        <div class="border-t border-neutral-200 py-2">
+                          <button
+                            @click="handleSignOut"
+                            class="flex items-center gap-3 px-4 py-2.5 hover:bg-error/10 transition-colors w-full text-left"
+                          >
+                            <LogOut :size="18" class="text-error" />
+                            <span class="text-error font-medium">Đăng xuất</span>
+                          </button>
+                        </div>
+                      </div>
+                    </Transition>
+                  </div>
+
+                  <!-- Not Logged In - Login Button -->
                   <button
-                    @click="isUserMenuOpen = !isUserMenuOpen"
+                    v-else
+                    @click="showAuthModal = true"
                     :class="[
-                      'flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300 hover:scale-105',
-                      isScrolled || route.path !== '/'
-                        ? 'bg-primary-50 hover:bg-primary-100 border border-primary-200'
-                        : 'bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30',
+                      'bg-gradient-to-r from-accent-500 to-accent-600 text-white group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden',
                     ]"
                   >
-                    <img
-                      :src="authStore.userAvatar"
-                      :alt="authStore.userDisplayName"
-                      class="w-8 h-8 rounded-full ring-2 ring-primary-300"
-                    />
-                    <span
-                      :class="[
-                        'font-semibold hidden lg:block',
-                        isScrolled || route.path !== '/'
-                          ? 'text-neutral-900'
-                          : 'text-white',
-                      ]"
-                    >
-                      {{ authStore.userDisplayName }}
+                    <span class="relative z-10 flex items-center gap-2">
+                      <LogIn :size="16" />
+                      <span>Đăng nhập</span>
                     </span>
-                    <ChevronDown
-                      :size="16"
-                      :class="[
-                        'transition-transform',
-                        isUserMenuOpen && 'rotate-180',
-                        isScrolled || route.path !== '/'
-                          ? 'text-neutral-600'
-                          : 'text-white',
-                      ]"
-                    />
-                  </button>
-
-                  <!-- Dropdown Menu -->
-                  <Transition name="dropdown">
+                    <!-- Shimmer effect -->
                     <div
-                      v-if="isUserMenuOpen"
-                      class="absolute right-0 top-full mt-2 w-62 bg-white border-2 border-neutral-200 rounded-2xl shadow-2xl py-2 z-50"
-                    >
-                      <!-- User Info -->
-                      <div class="px-4 py-3 border-b border-neutral-200">
-                        <p class="font-bold text-neutral-900">
-                          {{ authStore.userDisplayName }}
-                        </p>
-                        <p class="text-sm text-neutral-600">
-                          {{ authStore.userEmail }}
-                        </p>
-                      </div>
-
-                      <!-- Menu Items -->
-                      <div class="py-2">
-                        <router-link
-                          to="/favorites"
-                          @click="isUserMenuOpen = false"
-                          class="flex items-center gap-3 px-4 py-2.5 hover:bg-primary-50 transition-colors"
-                        >
-                          <Heart :size="18" class="text-neutral-600" />
-                          <span class="text-neutral-900 font-medium"
-                            >Món yêu thích</span
-                          >
-                          <span
-                            class="ml-auto bg-primary-100 text-primary-700 text-xs font-bold px-2 py-1 rounded-full"
-                          >
-                            {{ favoritesStore.favoriteCount }}
-                          </span>
-                        </router-link>
-
-                        <router-link
-                          to="/my-recipes"
-                          @click="isUserMenuOpen = false"
-                          class="flex items-center gap-3 px-4 py-2.5 hover:bg-primary-50 transition-colors"
-                        >
-                          <ChefHat :size="18" class="text-neutral-600" />
-                          <span class="text-neutral-900 font-medium"
-                            >Công thức của tôi</span
-                          >
-                        </router-link>
-                      </div>
-
-                      <!-- Logout -->
-                      <div class="border-t border-neutral-200 py-2">
-                        <button
-                          @click="handleSignOut"
-                          class="flex items-center gap-3 px-4 py-2.5 hover:bg-error/10 transition-colors w-full text-left"
-                        >
-                          <LogOut :size="18" class="text-error" />
-                          <span class="text-error font-medium">Đăng xuất</span>
-                        </button>
-                      </div>
-                    </div>
-                  </Transition>
+                      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
+                    ></div>
+                  </button>
                 </div>
-
-                <!-- Not Logged In - Login Button -->
-                <button
-                  v-else
-                  @click="showAuthModal = true"
-                  :class="[
-                    ' bg-gradient-to-r from-accent-500 to-accent-600 text-white group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden',
-                  ]"
-                >
-                  <span class="relative z-10 flex items-center gap-2">
-                    <LogIn :size="16" />
-                    <span>Đăng nhập</span>
-                  </span>
-                  <!-- Shimmer effect -->
-                  <div
-                    class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
-                  ></div>
-                </button>
               </div>
 
               <!-- Mobile menu button -->
@@ -297,6 +433,20 @@
               </router-link>
             </li>
           </ul>
+
+          <!-- Nút cài đặt PWA trong mobile menu -->
+          <div v-if="canInstall()" class="border-t border-neutral-200 px-4 py-3">
+            <button
+              @click="handleInstallClick"
+              class="flex items-center justify-center gap-3 w-full px-5 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl font-semibold shadow-lg active:scale-95 transition-all"
+            >
+              <Download :size="20" />
+              <span>Cài đặt ứng dụng</span>
+            </button>
+            <p class="text-center text-xs text-neutral-600 mt-2">
+              Cài đặt để truy cập nhanh và dùng offline
+            </p>
+          </div>
 
           <!-- Mobile User Section -->
           <div class="border-t border-neutral-200">
@@ -400,7 +550,7 @@
       <slot />
     </main>
 
-    <!-- Footer giữ nguyên -->
+    <!-- Footer giữ nguyên như cũ -->
     <footer
       class="bg-gradient-to-br to-primary-500 via-primary-800 from-accent-200 text-white py-16 relative"
     >
@@ -513,6 +663,8 @@
         </div>
       </div>
     </footer>
+    
+    <!-- Back to top button -->
     <Transition name="fade">
       <button
         v-if="backToTopVisible"
@@ -523,115 +675,11 @@
         <ArrowUp :size="18" />
       </button>
     </Transition>
+    
     <!-- Auth Modal -->
     <AuthModal v-model="showAuthModal" @success="handleAuthSuccess" />
   </div>
 </template>
-
-<script setup>
-import { ref, onMounted, onUnmounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import {
-  ChefHat,
-  Menu,
-  X,
-  Home,
-  Users,
-  TrendingUp,
-  LogIn,
-  LogOut,
-  Heart,
-  ChevronDown,
-  ArrowUp,
-} from "lucide-vue-next";
-import AuthModal from "../components/auth/AuthModal.vue";
-import { useAuthStore } from "../stores/authStore";
-import { useFavoritesStore } from "../stores/favoritesStore";
-
-const route = useRoute();
-const router = useRouter();
-const authStore = useAuthStore();
-const favoritesStore = useFavoritesStore();
-
-const navbarEl = ref(null);
-const userMenuRef = ref(null);
-const isScrolled = ref(false);
-const isMobileMenuOpen = ref(false);
-const isUserMenuOpen = ref(false);
-const showAuthModal = ref(false);
-const backToTopVisible = ref(false);
-
-const navItems = [
-  { path: "/", label: "Trang chủ", icon: Home },
-  { path: "/community", label: "Cộng đồng", icon: Users },
-  { path: "/impact", label: "Tác động", icon: TrendingUp },
-];
-
-// Scroll handler
-const handleScroll = () => {
-  isScrolled.value = window.scrollY > 50;
-  backToTopVisible.value = window.scrollY > 400;
-};
-
-const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
-
-// Toggle mobile menu
-const toggleMobileMenu = () => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value;
-};
-
-// Show auth modal on mobile
-const showAuthModalMobile = () => {
-  toggleMobileMenu();
-  showAuthModal.value = true;
-};
-
-// Handle sign out
-const handleSignOut = async () => {
-  isUserMenuOpen.value = false;
-  isMobileMenuOpen.value = false;
-  await authStore.signOut();
-  router.push("/");
-};
-
-// Handle auth success
-const handleAuthSuccess = async () => {
-  await favoritesStore.loadFavorites();
-};
-
-// Click outside to close user menu (CHỈ DESKTOP)
-const handleClickOutside = (event) => {
-  // Bỏ qua nếu là mobile menu
-  if (isMobileMenuOpen.value) return;
-
-  // Chỉ xử lý desktop user menu
-  if (userMenuRef.value && !userMenuRef.value.contains(event.target)) {
-    isUserMenuOpen.value = false;
-  }
-};
-
-onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
-  // Sử dụng mousedown thay vì click để tốt hơn trên cả desktop và mobile
-  document.addEventListener("mousedown", handleClickOutside);
-  // Thêm touchstart cho mobile
-  document.addEventListener("touchstart", handleClickOutside);
-  handleScroll();
-
-  // Load favorites nếu đã đăng nhập
-  if (authStore.isAuthenticated) {
-    favoritesStore.loadFavorites();
-  }
-});
-
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
-  document.removeEventListener("mousedown", handleClickOutside);
-  document.removeEventListener("touchstart", handleClickOutside);
-});
-</script>
 
 <style scoped>
 .fade-enter-active,

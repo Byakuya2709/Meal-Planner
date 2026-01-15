@@ -537,7 +537,7 @@
                         class="bg-white border border-primary-200 rounded-xl p-4 text-center"
                       >
                         <p class="text-2xl font-bold text-primary-600">
-                          {{ recipe.nutrition_facts.protein_g || 0 }}g
+                          {{ recipe.nutrition_facts.protein || 0 }}g
                         </p>
                         <p class="text-xs text-neutral-600 font-medium">
                           Protein
@@ -547,7 +547,7 @@
                         class="bg-white border border-primary-200 rounded-xl p-4 text-center"
                       >
                         <p class="text-2xl font-bold text-primary-600">
-                          {{ recipe.nutrition_facts.carbohydrates_g || 0 }}g
+                          {{ recipe.nutrition_facts.carbs || 0 }}g
                         </p>
                         <p class="text-xs text-neutral-600 font-medium">
                           Carbs
@@ -557,7 +557,7 @@
                         class="bg-white border border-primary-200 rounded-xl p-4 text-center"
                       >
                         <p class="text-2xl font-bold text-primary-600">
-                          {{ recipe.nutrition_facts.fat_total_g || 0 }}g
+                          {{ recipe.nutrition_facts.fat || 0 }}g
                         </p>
                         <p class="text-xs text-neutral-600 font-medium">
                           Chất béo
@@ -567,7 +567,7 @@
                         class="bg-white border border-primary-200 rounded-xl p-4 text-center"
                       >
                         <p class="text-2xl font-bold text-primary-600">
-                          {{ recipe.nutrition_facts.fiber_g || 0 }}g
+                          {{ recipe.nutrition_facts.fiber || 0 }}g
                         </p>
                         <p class="text-xs text-neutral-600 font-medium">
                           Chất xơ

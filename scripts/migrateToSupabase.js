@@ -871,539 +871,777 @@ const recipes = [
 const communityRecipes = [
   // ========== MỨC ĐỘ DỄ ==========
   {
-    title: "Canh Chua Cá",
+    title: "Canh Chua Cá Lóc",
     description:
-      "Canh chua cá miền Nam với thơm, cà chua và me, vị chua ngọt rất đưa cơm.",
+      "Canh chua cá lóc miền Nam với thơm, cà chua và me, vị chua ngọt thanh mát rất đưa cơm, đặc biệt thích hợp cho bữa trưa mùa hè.",
     image_url:
       "https://images.unsplash.com/photo-1604908177479-3b2d6f3e5b5d?w=1200",
-    time_minutes: 35,
-    difficulty_score: 2,
-    ingredients_list: [
-      "Cá 300g",
-      "Cà chua 2 trái",
-      "Thơm 100g",
-      "Đậu bắp 50g",
-      "Me 2 tbsp",
-    ],
-    ingredients_list_fixed: [
-      "fish 300g",
-      "tomato 2",
-      "pineapple 100g",
-      "okra 50g",
-      "tamarind 2 tbsp",
-    ],
-    seasoning: ["fish_sauce 2 tbsp", "sugar 1 tbsp"],
-    instructions: [
-      "Nấu nước dùng chua ngọt với me, cho cá và các loại rau vào, nêm vừa ăn.",
-    ],
-    tags: ["soup", "family"],
-    like_count: 124,
-    is_community: true,
-    author_name: "Nguyễn Minh",
-    author_avatar: "https://i.pravatar.cc/150?img=1",
-    requiredIngredients: ["fish", "tomato", "tamarind"],
-    nutrition_facts: {
-      calories: 195,
-      protein: 26,
-      carbs: 18,
-      fat: 3,
-      fiber: 4
-    }
-  },
-
-  {
-    title: "Mì Xào Hải Sản",
-    description:
-      "Mì xào thập cẩm với tôm, mực và rau củ, nhanh gọn cho bữa tối.",
-    image_url:
-      "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=1200",
-    time_minutes: 25,
-    difficulty_score: 1,
-    ingredients_list: ["Mì 200g", "Tôm 150g", "Bắp cải 100g", "Cà rốt 1 củ"],
-    ingredients_list_fixed: [
-      "noodles 200g",
-      "shrimp 150g",
-      "cabbage 100g",
-      "carrot 1",
-    ],
-    seasoning: ["fish_sauce 1 tbsp", "sugar 1 tsp"],
-    instructions: [
-      "Xào nhanh tôm và rau, cho mì vào đảo đều với gia vị, thưởng thức nóng.",
-    ],
-    tags: ["quick", "seafood"],
-    like_count: 98,
-    is_community: true,
-    author_name: "Lê Thu",
-    author_avatar: "https://i.pravatar.cc/150?img=2",
-    requiredIngredients: ["noodles", "shrimp", "cabbage"],
-    nutrition_facts: {
-      calories: 380,
-      protein: 22,
-      carbs: 54,
-      fat: 8,
-      fiber: 5
-    }
-  },
-
-  {
-    title: "Đậu Hũ Sốt Cà Chua",
-    description: "Đậu hũ mềm sốt cà chua ngọt nhẹ, thích hợp cho bữa chay.",
-    image_url:
-      "https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?w=1200",
-    time_minutes: 25,
-    difficulty_score: 1,
-    ingredients_list: ["Đậu hũ 300g", "Cà chua 3 trái", "Hành tây 1 củ", "Nấm 100g"],
-    ingredients_list_fixed: [
-      "tofu 300g",
-      "tomato 3",
-      "onion 1",
-      "mushroom 100g",
-    ],
-    seasoning: ["fish_sauce 1 tbsp", "sugar 1 tsp"],
-    instructions: [
-      "Chiên đậu hũ, nấu sốt cà chua với hành, nấm rồi cho đậu vào om cho thấm.",
-    ],
-    tags: ["vegetarian", "easy"],
-    like_count: 87,
-    is_community: true,
-    author_name: "Trần Anh",
-    author_avatar: "https://i.pravatar.cc/150?img=3",
-    requiredIngredients: ["tofu", "tomato", "onion"],
-    nutrition_facts: {
-      calories: 235,
-      protein: 16,
-      carbs: 20,
-      fat: 11,
-      fiber: 5
-    }
-  },
-
-  {
-    title: "Canh Rau Muống Nấu Tôm",
-    description: "Canh rau muống thanh mát, nhanh gọn cho bữa cơm hàng ngày.",
-    image_url:
-      "https://images.unsplash.com/photo-1604908177479-3b2d6f3e5b5d?w=1200",
-    time_minutes: 15,
-    difficulty_score: 1,
-    ingredients_list: ["Rau muống 200g", "Tôm 100g", "Tỏi 2 tép"],
-    ingredients_list_fixed: [
-      "vegetable 200g",
-      "shrimp 100g",
-      "garlic 2 cloves",
-    ],
-    seasoning: ["fish_sauce 1 tbsp", "salt"],
-    instructions: [
-      "Đun sôi nước, cho tỏi phi thơm, thêm tôm và rau muống, nêm vừa ăn.",
-    ],
-    tags: ["soup", "quick", "healthy"],
-    like_count: 76,
-    is_community: true,
-    author_name: "Văn Hà",
-    author_avatar: "https://i.pravatar.cc/150?img=10",
-    requiredIngredients: ["shrimp", "garlic"],
-    nutrition_facts: {
-      calories: 95,
-      protein: 14,
-      carbs: 6,
-      fat: 2,
-      fiber: 3
-    }
-  },
-
-  {
-    title: "Thịt Ba Chỉ Chiên Giòn",
-    description: "Thịt ba chỉ chiên giòn rụm, ăn kèm cơm trắng hoặc bún.",
-    image_url:
-      "https://images.unsplash.com/photo-1603073163308-9ab1de79b02d?w=1200",
-    time_minutes: 30,
-    difficulty_score: 1,
-    ingredients_list: ["Thịt ba chỉ 300g", "Tỏi 3 tép", "Ớt 2 trái"],
-    ingredients_list_fixed: [
-      "pork 300g",
-      "garlic 3 cloves",
-      "pepper 2",
-    ],
-    seasoning: ["fish_sauce 2 tbsp", "sugar 1 tsp", "pepper"],
-    instructions: [
-      "Luộc thịt ba chỉ, để nguội rồi thái lát mỏng, chiên vàng giòn, ăn kèm nước mắm pha.",
-    ],
-    tags: ["crispy", "pork", "easy"],
-    like_count: 142,
-    is_community: true,
-    author_name: "Minh Tuấn",
-    author_avatar: "https://i.pravatar.cc/150?img=11",
-    requiredIngredients: ["pork", "garlic"],
-    nutrition_facts: {
-      calories: 420,
-      protein: 18,
-      carbs: 8,
-      fat: 36,
-      fiber: 1
-    }
-  },
-
-  // ========== MỨC ĐỘ VỪA ==========
-  {
-    title: "Thịt Kho Tàu (Bà Nội)",
-    description:
-      "Thịt kho truyền thống với nước dừa, trứng luộc, thơm đậm đà đúng vị Tết.",
-    image_url:
-      "https://images.unsplash.com/photo-1603073163308-9ab1de79b02d?w=1200",
-    time_minutes: 90,
-    difficulty_score: 2,
-    ingredients_list: ["Thịt heo 500g", "Trứng 4 quả", "Nước dừa 300ml", "Tỏi 5 tép"],
-    ingredients_list_fixed: [
-      "pork 500g",
-      "egg 4",
-      "coconut 300ml",
-      "garlic 5 cloves",
-    ],
-    seasoning: ["fish_sauce 3 tbsp", "sugar 2 tbsp"],
-    instructions: [
-      "Kho thịt với nước dừa và gia vị đến khi thịt mềm, nước sánh và có màu bóng.",
-    ],
-    tags: ["traditional", "holiday"],
-    like_count: 156,
-    is_community: true,
-    author_name: "Phạm Hải",
-    author_avatar: "https://i.pravatar.cc/150?img=4",
-    requiredIngredients: ["pork", "egg", "coconut"],
-    nutrition_facts: {
-      calories: 435,
-      protein: 33,
-      carbs: 16,
-      fat: 29,
-      fiber: 1
-    }
-  },
-
-  {
-    title: "Mì Quảng",
-    description:
-      "Mì Quảng đặc trưng miền Trung, nước ít, hương vị đậm và nhiều topping.",
-    image_url:
-      "https://images.unsplash.com/photo-1604908177435-6b9f1a0d5f4f?w=1200",
-    time_minutes: 45,
-    difficulty_score: 2,
-    ingredients_list: ["Mì quảng 200g", "Tôm 100g", "Thịt 100g", "Rau sống 50g"],
-    ingredients_list_fixed: [
-      "noodles 200g",
-      "shrimp 100g",
-      "pork 100g",
-      "bean_sprouts 50g",
-    ],
-    seasoning: ["fish_sauce", "turmeric"],
-    instructions: [
-      "Chuẩn bị nước lèo, trụng mì, xếp topping và rắc đậu phộng, rau thơm.",
-    ],
-    tags: ["regional", "noodles"],
-    like_count: 132,
-    is_community: true,
-    author_name: "Mai Hương",
-    author_avatar: "https://i.pravatar.cc/150?img=5",
-    requiredIngredients: ["noodles", "shrimp", "pork"],
-    nutrition_facts: {
-      calories: 465,
-      protein: 28,
-      carbs: 58,
-      fat: 12,
-      fiber: 4
-    }
-  },
-
-  {
-    title: "Bò Lúc Lắc",
-    description:
-      "Bò lúc lắc chảo, miếng bò thơm, ăn kèm salad và cơm hoặc bánh mì.",
-    image_url:
-      "https://images.unsplash.com/photo-1553621042-f6e147245754?w=1200",
-    time_minutes: 30,
-    difficulty_score: 2,
-    ingredients_list: ["Thịt bò 300g", "Hành tây 1 củ", "Tỏi 2 tép"],
-    ingredients_list_fixed: ["beef 300g", "onion 1", "garlic 2 cloves"],
-    seasoning: ["fish_sauce 1 tbsp", "pepper"],
-    instructions: [
-      "Áp chảo nhanh miếng bò ướp, xào cùng hành tây, nêm gia vị, ăn nóng.",
-    ],
-    tags: ["beef", "dinner"],
-    like_count: 201,
-    is_community: true,
-    author_name: "Hoàng Nam",
-    author_avatar: "https://i.pravatar.cc/150?img=6",
-    requiredIngredients: ["beef", "onion"],
-    nutrition_facts: {
-      calories: 365,
-      protein: 36,
-      carbs: 10,
-      fat: 20,
-      fiber: 2
-    }
-  },
-
-  {
-    title: "Cháo Gà",
-    description:
-      "Cháo gà mềm mịn, ấm bụng, phù hợp cho người ốm hoặc bữa sáng nhẹ.",
-    image_url:
-      "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=1200",
-    time_minutes: 60,
-    difficulty_score: 1,
-    ingredients_list: ["Gạo 200g", "Gà 300g", "Gừng 1 khúc", "Hành lá 1 bó"],
-    ingredients_list_fixed: [
-      "rice 200g",
-      "chicken 300g",
-      "ginger 1 piece",
-      "spring_onion 1 bunch",
-    ],
-    seasoning: ["fish_sauce", "pepper"],
-    instructions: [
-      "Ninh cháo gạo với gà, nêm vừa ăn, rắc hành và tiêu khi ăn.",
-    ],
-    tags: ["comfort-food", "breakfast"],
-    like_count: 176,
-    is_community: true,
-    author_name: "Ngọc Lan",
-    author_avatar: "https://i.pravatar.cc/150?img=7",
-    requiredIngredients: ["rice", "chicken", "spring_onion"],
-    nutrition_facts: {
-      calories: 385,
-      protein: 28,
-      carbs: 52,
-      fat: 7,
-      fiber: 2
-    }
-  },
-
-  {
-    title: "Sườn Xào Chua Ngọt",
-    description: "Sườn xào với sốt chua ngọt, thơm ngon đậm đà.",
-    image_url:
-      "https://images.unsplash.com/photo-1603073163308-9ab1de79b02d?w=1200",
     time_minutes: 40,
     difficulty_score: 2,
-    ingredients_list: ["Sườn heo 400g", "Thơm 100g", "Cà chua 2 trái", "Hành tây 1 củ"],
-    ingredients_list_fixed: [
-      "pork 400g",
-      "pineapple 100g",
-      "tomato 2",
-      "onion 1",
+    ingredients_list: [
+      "Cá lóc 400g",
+      "Cà chua 3 trái",
+      "Thơm 150g",
+      "Đậu bắp 80g",
+      "Giá đỗ 50g",
+      "Rau thơm (ngò gai, ngò rí)"
     ],
-    seasoning: ["fish_sauce 2 tbsp", "sugar 2 tbsp", "vinegar 1 tbsp"],
-    instructions: [
-      "Chiên sườn vàng, xào hành cà chua thơm, thêm sốt chua ngọt và om cùng sườn.",
-    ],
-    tags: ["sweet-sour", "pork"],
-    like_count: 188,
-    is_community: true,
-    author_name: "Thanh Hà",
-    author_avatar: "https://i.pravatar.cc/150?img=12",
-    requiredIngredients: ["pork", "pineapple", "tomato"],
-    nutrition_facts: {
-      calories: 410,
-      protein: 32,
-      carbs: 32,
-      fat: 18,
-      fiber: 3
-    }
-  },
-
-  {
-    title: "Cá Chiên Xù",
-    description: "Cá chiên giòn xù, ăn kèm cơm và rau sống.",
-    image_url:
-      "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=1200",
-    time_minutes: 35,
-    difficulty_score: 2,
-    ingredients_list: ["Cá 400g", "Bột chiên giòn 100g", "Tỏi 3 tép"],
     ingredients_list_fixed: [
       "fish 400g",
-      "flour 100g",
-      "garlic 3 cloves",
+      "tomato 3",
+      "pineapple 150g",
+      "okra 80g",
+      "bean_sprouts 50g",
     ],
-    seasoning: ["fish_sauce 2 tbsp", "pepper", "salt"],
+    seasoning: [
+      "Me 3 muỗng canh",
+      "Nước mắm 2 muỗng canh",
+      "Đường 1 muỗng canh",
+      "Muối 1 muỗng cà phê",
+      "Ớt sừng 2 trái"
+    ],
     instructions: [
-      "Ướp cá với gia vị, tẩm bột chiên giòn, chiên vàng đều các mặt.",
+      "Sơ chế cá: Cắt khúc vừa ăn, ướp với muối và nghệ 15 phút để khử mùi tanh. Cà chua thái múi cau, thơm cắt miếng vừa, đậu bắp thái xéo.",
+      "Nấu nước dùng: Đun sôi 1.5 lít nước, cho me vào khuấy tan. Thêm cà chua và thơm vào nấu 5 phút cho ngọt nước.",
+      "Nấu cá và rau: Cho cá vào nồi, nêm nước mắm, đường, muối vừa ăn. Đợi sôi trở lại thì cho đậu bắp vào. Tắt bếp, thêm giá đỗ và rau thơm.",
+      "Hoàn thiện: Nêm nếm lại gia vị cho vừa miệng, múc ra tô, ăn nóng với cơm trắng."
     ],
-    tags: ["fried", "crispy", "fish"],
-    like_count: 154,
+    tags: ["soup", "family", "southern"],
+    like_count: 156,
     is_community: true,
-    author_name: "Đức Anh",
-    author_avatar: "https://i.pravatar.cc/150?img=13",
-    requiredIngredients: ["fish", "garlic"],
+    author_name: "Nguyễn Minh Châu",
+    author_avatar: "https://i.pravatar.cc/150?img=1",
+    requiredIngredients: ["fish", "tomato", "pineapple", "okra"],
     nutrition_facts: {
-      calories: 380,
-      protein: 34,
-      carbs: 28,
-      fat: 15,
-      fiber: 1
+      calories: 210,
+      protein: 28,
+      carbs: 20,
+      fat: 4,
+      fiber: 5
     }
   },
 
-  // ========== MỨC ĐỘ KHÓ HƠN ==========
   {
-    title: "Bún Thịt Nướng",
+    title: "Mì Xào Hải Sản Sốt Mè",
     description:
-      "Bún thịt nướng thơm, ăn kèm rau sống, đồ chua và nước mắm chua ngọt.",
+      "Mì xào giòn thơm với tôm, mực và rau củ đầy đủ, phủ sốt mè béo ngậy, nhanh gọn cho bữa tối cuối tuần.",
     image_url:
-      "https://images.unsplash.com/photo-1589307000254-6d91a6f0d5d7?w=1200",
-    time_minutes: 35,
+      "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=1200",
+    time_minutes: 30,
     difficulty_score: 1,
-    ingredients_list: ["Bún 200g", "Thịt nướng 200g", "Rau sống", "Đồ chua"],
+    ingredients_list: [
+      "Mì trứng 250g",
+      "Tôm 150g",
+      "Mực 100g",
+      "Bắp cải 150g",
+      "Cà rốt 1 củ",
+      "Hành tây 1/2 củ",
+      "Tỏi 3 tép"
+    ],
     ingredients_list_fixed: [
-      "rice_noodles 200g",
-      "pork 200g",
-      "bean_sprouts 50g",
+      "noodles 250g",
+      "shrimp 150g",
+      "cabbage 150g",
+      "carrot 1",
+      "onion 0.5",
+      "garlic 3 cloves",
     ],
-    seasoning: ["fish_sauce", "sugar"],
+    seasoning: [
+      "Dầu mè 2 muỗng canh",
+      "Nước tương 2 muỗng canh",
+      "Dầu hào 1 muỗng canh",
+      "Đường 1 muỗng cà phê",
+      "Tiêu đen",
+      "Mè rang"
+    ],
     instructions: [
-      "Nướng thịt, chuẩn bị bún và rau, chan nước mắm pha chua ngọt trước khi ăn.",
+      "Sơ chế nguyên liệu: Luộc mì qua nước sôi 3 phút, vớt ra để ráo. Tôm bóc vỏ, mực cắt khoanh. Bắp cải thái sợi, cà rốt thái mỏng, hành tây thái múi, tỏi băm.",
+      "Xào hải sản: Làm nóng chảo với dầu, phi tỏi thơm. Cho tôm và mực vào xào nhanh tay 2 phút với lửa lớn cho chín tới.",
+      "Xào mì và rau: Đẩy hải sản qua một bên, cho rau củ vào xào 2 phút. Thêm mì vào, chan nước tương, dầu hào, đường, tóc đều. Rưới dầu mè lên trên.",
+      "Hoàn thiện: Đảo đều tất cả nguyên liệu với lửa lớn trong 1-2 phút. Tắt bếp, rắc tiêu và mè rang, trình bày ra đĩa ăn nóng."
     ],
-    tags: ["summer", "grill"],
-    like_count: 245,
+    tags: ["quick", "seafood", "stir-fry"],
+    like_count: 124,
     is_community: true,
-    author_name: "Thuỳ Dung",
-    author_avatar: "https://i.pravatar.cc/150?img=8",
-    requiredIngredients: ["rice_noodles", "pork"],
+    author_name: "Lê Thu Hằng",
+    author_avatar: "https://i.pravatar.cc/150?img=2",
+    requiredIngredients: ["noodles", "shrimp", "cabbage", "carrot"],
     nutrition_facts: {
       calories: 420,
       protein: 26,
-      carbs: 58,
-      fat: 10,
-      fiber: 4
+      carbs: 56,
+      fat: 11,
+      fiber: 6
     }
   },
 
   {
-    title: "Nem Rán (Chả Giò)",
-    description: "Nem rán giòn rụm, nhân thịt và nấm, ăn kèm bún và rau sống.",
+    title: "Đậu Hũ Sốt Cà Chua Nấm",
+    description: "Đậu hũ non mềm mịn kết hợp với sốt cà chua cà chua ngọt đậm, nấm hương thơm lừng, món chay bổ dưỡng cho cả nhà.",
     image_url:
-      "https://images.unsplash.com/photo-1544025163-3b2b2d3c2a7b?w=1200",
-    time_minutes: 50,
-    difficulty_score: 2,
-    ingredients_list: ["Bánh tráng 10 tờ", "Thịt băm 200g", "Nấm 50g", "Giá đỗ 50g"],
+      "https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?w=1200",
+    time_minutes: 30,
+    difficulty_score: 1,
+    ingredients_list: [
+      "Đậu hũ non 400g",
+      "Cà chua 4 trái",
+      "Hành tây 1 củ",
+      "Nấm hương 150g",
+      "Tỏi 3 tép",
+      "Hành lá 2 cây"
+    ],
     ingredients_list_fixed: [
-      "rice_paper 10",
-      "pork 200g",
-      "mushroom 50g",
-      "bean_sprouts 50g",
+      "tofu 400g",
+      "tomato 4",
+      "onion 1",
+      "mushroom 150g",
+      "garlic 3 cloves",
+      "spring_onion 2",
     ],
-    seasoning: ["fish_sauce", "pepper"],
+    seasoning: [
+      "Dầu ăn 3 muỗng canh",
+      "Nước tương 2 muỗng canh",
+      "Đường 1 muỗng cà phê",
+      "Bột ngọt 1/2 muỗng cà phê",
+      "Tiêu",
+      "Bột năng (hoặc bột bắp) 1 muỗng cà phê"
+    ],
     instructions: [
-      "Cuộn nem với nhân, chiên vàng, ăn kèm nước chấm pha chua ngọt.",
+      "Sơ chế nguyên liệu: Đậu hũ cắt miếng vuông 3cm, thấm khô. Cà chua thái múi, hành tây thái múi, nấm ngâm mềm thái lát, tỏi băm, hành lá thái khúc 3cm.",
+      "Chiên đậu hũ: Làm nóng dầu trong chảo, chiên đậu hũ vàng đều các mặt với lửa vừa. Vớt ra để ráo dầu.",
+      "Nấu sốt cà chua: Dùng lại dầu chiên đậu, phi tỏi thơm, cho hành tây vào xào. Thêm cà chua và nấm, xào cho cà chua ra nước. Nêm nước tương, đường, bột ngọt, cho 100ml nước vào.",
+      "Hoàn thiện món: Đun sôi 3-4 phút, cho đậu hũ vào đảo nhẹ cho thấm gia vị. Pha bột năng với 2 muỗng nước, từ từ đổ vào khuấy đều cho sệt sốt. Rắc tiêu và hành lá, tắt bếp."
     ],
-    tags: ["appetizer", "party"],
-    like_count: 198,
+    tags: ["vegetarian", "easy", "healthy"],
+    like_count: 98,
     is_community: true,
-    author_name: "Văn Bình",
-    author_avatar: "https://i.pravatar.cc/150?img=9",
-    requiredIngredients: ["rice_paper", "pork", "mushroom"],
+    author_name: "Trần Minh Anh",
+    author_avatar: "https://i.pravatar.cc/150?img=3",
+    requiredIngredients: ["tofu", "tomato", "onion", "mushroom"],
     nutrition_facts: {
-      calories: 340,
+      calories: 245,
       protein: 18,
-      carbs: 38,
-      fat: 14,
-      fiber: 3
-    }
-  },
-
-  {
-    title: "Bún Riêu Cua",
-    description: "Bún riêu cua với nước dùng đỏ thơm, nhiều topping.",
-    image_url:
-      "https://images.unsplash.com/photo-1604908177435-6b9f1a0d5f4f?w=1200",
-    time_minutes: 70,
-    difficulty_score: 3,
-    ingredients_list: ["Bún 250g", "Riêu cua 200g", "Cà chua 3 trái", "Đậu hũ 100g", "Tôm 100g"],
-    ingredients_list_fixed: [
-      "rice_noodles 250g",
-      "crab_paste 200g",
-      "tomato 3",
-      "tofu 100g",
-      "shrimp 100g",
-    ],
-    seasoning: ["fish_sauce 3 tbsp", "mam_tom 1 tbsp", "sugar 1 tbsp"],
-    instructions: [
-      "Nấu nước dùng với cà chua, cho riêu cua vào, thêm đậu hũ và tôm, nêm vừa ăn, chan lên bún.",
-    ],
-    tags: ["noodles", "traditional", "complex"],
-    like_count: 267,
-    is_community: true,
-    author_name: "Kim Chi",
-    author_avatar: "https://i.pravatar.cc/150?img=14",
-    requiredIngredients: ["rice_noodles", "tomato", "tofu", "shrimp"],
-    nutrition_facts: {
-      calories: 445,
-      protein: 32,
-      carbs: 54,
+      carbs: 22,
       fat: 12,
       fiber: 6
     }
   },
 
   {
-    title: "Hủ Tiếu Nam Vang",
-    description: "Hủ tiếu Nam Vang với nước dùng ngọt thanh, đa dạng topping.",
+    title: "Gà Kho Gừng",
+    description: "Gà kho với gừng tươi thơm nồng, màu nước cánh gián bóng mượt, món ngon hao cơm cho bữa cơm gia đình.",
     image_url:
-      "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=1200",
-    time_minutes: 80,
-    difficulty_score: 3,
-    ingredients_list: ["Hủ tiếu 250g", "Tôm 150g", "Thịt heo 150g", "Gan heo 100g", "Tỏi 5 tép"],
+      "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=1200",
+    time_minutes: 45,
+    difficulty_score: 2,
+    ingredients_list: [
+      "Thịt gà (đùi, cánh) 500g",
+      "Gừng tươi 50g",
+      "Hành tím 5 củ",
+      "Ớt hiểm 3 trái",
+      "Sả 2 cây"
+    ],
     ingredients_list_fixed: [
-      "rice_noodles 250g",
-      "shrimp 150g",
-      "pork 150g",
-      "pork_liver 100g",
+      "chicken 500g",
       "garlic 5 cloves",
+      "pepper 3",
+      "lemongrass 2",
     ],
-    seasoning: ["fish_sauce 3 tbsp", "sugar 1 tbsp", "pepper"],
+    seasoning: [
+      "Nước mắm 3 muỗng canh",
+      "Đường 1.5 muỗng canh",
+      "Nước màu (đường đun cháy) 1 muỗng canh",
+      "Tiêu đen",
+      "Hạt nêm"
+    ],
     instructions: [
-      "Ninh nước dùng ngọt từ xương, chuẩn bị topping, chần hủ tiếu và chan nước dùng.",
+      "Sơ chế và ướp: Gà chặt miếng vừa ăn, rửa sạch. Gừng thái lát mỏng, hành tím bóc vỏ, sả đập dập. Ướp gà với nước mắm, đường, tiêu, gừng trong 20 phút.",
+      "Làm màu kho: Đun 1.5 muỗng đường với 1 muỗng nước trên lửa nhỏ cho đến khi hóa màu nâu sẫm (nước màu). Thêm 50ml nước vào khuấy đều.",
+      "Kho gà: Bắc chảo lên bếp, cho dầu phi hành tím thơm. Cho gà đã ướp vào, xào săn thịt. Đổ nước màu vào, thêm nước ngập gà. Cho sả và ớt vào.",
+      "Hoàn thiện: Kho với lửa vừa đến nhỏ khoảng 25-30 phút cho gà mềm và nước sệt lại. Nêm nếm lại, thu lửa to để nước sánh bóng. Tắt bếp, rắc tiêu."
     ],
-    tags: ["noodles", "saigon", "comfort"],
-    like_count: 223,
+    tags: ["braised", "chicken", "family"],
+    like_count: 187,
     is_community: true,
-    author_name: "Minh Quân",
-    author_avatar: "https://i.pravatar.cc/150?img=15",
-    requiredIngredients: ["rice_noodles", "shrimp", "pork", "garlic"],
+    author_name: "Phạm Văn Hùng",
+    author_avatar: "https://i.pravatar.cc/150?img=10",
+    requiredIngredients: ["chicken", "garlic", "pepper", "lemongrass"],
     nutrition_facts: {
-      calories: 485,
-      protein: 36,
-      carbs: 60,
-      fat: 11,
-      fiber: 3
+      calories: 320,
+      protein: 32,
+      carbs: 12,
+      fat: 16,
+      fiber: 1
     }
   },
 
   {
-    title: "Bánh Khọt Vũng Tàu",
-    description: "Bánh khọt giòn ngoài mềm trong, ăn kèm tôm và rau sống.",
+    title: "Canh Khổ Qua Nhồi Thịt",
+    description: "Canh khổ qua nhồi thịt thanh mát, đắng nhẹ hòa quyện với vị ngọt của nước dùng, món canh bổ dưỡng giải nhiệt mùa hè.",
     image_url:
-      "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=1200",
-    time_minutes: 55,
-    difficulty_score: 3,
-    ingredients_list: ["Bột gạo 250g", "Tôm 200g", "Nước dừa 200ml", "Hành lá 1 bó"],
+      "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=1200",
+    time_minutes: 40,
+    difficulty_score: 2,
+    ingredients_list: [
+      "Khổ qua 3 trái",
+      "Thịt heo xay 200g",
+      "Mộc nhĩ 30g",
+      "Miến 50g",
+      "Hành tím 2 củ",
+      "Hành lá"
+    ],
     ingredients_list_fixed: [
-      "rice_flour 250g",
-      "shrimp 200g",
-      "coconut 200ml",
-      "spring_onion 1 bunch",
+      "pork 200g",
+      "mushroom 30g",
+      "onion 2",
+      "spring_onion 2",
     ],
-    seasoning: ["fish_sauce", "turmeric", "salt"],
+    seasoning: [
+      "Nước mắm 2 muỗng canh",
+      "Đường 1 muỗng cà phê",
+      "Hạt nêm",
+      "Tiêu",
+      "Muối"
+    ],
     instructions: [
-      "Pha bột với nước dừa và nghệ, đổ vào khuôn bánh khọt, cho tôm vào, chiên giòn.",
+      "Sơ chế và làm nhân: Khổ qua cắt khúc 5cm, bỏ ruột, chần qua nước muối. Thịt xay trộn với mộc nhĩ thái nhỏ, miến ngắn, hành băm, nêm gia vị.",
+      "Nhồi thịt vào khổ qua: Lấy thìa hoặc tay nhồi nhân thịt vào lòng khổ qua, ấn nhẹ cho chắc. Đặt khổ qua nhồi lên đĩa.",
+      "Nấu canh: Đun sôi 1 lít nước, cho khổ qua nhồi thịt vào, nấu lửa vừa 15-20 phút. Nêm nước mắm, đường, hạt nêm vừa ăn.",
+      "Hoàn thiện: Khi thịt chín, khổ qua mềm thì tắt bếp. Rắc hành lá thái nhỏ, tiêu lên trên. Múc ra tô ăn nóng."
     ],
-    tags: ["banh", "southern", "crispy"],
-    like_count: 192,
+    tags: ["soup", "stuffed", "summer"],
+    like_count: 142,
     is_community: true,
-    author_name: "Lan Phương",
-    author_avatar: "https://i.pravatar.cc/150?img=16",
-    requiredIngredients: ["shrimp", "coconut", "spring_onion"],
+    author_name: "Mai Thị Lan",
+    author_avatar: "https://i.pravatar.cc/150?img=11",
+    requiredIngredients: ["pork", "mushroom", "onion", "spring_onion"],
+    nutrition_facts: {
+      calories: 185,
+      protein: 16,
+      carbs: 14,
+      fat: 8,
+      fiber: 4
+    }
+  },
+
+  // ========== MỨC ĐỘ VỪA ==========
+  {
+    title: "Thịt Kho Tàu Truyền Thống",
+    description:
+      "Thịt kho tàu theo công thức gia truyền với nước dừa, trứng luộc, màu nước cánh gián bóng mượt, thơm đậm đà đúng vị Tết cổ truyền.",
+    image_url:
+      "https://images.unsplash.com/photo-1603073163308-9ab1de79b02d?w=1200",
+    time_minutes: 90,
+    difficulty_score: 2,
+    ingredients_list: [
+      "Thịt ba chỉ 600g",
+      "Trứng gà 6 quả",
+      "Nước dừa tươi 400ml",
+      "Tỏi 6 tép",
+      "Hành tím 4 củ"
+    ],
+    ingredients_list_fixed: [
+      "pork 600g",
+      "egg 6",
+      "coconut 400ml",
+      "garlic 6 cloves",
+    ],
+    seasoning: [
+      "Nước mắm 4 muỗng canh",
+      "Đường phên (hoặc đường trắng) 2 muỗng canh",
+      "Nước màu 1.5 muỗng canh",
+      "Tiêu đen xay",
+      "Hạt nêm"
+    ],
+    instructions: [
+      "Sơ chế nguyên liệu: Thịt ba chỉ rửa sạch, luộc sơ 10 phút để ra bọt, vớt ra cắt miếng vuông 3-4cm. Trứng luộc chín, bóc vỏ. Tỏi, hành tím bóc vỏ, đập dập.",
+      "Ướp và làm màu: Ướp thịt với nước mắm, đường, tỏi, tiêu trong 15 phút. Đun đường với nước để làm nước màu, khi đường chuyển sang màu nâu đỏ thì tắt bếp.",
+      "Kho thịt giai đoạn 1: Bắc nồi lên bếp, cho chút dầu phi hành tím thơm. Cho thịt đã ướp vào xào săn. Đổ nước màu và nước dừa vào, khuấy đều. Đun sôi rồi hạ lửa nhỏ.",
+      "Kho thịt giai đoạn 2: Kho trong 60 phút với lửa liu riu, đậy vung để thịt mềm. Sau 40 phút cho trứng vào kho cùng. Khi nước còn 1/3, bật lửa vừa để thu nước sệt và bóng. Nêm nếm lại, tắt bếp."
+    ],
+    tags: ["traditional", "holiday", "braised"],
+    like_count: 234,
+    is_community: true,
+    author_name: "Phạm Thị Hải",
+    author_avatar: "https://i.pravatar.cc/150?img=4",
+    requiredIngredients: ["pork", "egg", "coconut", "garlic"],
+    nutrition_facts: {
+      calories: 485,
+      protein: 35,
+      carbs: 18,
+      fat: 32,
+      fiber: 1
+    }
+  },
+
+  {
+    title: "Mì Quảng Đà Nẵng",
+    description:
+      "Mì Quảng đặc trưng miền Trung với nước lèo màu nghệ, nước ít nhưng đậm đà, nhiều topping thịt tôm và rau thơm, món ăn đặc sắc vùng biển.",
+    image_url:
+      "https://images.unsplash.com/photo-1604908177435-6b9f1a0d5f4f?w=1200",
+    time_minutes: 50,
+    difficulty_score: 2,
+    ingredients_list: [
+      "Mì Quảng (bánh đa vàng) 300g",
+      "Tôm 150g",
+      "Thịt heo 150g",
+      "Trứng cút 6 quả",
+      "Rau sống (xà lách, húng, tía tô)",
+      "Đậu phộng rang 50g",
+      "Bánh tráng nướng 2 tờ"
+    ],
+    ingredients_list_fixed: [
+      "noodles 300g",
+      "shrimp 150g",
+      "pork 150g",
+      "egg 6",
+      "bean_sprouts 80g",
+    ],
+    seasoning: [
+      "Nước mắm 3 muỗng canh",
+      "Hành tím 4 củ",
+      "Tỏi 3 tép",
+      "Nghệ tươi 1 củ",
+      "Ớt",
+      "Hạt nêm"
+    ],
+    instructions: [
+      "Sơ chế nguyên liệu: Thịt heo thái mỏng, ướp nghệ, nước mắm, hành tím băm. Tôm bóc vỏ. Trứng cút luộc chín. Nghệ tươi giã nát lấy nước. Rau rửa sạch.",
+      "Nấu nước lèo: Phi hành tỏi thơm, cho thịt đã ướp vào xào. Đổ 500ml nước vào, nêm nước mắm, hạt nêm. Cho nước nghệ vào, đun sôi 15 phút.",
+      "Trụng mì và chuẩn bị topping: Luộc mì Quảng qua nước sôi 2-3 phút, vớt ra để ráo. Cho tôm vào nước lèo chần chín. Chiên trứng cút.",
+      "Trình bày và hoàn thiện: Cho mì vào tô, chan nước lèo vừa đủ (không ngập mì). Xếp thịt, tôm, trứng cút, rau sống lên trên. Rắc đậu phộng, bánh tráng vò nhỏ và ớt."
+    ],
+    tags: ["regional", "noodles", "central"],
+    like_count: 198,
+    is_community: true,
+    author_name: "Võ Mai Hương",
+    author_avatar: "https://i.pravatar.cc/150?img=5",
+    requiredIngredients: ["noodles", "shrimp", "pork", "egg"],
+    nutrition_facts: {
+      calories: 520,
+      protein: 32,
+      carbs: 64,
+      fat: 15,
+      fiber: 5
+    }
+  },
+
+  {
+    title: "Bò Lúc Lắc Khoai Tây Chiên",
+    description:
+      "Bò lúc lắc thái hạt lựu áp chảo nhanh giữ độ mềm ngọt, ăn kèm khoai tây chiên giòn và salad rau tươi, món sang trọng cho bữa tối.",
+    image_url:
+      "https://images.unsplash.com/photo-1553621042-f6e147245754?w=1200",
+    time_minutes: 35,
+    difficulty_score: 2,
+    ingredients_list: [
+      "Thịt bò thăn 400g",
+      "Khoai tây 2 củ",
+      "Hành tây 1 củ",
+      "Tỏi 3 tép",
+      "Cà chua bi 10 trái",
+      "Xà lách 100g"
+    ],
+    ingredients_list_fixed: [
+      "beef 400g",
+      "potato 2",
+      "onion 1",
+      "garlic 3 cloves",
+      "tomato 10",
+    ],
+    seasoning: [
+      "Nước tương 2 muỗng canh",
+      "Dầu hào 1 muỗng canh",
+      "Đường 1 muỗng cà phê",
+      "Tiêu đen xay",
+      "Dầu ăn",
+      "Bơ 1 muỗng canh"
+    ],
+    instructions: [
+      "Sơ chế và ướp bò: Thịt bò thái hạt lựu (2cm), ướp với nước tương, tỏi băm, đường, tiêu trong 20 phút. Khoai tây gọt vỏ thái que, rửa sạch, lau khô.",
+      "Chiên khoai tây: Đun nóng dầu sâu lòng chảo, chiên khoai tây với lửa vừa cho đến khi vàng giòn. Vớt ra để ráo dầu, rắc muối.",
+      "Áp chảo bò: Làm nóng chảo gang hoặc chảo chống dính với lửa lớn. Cho bơ và dầu vào, khi bơ tan thì cho bò vào. Lắc chảo hoặc đảo nhanh trong 2-3 phút (bò chín tái).",
+      "Hoàn thiện món: Cho hành tây thái múi vào xào cùng bò 1 phút. Nêm nếm lại gia vị. Tắt bếp. Trình bày bò lên đĩa với khoai chiên, xà lách và cà chua bi."
+    ],
+    tags: ["beef", "dinner", "fancy"],
+    like_count: 276,
+    is_community: true,
+    author_name: "Đỗ Hoàng Nam",
+    author_avatar: "https://i.pravatar.cc/150?img=6",
+    requiredIngredients: ["beef", "potato", "onion", "garlic"],
+    nutrition_facts: {
+      calories: 445,
+      protein: 38,
+      carbs: 32,
+      fat: 20,
+      fiber: 4
+    }
+  },
+
+  {
+    title: "Cháo Gà Quay Thơm Nức",
+    description:
+      "Cháo gà trắng mịn màng kết hợp với gà quay giòn da thơm nức, món ăn bổ dưỡng vừa thanh nhẹ vừa đậm đà, thích hợp cho người ốm dậy hoặc bữa sáng cuối tuần.",
+    image_url:
+      "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=1200",
+    time_minutes: 75,
+    difficulty_score: 2,
+    ingredients_list: [
+      "Gạo tẻ 200g",
+      "Đùi gà 2 cái (400g)",
+      "Gừng tươi 30g",
+      "Hành lá 3 cây",
+      "Rau thơm (ngò, mùi tàu)"
+    ],
+    ingredients_list_fixed: [
+      "rice 200g",
+      "chicken 400g",
+      "garlic 3 cloves",
+      "spring_onion 3",
+    ],
+    seasoning: [
+      "Nước mắm",
+      "Muối",
+      "Đường 1 muỗng cà phê",
+      "Tiêu",
+      "Hạt nêm",
+      "Dầu ăn",
+      "Rượu trắng 1 muỗng canh"
+    ],
+    instructions: [
+      "Sơ chế và luộc gà: Gà rửa sạch, chà muối và gừng để khử mùi, ướp rượu 10 phút. Đun sôi nồi nước với gừng đập dập, cho gà vào luộc 20 phút lửa vừa. Vớt gà ra, để nguội.",
+      "Ninh cháo: Gạo vo sạch, ngâm 15 phút. Dùng nước luộc gà (khoảng 1.5 lít) để nấu cháo. Cho gạo vào nấu với lửa nhỏ 40-45 phút, thỉnh thoảng khuấy đều. Nêm muối, hạt nêm.",
+      "Quay gà giòn da: Thoa đều dầu lên da gà. Đặt gà vào lò nướng hoặc chảo, quay/chiên ở nhiệt độ 180°C khoảng 15 phút cho da vàng giòn. Chặt miếng vừa ăn.",
+      "Hoàn thiện món: Múc cháo ra tô, xếp thịt gà quay lên trên. Rắc hành lá, gừng thái sợi, rau thơm, tiêu. Ăn kèm nước mắm gừng."
+    ],
+    tags: ["comfort-food", "breakfast", "chicken"],
+    like_count: 212,
+    is_community: true,
+    author_name: "Lý Ngọc Lan",
+    author_avatar: "https://i.pravatar.cc/150?img=7",
+    requiredIngredients: ["rice", "chicken", "garlic", "spring_onion"],
+    nutrition_facts: {
+      calories: 425,
+      protein: 32,
+      carbs: 56,
+      fat: 9,
+      fiber: 2
+    }
+  },
+
+  {
+    title: "Cá Diêu Hồng Chiên Sốt Cà",
+    description: "Cá diêu hồng chiên giòn nguyên con, sốt cà chua chua ngọt đậm đà với thơm, món ngon hao cơm cho bữa cơm gia đình.",
+    image_url:
+      "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=1200",
+    time_minutes: 40,
+    difficulty_score: 2,
+    ingredients_list: [
+      "Cá diêu hồng 2 con (600g)",
+      "Cà chua 4 trái",
+      "Thơm 150g",
+      "Hành tây 1 củ",
+      "Tỏi 4 tép",
+      "Ớt 2 trái"
+    ],
+    ingredients_list_fixed: [
+      "fish 600g",
+      "tomato 4",
+      "pineapple 150g",
+      "onion 1",
+      "garlic 4 cloves",
+      "pepper 2",
+    ],
+    seasoning: [
+      "Nước mắm 3 muỗng canh",
+      "Đường 2 muỗng canh",
+      "Dấm 1 muỗng canh",
+      "Tương ớt 1 muỗng canh",
+      "Bột năng 1 muỗng cà phê",
+      "Nghệ bột"
+    ],
+    instructions: [
+      "Sơ chế cá: Cá rửa sạch, rạch 2-3 đường trên lưng, ướp muối, nghệ, tiêu 15 phút. Thấm khô cá trước khi chiên.",
+      "Chiên cá: Làm nóng chảo dầu sâu, chiên cá với lửa vừa cho đến khi vàng giòn đều 2 mặt (khoảng 10 phút). Vớt ra đĩa lót giấy thấm dầu.",
+      "Nấu sốt cà chua: Dùng lại chảo với chút dầu, phi tỏi băm và hành tây thái múi. Cho cà chua thái múi vào xào đến khi cà chua nhũn. Thêm thơm thái miếng, ớt.",
+      "Hoàn thiện: Nêm nước mắm, đường, dấm, tương ớt vào sốt. Cho 100ml nước, đun sôi. Pha bột năng với nước, đổ vào khuấy đều cho sốt sệt. Chan sốt lên cá, rắc hành lá."
+    ],
+    tags: ["fried", "fish", "sweet-sour"],
+    like_count: 189,
+    is_community: true,
+    author_name: "Nguyễn Đức Anh",
+    author_avatar: "https://i.pravatar.cc/150?img=13",
+    requiredIngredients: ["fish", "tomato", "pineapple", "onion", "garlic"],
     nutrition_facts: {
       calories: 395,
-      protein: 24,
-      carbs: 52,
-      fat: 11,
-      fiber: 3
+      protein: 36,
+      carbs: 32,
+      fat: 14,
+      fiber: 4
+    }
+  },
+
+  // ========== MỨC ĐỘ KHÓ HƠN ==========
+  {
+    title: "Bún Thịt Nướng Sả Nghệ",
+    description:
+      "Bún thịt nướng thơm lừng với sả nghệ, thịt mềm ngọt ăn kèm rau sống, đồ chua, bún trắng và nước mắm chua ngọt đậm đà, món ăn hè đặc trưng miền Nam.",
+    image_url:
+      "https://images.unsplash.com/photo-1589307000254-6d91a6f0d5d7?w=1200",
+    time_minutes: 50,
+    difficulty_score: 2,
+    ingredients_list: [
+      "Bún tươi 300g",
+      "Thịt vai heo 400g",
+      "Sả 3 cây",
+      "Rau sống (xà lách, húng, tía tô)",
+      "Dưa leo 1 trái",
+      "Cà rốt 1 củ",
+      "Đậu phộng rang 50g"
+    ],
+    ingredients_list_fixed: [
+      "rice_noodles 300g",
+      "pork 400g",
+      "lemongrass 3",
+      "bean_sprouts 80g",
+      "carrot 1",
+    ],
+    seasoning: [
+      "Nước mắm 3 muỗng canh",
+      "Đường 2 muỗng canh",
+      "Tỏi 5 tép",
+      "Nghệ bột 1 muỗng cà phê",
+      "Dầu ăn 2 muỗng canh",
+      "Dấm 2 muỗng canh"
+    ],
+    instructions: [
+      "Ướp và ướp thịt: Thịt thái lát mỏng 0.5cm. Sả băm nhuyễn, tỏi băm. Ướp thịt với sả, tỏi, nghệ, nước mắm, đường, dầu trong 2 giờ (hoặc qua đêm trong tủ lạnh).",
+      "Chuẩn bị đồ chua và rau: Cà rốt, dưa leo thái sợi nhỏ, ngâm với đường, dấm, muối 30 phút. Rau rửa sạch, để ráo. Pha nước mắm chua ngọt.",
+      "Nướng thịt: Làm nóng vỉ nướng hoặc chảo gang với lửa lớn. Nướng thịt đã ướp từng lát, khoảng 2-3 phút mỗi mặt cho thịt chín vàng thơm, có vết cháy xém nhẹ.",
+      "Hoàn thiện và trình bày: Chần bún qua nước sôi. Xếp bún vào tô, rau sống, đồ chua xung quanh. Xếp thịt nướng lên trên, rắc đậu phộng rang giã nhỏ, hành phi. Chan nước mắm chua ngọt."
+    ],
+    tags: ["summer", "grill", "noodles"],
+    like_count: 312,
+    is_community: true,
+    author_name: "Trần Thuỳ Dung",
+    author_avatar: "https://i.pravatar.cc/150?img=8",
+    requiredIngredients: ["rice_noodles", "pork", "lemongrass", "carrot"],
+    nutrition_facts: {
+      calories: 485,
+      protein: 30,
+      carbs: 62,
+      fat: 13,
+      fiber: 5
+    }
+  },
+
+  {
+    title: "Nem Rán (Chả Giò) Miền Nam",
+    description: "Nem rán giòn rụm với vỏ bánh tráng vàng ươm, nhân thịt băm, nấm, mộc nhĩ, miến thơm ngon, món khai vị hoặc ăn kèm bún đều ngon.",
+    image_url:
+      "https://images.unsplash.com/photo-1544025163-3b2b2d3c2a7b?w=1200",
+    time_minutes: 60,
+    difficulty_score: 3,
+    ingredients_list: [
+      "Bánh tráng 20 tờ",
+      "Thịt heo xay 300g",
+      "Tôm 100g",
+      "Nấm mèo (mộc nhĩ) 50g",
+      "Miến 50g",
+      "Cà rốt 1 củ",
+      "Hành tím 3 củ",
+      "Trứng gà 2 quả"
+    ],
+    ingredients_list_fixed: [
+      "rice_paper 20",
+      "pork 300g",
+      "shrimp 100g",
+      "mushroom 50g",
+      "carrot 1",
+    ],
+    seasoning: [
+      "Nước mắm 2 muỗng canh",
+      "Đường 1 muỗng cà phê",
+      "Tiêu",
+      "Hạt nêm",
+      "Dầu chiên"
+    ],
+    instructions: [
+      "Sơ chế và làm nhân: Nấm, miến ngâm nở thái nhỏ. Tôm băm nhỏ. Cà rốt bào sợi. Trộn thịt xay với tất cả nguyên liệu trên, thêm 1 quả trứng, nêm nước mắm, đường, tiêu, hạt nêm. Trộn đều, ướp 15 phút.",
+      "Chuẩn bị bánh tráng: Dùng khăn ẩm hoặc nước lọc phết nhẹ lên bánh tráng cho mềm dẻo (không quá ướt). Đợi 30 giây.",
+      "Cuộn nem: Đặt 1.5 muỗng canh nhân vào 1/3 dưới bánh tráng. Gấp 2 bên vào, cuộn chặt từ dưới lên. Dùng hỗn hợp trứng để dính miệng nem.",
+      "Chiên nem: Đun nóng dầu sâu lòng chảo với lửa vừa (170°C). Cho nem vào chiên từng đợt, đảo đều cho vàng giòn đều các mặt (10-12 phút). Vớt ra để ráo dầu. Ăn nóng với nước mắm chua ngọt và rau sống."
+    ],
+    tags: ["appetizer", "party", "crispy"],
+    like_count: 267,
+    is_community: true,
+    author_name: "Lê Văn Bình",
+    author_avatar: "https://i.pravatar.cc/150?img=9",
+    requiredIngredients: ["rice_paper", "pork", "shrimp", "mushroom", "carrot"],
+    nutrition_facts: {
+      calories: 385,
+      protein: 20,
+      carbs: 42,
+      fat: 16,
+      fiber: 4
+    }
+  },
+
+  {
+    title: "Bún Riêu Cua Đồng",
+    description: "Bún riêu cua đồng với nước dùng đỏ thơm từ cà chua, riêu cua, nhiều topping đậu hũ, tôm, thịt, món ăn truyền thống Hà Nội.",
+    image_url:
+      "https://images.unsplash.com/photo-1604908177435-6b9f1a0d5f4f?w=1200",
+    time_minutes: 80,
+    difficulty_score: 3,
+    ingredients_list: [
+      "Bún tươi 400g",
+      "Riêu cua (cua đồng) 200g",
+      "Cà chua 5 trái",
+      "Đậu hũ 200g",
+      "Tôm 150g",
+      "Huyết heo 100g",
+      "Rau muống 100g",
+      "Bạc hà 50g"
+    ],
+    ingredients_list_fixed: [
+      "rice_noodles 400g",
+      "tomato 5",
+      "tofu 200g",
+      "shrimp 150g",
+    ],
+    seasoning: [
+      "Nước mắm 4 muỗng canh",
+      "Mắm tôm 1.5 muỗng canh",
+      "Đường 1 muỗng canh",
+      "Hành tím 5 củ",
+      "Muối",
+      "Hạt nêm"
+    ],
+    instructions: [
+      "Sơ chế nguyên liệu: Cà chua thái múi to. Đậu hũ chiên vàng, cắt miếng tam giác. Huyết luộc chín, cắt miếng. Rau rửa sạch. Tôm bóc vỏ.",
+      "Nấu nước dùng: Đun sôi 2 lít nước. Phi hành tím thơm, cho cà chua vào xào cho nhũn. Đổ vào nồi nước, nêm nước mắm, đường, muối. Đun sôi 10 phút.",
+      "Làm riêu và nấu: Riêu cua trộn đều với 1 ít nước, từ từ cho vào nồi nước dùng đang sôi, khuấy nhẹ. Cho đậu hũ, tôm vào nấu 5 phút. Thêm mắm tôm, nêm nếm lại.",
+      "Hoàn thiện món: Chần bún, rau qua nước sôi. Cho bún vào tô, múc riêu cùng topping lên. Thêm rau muống, bạc hà, huyết. Ăn kèm chanh, ớt, mắm tôm."
+    ],
+    tags: ["noodles", "traditional", "hanoi"],
+    like_count: 298,
+    is_community: true,
+    author_name: "Vũ Kim Chi",
+    author_avatar: "https://i.pravatar.cc/150?img=14",
+    requiredIngredients: ["rice_noodles", "tomato", "tofu", "shrimp"],
+    nutrition_facts: {
+      calories: 465,
+      protein: 34,
+      carbs: 58,
+      fat: 13,
+      fiber: 7
+    }
+  },
+
+  {
+    title: "Hủ Tiếu Nam Vang Sài Gòn",
+    description: "Hủ tiếu Nam Vang với nước dùng ngọt thanh từ xương heo, nhiều topping tôm, thịt, gan, lòng, món ăn đường phố đặc trưng Sài Gòn.",
+    image_url:
+      "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=1200",
+    time_minutes: 90,
+    difficulty_score: 3,
+    ingredients_list: [
+      "Hủ tiếu khô 300g",
+      "Tôm 200g",
+      "Thịt heo xay 150g",
+      "Thịt heo luộc 150g",
+      "Gan heo 100g",
+      "Xương heo 500g",
+      "Tỏi 6 tép",
+      "Giá đỗ 100g"
+    ],
+    ingredients_list_fixed: [
+      "rice_noodles 300g",
+      "shrimp 200g",
+      "pork 300g",
+      "garlic 6 cloves",
+      "bean_sprouts 100g",
+    ],
+    seasoning: [
+      "Nước mắm 4 muỗng canh",
+      "Đường phên 1.5 muỗng canh",
+      "Bột ngọt",
+      "Tiêu",
+      "Muối",
+      "Hành tím phi"
+    ],
+    instructions: [
+      "Ninh nước dùng: Xương heo blanch qua nước sôi, rửa sạch. Cho vào nồi với 2.5 lít nước lạnh, đun sôi rồi hạ lửa nhỏ ninh 60 phút. Vớt bỏ xương, lọc nước trong.",
+      "Sơ chế topping: Thịt xay nặn thành viên nhỏ. Thịt heo luộc thái lát mỏng. Gan luộc vừa chín thái lát. Tôm bóc vỏ. Tỏi băm phi vàng.",
+      "Nấu nước dùng hoàn chỉnh: Nêm nước dùng với nước mắm, đường, bột ngọt vừa ăn. Cho thịt viên và gan vào nấu chín. Cho tôm vào chần chín.",
+      "Hoàn thiện món: Chần hủ tiếu và giá đỗ qua nước sôi. Cho hủ tiếu vào tô, xếp topping đầy đủ. Chan nước dùng nóng. Rắc hành tím phi, tiêu, thêm rau thơm. Ăn kèm tương ớt và chanh."
+    ],
+    tags: ["noodles", "saigon", "comfort"],
+    like_count: 278,
+    is_community: true,
+    author_name: "Lâm Minh Quân",
+    author_avatar: "https://i.pravatar.cc/150?img=15",
+    requiredIngredients: ["rice_noodles", "shrimp", "pork", "garlic", "bean_sprouts"],
+    nutrition_facts: {
+      calories: 525,
+      protein: 38,
+      carbs: 64,
+      fat: 13,
+      fiber: 4
+    }
+  },
+
+  {
+    title: "Bánh Xèo Miền Tây",
+    description: "Bánh xèo miền Tây giòn tan, size lớn, nhân tôm thịt đầy đặn, ăn kèm rau sống và nước mắm chua ngọt, món đặc sản miền sông nước.",
+    image_url:
+      "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=1200",
+    time_minutes: 60,
+    difficulty_score: 3,
+    ingredients_list: [
+      "Bột bánh xèo 300g",
+      "Nước dừa 400ml",
+      "Tôm 200g",
+      "Thịt ba chỉ 150g",
+      "Giá đỗ 200g",
+      "Hành lá 3 cây",
+      "Rau sống (xà lách, tía tô, húng)"
+    ],
+    ingredients_list_fixed: [
+      "shrimp 200g",
+      "pork 150g",
+      "bean_sprouts 200g",
+      "spring_onion 3",
+      "coconut 400ml",
+    ],
+    seasoning: [
+      "Nghệ bột 1 muỗng cà phê",
+      "Muối",
+      "Đường",
+      "Nước mắm 3 muỗng canh",
+      "Tỏi 3 tép",
+      "Ớt 2 trái"
+    ],
+    instructions: [
+      "Pha bột bánh xèo: Trộn bột bánh xèo với nước dừa, thêm nghệ, muối, khuấy đều. Để bột nghỉ 30 phút. Độ sệt vừa phải (hơi loãng một chút).",
+      "Sơ chế nhân: Thịt ba chỉ thái lát mỏng, ướp muối, tiêu. Tôm bóc vỏ, rửa sạch. Giá rửa sạch, để ráo. Hành lá thái khúc 3cm.",
+      "Đổ bánh: Làm nóng chảo lớn với dầu. Cho thịt vào xào sơ, thêm tôm. Múc 1 muôi lớn bột đổ vào chảo, lắc đều cho bột phủ kín đáy. Cho giá và hành lá vào giữa bánh.",
+      "Hoàn thiện: Đậy nắp 2 phút, mở nắp chiên với lửa vừa cho bánh giòn đáy (5-7 phút). Gấp đôi bánh. Trình bày với rau sống và nước mắm pha chua ngọt."
+    ],
+    tags: ["banh", "southern", "crispy"],
+    like_count: 245,
+    is_community: true,
+    author_name: "Võ Lan Phương",
+    author_avatar: "https://i.pravatar.cc/150?img=16",
+    requiredIngredients: ["shrimp", "pork", "bean_sprouts", "spring_onion", "coconut"],
+    nutrition_facts: {
+      calories: 445,
+      protein: 26,
+      carbs: 54,
+      fat: 15,
+      fiber: 5
     }
   }
 ];
