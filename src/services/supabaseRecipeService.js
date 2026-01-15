@@ -464,57 +464,51 @@ export const supabaseRecipeService = {
   },
 
   /**
-   * Lấy community recipes
+   * Lấy community recipes với pagination và filters - SỬ DỤNG RPC
    */
-  async getCommunityRecipes(limit = 6, filterIngredients = []) {
+  async getCommunityRecipes(options = {}) {
     try {
-      log('Fetching community recipes', { limit, filterIngredients })
+      const {
+        limit = 6,
+        offset = 0,
+        difficulty = '',
+        cookingTime = '',
+        ingredientCount = '',
+        sortBy = 'latest'
+      } = options
+  
+      log('Fetching community recipes', options)
       
-      // Nếu có filter ingredients
-      if (filterIngredients.length > 0) {
-        const { data: selectedIngredients } = await supabase
-          .from('ingredients')
-          .select('name')
-          .in('id', filterIngredients)
-        
-        const ingredientNames = selectedIngredients.map(ing => normalizeText(ing.name))
-        
-        const { data: matchedRecipes, error: searchError } = await supabase
-          .rpc('search_recipes_by_ingredients', {
-            ingredient_names: ingredientNames,
-            is_community_filter: true
-          })
-        
-        if (searchError) throw searchError
-        
-        if (matchedRecipes && matchedRecipes.length > 0) {
-          const recipeIds = matchedRecipes.slice(0, limit).map(r => r.recipe_id)
-          
-          const { data, error } = await supabase
-            .from('recipes')
-            .select('*')
-            .in('id', recipeIds)
-            .eq('is_community', true)
-          
-          if (error) throw error
-          return { success: true, data }
-        } else {
-          return { success: true, data: [] }
-        }
-      }
-      
-      // Không có filter
-      const { data, error } = await supabase
-        .from('recipes')
-        .select('*')
-        .eq('is_community', true)
-        .order('like_count', { ascending: false })
-        .order('created_at', { ascending: false })
-        .limit(limit)
+      const { data, error } = await supabase.rpc('get_community_recipes_filtered', {
+        p_limit: limit,
+        p_offset: offset,
+        p_difficulty: difficulty ? parseInt(difficulty) : null,
+        p_cooking_time: cookingTime ? parseInt(cookingTime) : null,
+        p_ingredient_count: ingredientCount ? parseInt(ingredientCount) : null,
+        p_sort_by: sortBy
+      })
       
       if (error) throw error
       
-      return { success: true, data }
+      const totalCount = data.length > 0 ? data[0].total_count : 0
+      
+      // Remove total_count từ mỗi row
+      const cleanData = data.map(({ total_count, ...rest }) => rest)
+      
+      log('Fetched recipes:', { 
+        returned: cleanData.length, 
+        total: totalCount, 
+        offset, 
+        limit,
+        hasMore: offset + cleanData.length < totalCount
+      })
+      
+      return {
+        success: true,
+        data: cleanData,
+        total: totalCount,
+        hasMore: offset + cleanData.length < totalCount
+      }
       
     } catch (error) {
       return handleError('getCommunityRecipes', error)

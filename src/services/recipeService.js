@@ -148,9 +148,80 @@ const mockService = {
     return { success: true, data: recipe };
   },
 
-  async getCommunityRecipes(limit = 10) {
+  async getCommunityRecipes(options = {}) {
+    // Nếu có Supabase, dùng nó
+    if (USE_SUPABASE && supabaseRecipeService) {
+      return await supabaseRecipeService.getCommunityRecipes(options);
+    }
+
+    // Fallback to mock data
     await delay(500);
-    return { success: true, data: mockCommunity.slice(0, limit) };
+
+    const {
+      limit = 6,
+      offset = 0,
+      difficulty = "",
+      cookingTime = "",
+      ingredientCount = "",
+      sortBy = "latest",
+    } = options;
+
+    const mockRecipes = await import("./mockData");
+    let communityRecipes = [...(mockRecipes.communityRecipes || [])];
+
+    // Apply filters
+    if (difficulty) {
+      communityRecipes = communityRecipes.filter(
+        (r) => r.difficulty_score === parseInt(difficulty)
+      );
+    }
+
+    if (cookingTime) {
+      communityRecipes = communityRecipes.filter(
+        (r) => r.time_minutes <= parseInt(cookingTime)
+      );
+    }
+
+    if (ingredientCount) {
+      communityRecipes = communityRecipes.filter(
+        (r) =>
+          (r.ingredients_list_fixed?.length || 0) <= parseInt(ingredientCount)
+      );
+    }
+
+    // Apply sorting
+    switch (sortBy) {
+      case "popular":
+        communityRecipes.sort(
+          (a, b) => (b.like_count || 0) - (a.like_count || 0)
+        );
+        break;
+      case "easy":
+        communityRecipes.sort(
+          (a, b) => (a.difficulty_score || 1) - (b.difficulty_score || 1)
+        );
+        break;
+      case "latest":
+      default:
+        communityRecipes.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+        break;
+    }
+
+    const total = communityRecipes.length;
+    const paginatedData = communityRecipes.slice(offset, offset + limit);
+
+    console.log(
+      `[Mock] Fetching recipes: offset=${offset}, limit=${limit}, total=${total}, returned=${paginatedData.length}`
+    );
+
+    return {
+      success: true,
+      data: paginatedData,
+      total: total,
+      hasMore: offset + paginatedData.length < total,
+    };
   },
 
   async voteRecipe(recipeId) {

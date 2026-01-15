@@ -2,7 +2,8 @@
   <MainLayout>
     <div class="impact-page">
       <!-- Hero Section -->
-      <section class="bg-gradient-to-br from-primary-50 via-white to-primary-100 py-16 md:py-20 mt-16">
+      <section class="bg-gradient-to-br from-primary-50 via-white to-primary-100 py-16 md:py-20"
+      style="padding-top: 7rem;">
         <div class="container mx-auto px-4">
           <div class="max-w-4xl mx-auto text-center">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-success/20 rounded-full mb-6">

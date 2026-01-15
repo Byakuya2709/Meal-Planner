@@ -139,9 +139,9 @@
         </section>
       </Transition>
       <!-- ===== INGREDIENT SELECTION SECTION ===== -->
-      <section ref="ingredientsSection" class="section-md bg-white">
+      <section id="selection" ref="ingredientsSection" class="section-md bg-white">
         <div class="container-wide">
-          <div class="text-center mb-12">
+          <div class="text-center mb-1">
             <div
               class="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-4 py-2 rounded-full text-sm font-semibold mb-4"
             >
@@ -150,7 +150,7 @@
             </div>
             <h2 class="heading-2 mb-4">Chọn nguyên liệu trong tủ lạnh</h2>
             <p class="body-lg text-neutral-600 mb-6">
-              Chọn từ 3-5 nguyên liệu bạn đang có, chúng tôi sẽ gợi ý món phù
+              Chọn từ 1-3 nguyên liệu bạn đang có, chúng tôi sẽ gợi ý món phù
               hợp nhất
             </p>
 
@@ -158,7 +158,7 @@
             <div
               class="inline-flex items-center gap-4 bg-neutral-50 rounded-2xl px-8 py-4 border-2 border-neutral-200"
             >
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 ">
                 <div
                   v-for="n in 3"
                   :key="n"
@@ -196,87 +196,98 @@
           </div>
 
           <!-- Ingredients Grid -->
-          <div v-else class="space-y-12">
-            <!-- Category: Protein -->
-            <div>
-              <div class="flex items-center gap-3 mb-6">
-                <IconBox variant="secondary" size="sm"> 🥩 </IconBox>
-                <h3 class="heading-3">Protein</h3>
-                <div class="flex-1 h-px bg-neutral-200"></div>
-              </div>
-              <div
-                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
-              >
-                <IngredientCard
-                  v-for="ingredient in getByCategory('protein')"
-                  :key="ingredient.id"
-                  :ingredient="ingredient"
-                  :selected="isSelected(ingredient.id)"
-                  @click="handleIngredientClick(ingredient)"
-                />
-              </div>
-            </div>
-
-            <!-- Category: Vegetables -->
-            <div>
-              <div class="flex items-center gap-3 mb-6">
-                <IconBox variant="success" size="sm"> 🥬 </IconBox>
-                <h3 class="heading-3">Rau củ</h3>
-                <div class="flex-1 h-px bg-neutral-200"></div>
-              </div>
-              <div
-                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
-              >
-                <IngredientCard
-                  v-for="ingredient in getByCategory('vegetable')"
-                  :key="ingredient.id"
-                  :ingredient="ingredient"
-                  :selected="isSelected(ingredient.id)"
-                  @click="handleIngredientClick(ingredient)"
-                />
-              </div>
-            </div>
-
-            <!-- Category: Carbs -->
-            <div>
-              <div class="flex items-center gap-3 mb-6">
-                <IconBox variant="warning" size="sm"> 🍚 </IconBox>
-                <h3 class="heading-3">Tinh bột</h3>
-                <div class="flex-1 h-px bg-neutral-200"></div>
-              </div>
-              <div
-                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
-              >
-                <IngredientCard
-                  v-for="ingredient in getByCategory('carb')"
-                  :key="ingredient.id"
-                  :ingredient="ingredient"
-                  :selected="isSelected(ingredient.id)"
-                  @click="handleIngredientClick(ingredient)"
-                />
-              </div>
-            </div>
-
-            <!-- Category: Dairy -->
-            <div>
-              <div class="flex items-center gap-3 mb-6">
-                <IconBox variant="info" size="sm"> 🥛 </IconBox>
-                <h3 class="heading-3">Sữa & Phô mai</h3>
-                <div class="flex-1 h-px bg-neutral-200"></div>
-              </div>
-              <div
-                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
-              >
-                <IngredientCard
-                  v-for="ingredient in getByCategory('dairy')"
-                  :key="ingredient.id"
-                  :ingredient="ingredient"
-                  :selected="isSelected(ingredient.id)"
-                  @click="handleIngredientClick(ingredient)"
-                />
-              </div>
-            </div>
-          </div>
+                 <!-- Thay thế phần Ingredients Grid (từ dòng 205-314) bằng code này -->
+          
+                    <!-- Ingredients Carousel Grid -->
+                    <div v-else class="space-y-10">
+                      <!-- Category: Protein -->
+                      <div>
+                        <div class="flex items-center gap-3 mb-6">
+                          <IconBox variant="secondary" size="sm"> 🥩 </IconBox>
+                          <h3 class="heading-3">Protein</h3>
+                          <div class="flex-1 h-px bg-neutral-200"></div>
+                          <span class="text-sm text-neutral-500 font-medium">
+                            {{ getByCategory('protein').length }} loại
+                          </span>
+                        </div>
+                        <IngredientCarousel>
+                          <IngredientCard
+                            v-for="ingredient in getByCategory('protein')"
+                            :key="ingredient.id"
+                            :ingredient="ingredient"
+                            :selected="isSelected(ingredient.id)"
+                            @click="handleIngredientClick(ingredient)"
+                            class="flex-shrink-0 w-32"
+                          />
+                        </IngredientCarousel>
+                      </div>
+          
+                      <!-- Category: Vegetables -->
+                      <div>
+                        <div class="flex items-center gap-3 mb-6">
+                          <IconBox variant="success" size="sm"> 🥬 </IconBox>
+                          <h3 class="heading-3">Rau củ</h3>
+                          <div class="flex-1 h-px bg-neutral-200"></div>
+                          <span class="text-sm text-neutral-500 font-medium">
+                            {{ getByCategory('vegetable').length }} loại
+                          </span>
+                        </div>
+                        <IngredientCarousel>
+                          <IngredientCard
+                            v-for="ingredient in getByCategory('vegetable')"
+                            :key="ingredient.id"
+                            :ingredient="ingredient"
+                            :selected="isSelected(ingredient.id)"
+                            @click="handleIngredientClick(ingredient)"
+                            class="flex-shrink-0 w-32"
+                          />
+                        </IngredientCarousel>
+                      </div>
+          
+                      <!-- Category: Carbs -->
+                      <div>
+                        <div class="flex items-center gap-3 mb-6">
+                          <IconBox variant="warning" size="sm"> 🍚 </IconBox>
+                          <h3 class="heading-3">Tinh bột</h3>
+                          <div class="flex-1 h-px bg-neutral-200"></div>
+                          <span class="text-sm text-neutral-500 font-medium">
+                            {{ getByCategory('carb').length }} loại
+                          </span>
+                        </div>
+                        <IngredientCarousel>
+                          <IngredientCard
+                            v-for="ingredient in getByCategory('carb')"
+                            :key="ingredient.id"
+                            :ingredient="ingredient"
+                            :selected="isSelected(ingredient.id)"
+                            @click="handleIngredientClick(ingredient)"
+                            class="flex-shrink-0 w-32"
+                          />
+                        </IngredientCarousel>
+                      </div>
+          
+                      <!-- Category: Dairy -->
+                      <div>
+                        <div class="flex items-center gap-3 mb-6">
+                          <IconBox variant="info" size="sm"> 🥛 </IconBox>
+                          <h3 class="heading-3">Sữa & Phô mai</h3>
+                          <div class="flex-1 h-px bg-neutral-200"></div>
+                          <span class="text-sm text-neutral-500 font-medium">
+                            {{ getByCategory('dairy').length }} loại
+                          </span>
+                        </div>
+                        <IngredientCarousel>
+                          <IngredientCard
+                            v-for="ingredient in getByCategory('dairy')"
+                            :key="ingredient.id"
+                            :ingredient="ingredient"
+                            :selected="isSelected(ingredient.id)"
+                            @click="handleIngredientClick(ingredient)"
+                            class="flex-shrink-0 w-32 pt-2"
+                          />
+                        </IngredientCarousel>
+                      </div>
+                    </div>
         </div>
       </section>
 
@@ -348,7 +359,7 @@
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { BookOpen } from "lucide-vue-next";
-
+import IngredientCarousel from "../components/ui/IngredientCarousel.vue";
 import MainLayout from "../layouts/MainLayout.vue";
 import HeroSection from "../components/sections/HeroSection.vue";
 import WhyDifferentSection from "../components/sections/WhyDifferentSection.vue";

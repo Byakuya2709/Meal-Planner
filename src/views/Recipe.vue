@@ -642,19 +642,19 @@
 
         <!-- CTA Section -->
         <section
-          class="relative bg-gradient-to-b from-neutral-900 to-black py-16 md:py-20 overflow-hidden"
+          class="relative bg-gradient-to-bl from-primary-500 via-primary-900 to-accent-200 py-16 md:py-20 overflow-hidden"
         >
           <!-- Decorative background -->
           <div class="absolute inset-0">
             <div
-              class="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-[150px]"
+              class="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-[150px] "
             ></div>
             <div
               class="absolute bottom-0 right-1/4 w-96 h-96 bg-accent-500/20 rounded-full blur-[150px]"
             ></div>
           </div>
 
-          <div class="relative container mx-auto px-4">
+          <div class="relative container mx-auto ">
             <div class="max-w-4xl mx-auto text-center space-y-8">
               <div
                 class="inline-flex items-center justify-center w-20 h-20 bg-primary-500/20 backdrop-blur-md border border-primary-400/30 rounded-3xl mb-4"
@@ -673,7 +673,7 @@
 
               <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <button
-                  @click="$router.push('/')"
+                  @click="$router.push({ path: '/', hash: '#selection' })"
                   class="group px-8 py-4 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-2xl font-bold text-lg shadow-2xl hover:shadow-[0_0_50px_rgba(251,146,60,0.5)] transition-all duration-500 hover:scale-105 overflow-hidden relative"
                 >
                   <span
@@ -702,6 +702,7 @@
             </div>
           </div>
         </section>
+        <hr>
       </div>
     </div>
   </MainLayout>

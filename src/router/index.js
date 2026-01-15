@@ -50,9 +50,18 @@ const router = createRouter({
     if (savedPosition) {
       return savedPosition
     }
+
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth',
+      }
+    }
+
     return { top: 0, behavior: 'smooth' }
   },
 })
+
 
 // Navigation guard
 router.beforeEach(async (to, from, next) => {

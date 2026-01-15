@@ -39,11 +39,11 @@
       <!-- Stat 1 - Top Left - Màu Primary (30%) -->
       <div
         ref="stat1"
-        class="absolute top-[12%] left-[5%] lg:left-[8%] bg-primary-500/20 backdrop-blur-md border aspect-square w-[120px] border-primary-400/30 content-center rounded-full p-3 lg:p-4 shadow-xl animate-float opacity-0 transition-opacity duration-700"
+        class="absolute top-[12%] left-[5%] lg:left-[8%] bg-blue-800/20 backdrop-blur-md border aspect-square w-[120px] border-primary-400/30 content-center rounded-full p-3 lg:p-4 shadow-xl animate-float opacity-0 transition-opacity duration-700"
         style="animation-delay: 0s;"
       >
         <div class="text-center space-y-1">
-          <p class="text-2xl lg:text-4xl font-bold text-white">3-5</p>
+          <p class="text-2xl lg:text-4xl font-bold text-white">1-3</p>
           <p class="text-xs lg:text-sm text-secondary-100">Nguyên liệu</p>
         </div>
       </div>
@@ -51,7 +51,7 @@
       <!-- Stat 2 - Top Right - Màu Primary -->
       <div
         ref="stat2"
-        class="absolute top-[20%] right-[5%] lg:right-[10%] bg-primary-500/20 backdrop-blur-md border border-primary-400/30 w-[110px] h-[110px] content-center rounded-full p-3 lg:p-4 shadow-xl animate-float-delayed opacity-0 transition-opacity duration-700"
+        class="absolute top-[20%] right-[5%] lg:right-[10%] bg-blue-800/10 backdrop-blur-md border border-primary-400/30 w-[110px] h-[110px] content-center rounded-full p-3 lg:p-4 shadow-xl animate-float-delayed opacity-0 transition-opacity duration-700"
         style="animation-delay: 1s;"
       >
         <div class="text-center space-y-1">
@@ -63,7 +63,7 @@
       <!-- Stat 3 - Middle Left - Màu Accent (10%) -->
       <div
         ref="stat3"
-        class="absolute top-[42%] left-[3%] aspect-square w-[100px] lg:left-[5%] bg-accent-500/20 backdrop-blur-md border border-accent-400/30 content-center rounded-full p-3 lg:p-4 shadow-xl animate-float opacity-0 transition-opacity duration-700"
+        class="absolute top-[42%] left-[3%] aspect-square w-[100px] lg:left-[5%] bg-blue-800/50 backdrop-blur-md border border-blue-400/30 content-center rounded-full p-3 lg:p-4 shadow-xl animate-float opacity-0 transition-opacity duration-700"
         style="animation-delay: 2s;"
       >
         <div class="text-center space-y-1">
